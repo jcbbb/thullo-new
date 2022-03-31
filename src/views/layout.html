@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= it.title %></title>
-  <link rel="stylesheet" href="/public/css/main.min.css">
-</head>
-<body>
-  <%~ it.body %>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/public/images/favicon.svg" />
+    <link rel="icon" type="image/png" href="/public/images/favicon.png" />
+    <title><%= it.title %></title>
+    <link rel="stylesheet" href="/public/css/main.min.css" />
+  </head>
+  <body class="bg-slate-100">
+    <%~ includeFile('./partials/header.html', it) %> <%~ it.body %>
+  </body>
 </html>

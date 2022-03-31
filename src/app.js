@@ -1,18 +1,51 @@
-import express from "express";
+import fastify from "fastify";
+import fastifyStatic from "fastify-static";
+import view from "point-of-view";
 import path from "path";
-import routes from "./routes/index.js";
+import config from "./config/index.js";
+import formBody from "fastify-formbody";
+import multipart from "fastify-multipart";
+import cookie from "fastify-cookie";
+import { routes } from "./routes/index.js";
+import { isXhr } from "./plugins/is-xhr.js";
 import * as eta from "eta";
 
-export const app = express();
+export async function start() {
+  const app = fastify({ logger: true });
+  try {
+    app.register(isXhr);
+    app.register(formBody);
+    app.register(multipart);
+    app.register(cookie, {
+      secret: config.cookie_secret,
+    });
 
-app.engine("html", eta.renderFile);
-app.set("view engine", "html");
-app.set("views", path.join(process.cwd(), "src/views"));
-app.use("/public", express.static(path.join(process.cwd(), "src/public")));
-app.use("/node_modules", express.static(path.join(process.cwd(), "node_modules")));
+    app.register(view, {
+      engine: {
+        eta,
+      },
+      root: path.join(process.cwd(), "src/views"),
+      viewExt: "html",
+      propertyName: "render",
+    });
 
-app.use(routes);
+    app.register(fastifyStatic, {
+      root: path.join(process.cwd(), "src/public"),
+      prefix: "/public",
+      decorateReply: false,
+    });
 
-app.get("*", (req, res, next) => {
-  res.status(404).send("<h1>NOT FOUND</h1>");
-});
+    app.register(fastifyStatic, {
+      root: path.join(process.cwd(), "node_modules"),
+      prefix: "/node_modules",
+      decorateReply: false,
+    });
+
+    app.register(routes);
+
+    await app.listen(config.port);
+  } catch (err) {
+    app.log.error(err);
+    process.exit(1);
+  }
+}

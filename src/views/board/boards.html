@@ -1,0 +1,48 @@
+<div class="max-w-7xl w-full mx-auto mt-12">
+  <div class="flex items-center justify-between">
+    <h1>All boards</h1>
+    <noscript>
+      <style>
+        .js-enabled {
+          display: none;
+        }
+      </style>
+      <a href="/boards/new" class="block btn-primary">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5 flex-shrink-0"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+        </svg>
+        <span> Add </span>
+      </a>
+    </noscript>
+    <button class="js-enabled btn-primary js-add-board">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-5 w-5 flex-shrink-0"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+      </svg>
+      <span> Add </span>
+    </button>
+  </div>
+  <dialog
+    class="js-create-board-dialog bg-white shadow-md max-w-sm rounded-lg w-full open:animate-dialog-reveal p-0"
+  >
+    <%~ includeFile("./new-board.html", { method: "dialog" } ) %>
+  </dialog>
+  <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-10">
+    <% it.boards.forEach(function(board){ %> <%~ includeFile('./board-card.html', board) %> <% }) %>
+  </ul>
+</div>
+
+<script defer async type="module" src="/public/js/boards.js"></script>

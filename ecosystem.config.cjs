@@ -1,8 +1,8 @@
 module.exports = {
   apps: [
     {
-      name: "app-name",
-      script: "npm",
+      name: "thullo",
+      script: "pnpm",
       args: "start",
     },
   ],

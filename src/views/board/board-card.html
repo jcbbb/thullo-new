@@ -1,0 +1,11 @@
+<li class="bg-white p-4 shadow-md rounded-lg">
+  <a href="/boards/<%= it.id %>" class="text-neutral-900">
+    <h2 class="text-lg font-medium"><%= it.title %></h2>
+  </a>
+  <p class="text-neutral-900"><%= it.description %></p>
+  <ul>
+    <% it.members.forEach(function (member) {%>
+    <li><%= member.name %></li>
+    <% }) %>
+  </ul>
+</li>

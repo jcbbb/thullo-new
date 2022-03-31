@@ -1,8 +1,9 @@
-import { Router } from "express";
-import home from "./home.route.js";
+import { home } from "./home.route.js";
+import { auth } from "./auth.route.js";
+import { board } from "./board.route.js";
 
-const router = Router();
-
-router.get("/", home);
-
-export default router;
+export const routes = async (fastify) => {
+  fastify.register(home);
+  fastify.register(auth, { prefix: "/auth" });
+  fastify.register(board, { prefix: "/boards" });
+};

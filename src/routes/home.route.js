@@ -1,8 +1,7 @@
-import { Router } from "express";
 import * as HomeController from "../controllers/home.controller.js";
+import { authenticate } from "../plugins/authenticate.js";
 
-const router = Router();
-
-router.get("/", HomeController.getIndex);
-
-export default router;
+export const home = async (fastify) => {
+  fastify.register(authenticate);
+  fastify.get("/", HomeController.getIndex);
+};
