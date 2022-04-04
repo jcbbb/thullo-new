@@ -27,9 +27,17 @@ export async function createOne(req, res) {
 }
 
 export async function addMember(req, res) {
-  const { user_id, board_id } = normalizeBody(req.body);
+  const board_id = req.params.id;
+  const { user_id } = req.body;
   await BoardService.addMember({ user_id, board_id });
   res.redirect("/");
+}
+
+export async function addListMember(req, res) {
+  const { list_item_id, id } = req.params;
+  const { user_id } = req.body;
+  await BoardService.addListItemMember({ user_id, list_item_id });
+  res.redirect(`/boards/${id}`);
 }
 
 export async function getOne(req, res) {

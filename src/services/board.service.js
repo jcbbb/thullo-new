@@ -14,6 +14,10 @@ export async function addMember({ user_id, board_id }) {
   return await Board.relatedQuery("members").for(board_id).relate(user_id);
 }
 
+export async function addListItemMember({ user_id, list_item_id }) {
+  return await ListItem.relatedQuery("members").for(list_item_id).relate(user_id);
+}
+
 export async function getOne(id) {
   return await Board.query().findById(id).withGraphFetched("[lists.[items], members, creator]");
 }

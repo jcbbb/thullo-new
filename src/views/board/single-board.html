@@ -1,6 +1,6 @@
 <% layout('./layout.html', { title: it.board.title, board: it.board, user: it.user }) %>
 <div class="px-6 py-8 h-full">
-  <div class="flex space-x-4">
+  <div class="flex items-center space-x-4">
     <form method="post" id="change-board-visibility-form">
       <select name="visibility" id="" class="select" required>
         <option value="PRIVATE" <%= it.board.visibility === "PRIVATE" ? "selected" : ""%>>Private</option>
@@ -10,6 +10,18 @@
     <% if (it.board.members.length) {%>
     <ul class="flex"></ul>
     <% } %>
+    <button class="btn-primary !px-3 js-add-board-member" title="Add member">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-5 w-5 flex-shrink-0"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+      </svg>
+    </button>
     <noscript>
       <button form="change-board-visibility-form" class="btn-primary">Save</button>
     </noscript>
@@ -17,4 +29,11 @@
   <div class="flex space-x-4 bg-slate-100 rounded-2xl w-full mt-4 h-full">
     <%~ includeFile('../list/lists.html', { board: it.board }) %>
   </div>
+  <dialog
+    class="js-add-board-member-dialog bg-white shadow-md max-w-sm rounded-lg w-full open:animate-dialog-reveal p-0"
+  >
+    <%~ includeFile("./new-board-member.html", { method: "dialog" } ) %>
+  </dialog>
 </div>
+
+<script defer async type="module" src="/public/js/single-board.js"></script>
