@@ -1,11 +1,12 @@
 import * as AuthService from "../services/auth.service.js";
 import * as CookieService from "../services/cookie.service.js";
+import { normalizeBody } from "../utils/index.js";
 import config from "../config/index.js";
 
 export async function getSignup(req, res) {
   const cookie = req.cookies[config.session_cookie_name];
   const sid = cookie && req.unsignCookie(cookie);
-  if (!sid || !sid.valid) return res.render("auth/signup", { title: "Signup" });
+  if (!sid || !sid.valid) return res.render("auth/signup");
   const session = await AuthService.getSession(sid.value);
   if (!session) {
     const { cookie, opts } = CookieService.removeAccessCookie();
@@ -19,7 +20,7 @@ export async function getSignup(req, res) {
 export async function getLogin(req, res) {
   const cookie = req.cookies[config.session_cookie_name];
   const sid = cookie && req.unsignCookie(cookie);
-  if (!sid || !sid.valid) return res.render("auth/login", { title: "Login" });
+  if (!sid || !sid.valid) return res.render("auth/login");
   const session = await AuthService.getSession(sid.value);
   if (!session) {
     const { cookie, opts } = CookieService.removeAccessCookie();
@@ -27,11 +28,11 @@ export async function getLogin(req, res) {
     return res.render("auth/login", { title: "Signup" });
   }
   if (session.active) return res.redirect("/");
-  res.render("auth/login", { title: "Login" });
+  res.render("auth/login");
 }
 
 export async function signup(req, res) {
-  const { email, password, name } = req.body;
+  const { email, password, name } = normalizeBody(req.body);
   const { session } = await AuthService.signup({ email, password, name });
   const { cookie, opts } = CookieService.generateAccessCookie(session.id);
   res.setCookie(cookie.name, cookie.value, opts);
@@ -39,9 +40,20 @@ export async function signup(req, res) {
 }
 
 export async function login(req, res) {
-  const { email, password } = req.body;
+  const { email, password } = normalizeBody(req.body);
   const { session } = await AuthService.login({ email, password });
   const { cookie, opts } = CookieService.generateAccessCookie(session.id);
+  res.setCookie(cookie.name, cookie.value, opts);
+  res.redirect("/");
+}
+
+export async function logout(req, res) {
+  const ck = req.cookies[config.session_cookie_name];
+  const sid = ck && req.unsignCookie(ck);
+  if (!sid || !sid.valid) return res.render("auth/login");
+  await AuthService.deleteSession(sid.value);
+  const { cookie, opts } = CookieService.removeAccessCookie();
+
   res.setCookie(cookie.name, cookie.value, opts);
   res.redirect("/");
 }

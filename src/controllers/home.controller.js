@@ -5,7 +5,6 @@ export async function getIndex(req, res) {
   const boards = await BoardService.getMany({ creator_id: user.id });
 
   res.render("home", {
-    title: "Thullo",
     user,
     xhr: req.xhr,
     boards,

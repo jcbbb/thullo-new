@@ -12,7 +12,7 @@
   @font-face {
     font-family: "Roboto";
     font-weight: 700;
-    src: url("/public/fonts/Roboto-Bold.ttf");
+    src: url("/public/fonts/Roboto-medium.ttf");
     font-display: swap;
   }
   @font-face {
@@ -28,29 +28,25 @@ body {
   height: 100%;
 }
 
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  -o-appearance: none;
+  appearance: none;
+}
+
 button:disabled,
 fieldset:disabled {
   @apply pointer-events-none opacity-70;
 }
 
-.input {
-  @apply w-full outline-none border-none bg-brand-50 p-3 rounded-md focus:bg-transparent focus:ring-2 focus:ring-brand-100 transition-colors duration-200 placeholder-gray-500;
-}
-
-.btn-primary {
-  @apply py-3 px-6 bg-brand-500 flex space-x-2 justify-center items-center text-white focus:ring-2 focus:ring-brand-100 rounded-lg font-bold text-sm hover:bg-brand-600 transition-transform duration-200 active:scale-95;
-}
-
-.btn-secondary {
-  @apply py-3 px-6 rounded-md flex space-x-2 justify-center items-center focus:ring-2 focus:ring-brand-100 duration-200 bg-brand-50 hover:bg-brand-100 active:scale-95;
-}
-
-.btn-text {
-  @apply py-3 px-6 rounded-md flex space-x-2 justify-center items-center focus:ring-2 focus:ring-brand-100 duration-200 active:scale-95 active:bg-brand-100;
-}
-
 a {
   @apply text-brand-500;
+}
+
+details > summary {
+  list-style: none;
 }
 
 details summary::-webkit-details-marker {
@@ -59,4 +55,28 @@ details summary::-webkit-details-marker {
 
 details summary::marker {
   display: none;
+}
+
+.input {
+  @apply w-full outline-none border-none bg-brand-50 p-3 rounded-md focus:bg-transparent focus:ring-2 focus:ring-brand-300 ring-offset-2 ring-offset-brand-400 transition-colors duration-200 placeholder-gray-500;
+}
+
+.file-input {
+  @apply w-full outline-none border-none focus:ring-2 focus:ring-brand-300 ring-offset-2 ring-offset-brand-400 rounded-md file:w-full file:bg-brand-50 file:border-none file:p-3 file:rounded-md file:cursor-pointer file:text-gray-500;
+}
+
+.select {
+  @apply w-full outline-none border-none bg-brand-50 p-3 rounded-md focus:ring-2 focus:ring-brand-300 ring-offset-2 ring-offset-brand-400 transition-colors duration-200 placeholder-gray-500;
+}
+
+.btn-primary {
+  @apply py-3 px-6 bg-brand-500 flex space-x-2 justify-center items-center text-white focus:ring-2 focus:ring-brand-300 ring-offset-2 ring-offset-brand-400 rounded-lg text-sm hover:bg-brand-600 transition-transform duration-200 active:scale-95;
+}
+
+.btn-secondary {
+  @apply py-3 px-6 rounded-md flex space-x-2 justify-center items-center focus:ring-2 focus:ring-brand-300 ring-offset-2 ring-offset-brand-400 duration-200 bg-brand-50 hover:bg-brand-100 text-sm active:scale-95;
+}
+
+.btn-text {
+  @apply py-3 px-6 rounded-md flex space-x-2 justify-center items-center focus:ring-2 focus:ring-brand-300 ring-offset-2 ring-offset-brand-400 duration-200 active:scale-95 text-sm active:bg-brand-100;
 }

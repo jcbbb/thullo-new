@@ -17,6 +17,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.58.0",
     "argon2": "^0.28.5",
     "dotenv": "^10.0.0",
     "eta": "^1.12.3",
@@ -39,5 +40,8 @@
     "nodemon": "^2.0.15",
     "postcss": "^8.4.5",
     "tailwindcss": "^3.0.7"
+  },
+  "engines": {
+    "node": "^15.0.0"
   }
 }

@@ -1,12 +1,21 @@
 import { Model } from "objection";
 import { thullo } from "../services/db.service.js";
 import { User } from "./user.model.js";
+import { List } from "./list.model.js";
 
 class model extends Model {
   static get tableName() {
     return "boards";
   }
   static relationMappings = {
+    lists: {
+      relation: Model.HasManyRelation,
+      modelClass: List,
+      join: {
+        from: "boards.id",
+        to: "lists.board_id",
+      },
+    },
     members: {
       relation: Model.ManyToManyRelation,
       modelClass: User,

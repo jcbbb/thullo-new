@@ -30,3 +30,7 @@ export async function login({ email, password }) {
 export async function getSession(sid) {
   return await Session.query().findById(sid);
 }
+
+export async function deleteSession(sid) {
+  return await Session.query().deleteById(sid);
+}

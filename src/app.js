@@ -15,7 +15,7 @@ export async function start() {
   try {
     app.register(isXhr);
     app.register(formBody);
-    app.register(multipart);
+    app.register(multipart, { attachFieldsToBody: true });
     app.register(cookie, {
       secret: config.cookie_secret,
     });

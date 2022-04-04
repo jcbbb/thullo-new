@@ -1,11 +1,13 @@
 <li class="bg-white p-4 shadow-md rounded-lg">
-  <a href="/boards/<%= it.id %>" class="text-neutral-900">
+  <img alt="" class="h-40 w-full object-cover rounded-md mb-3" src="<%= it.cover_photo_url %>" />
+  <a href="/boards/<%= it.id %>" class="text-neutral-900 block">
     <h2 class="text-lg font-medium"><%= it.title %></h2>
   </a>
-  <p class="text-neutral-900"><%= it.description %></p>
-  <ul>
+  <% if (it.members.length) {%>
+  <ul class="mt-5">
     <% it.members.forEach(function (member) {%>
     <li><%= member.name %></li>
     <% }) %>
   </ul>
+  <% } %>
 </li>

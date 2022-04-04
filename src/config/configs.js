@@ -13,6 +13,10 @@ import {
   SESSION_COOKIE_NAME,
   SESSION_COOKIE_NAME_DEV,
   SESSION_COOKIE_NAME_STAGING,
+  AWS_ACCESS_KEY,
+  AWS_SECRET_KEY,
+  AWS_S3_REGION,
+  AWS_S3_BUCKET_NAME,
 } from "./secrets.js";
 
 export const configs = {
@@ -23,6 +27,10 @@ export const configs = {
     cookie_secret: COOKIE_SECRET,
     origin: ORIGIN,
     session_cookie_name: SESSION_COOKIE_NAME,
+    aws_access_key: AWS_ACCESS_KEY,
+    aws_secret_key: AWS_SECRET_KEY,
+    aws_s3_region: AWS_S3_REGION,
+    aws_s3_bucket_name: AWS_S3_BUCKET_NAME,
   },
   development: {
     port: PORT_DEV,
@@ -31,6 +39,10 @@ export const configs = {
     cookie_secret: COOKIE_SECRET,
     origin: ORIGIN_DEV,
     session_cookie_name: SESSION_COOKIE_NAME_DEV,
+    aws_access_key: AWS_ACCESS_KEY,
+    aws_secret_key: AWS_SECRET_KEY,
+    aws_s3_region: AWS_S3_REGION,
+    aws_s3_bucket_name: AWS_S3_BUCKET_NAME,
   },
   staging: {
     port: PORT_STAGING,
@@ -39,5 +51,9 @@ export const configs = {
     cookie_secret: COOKIE_SECRET,
     origin: ORIGIN_STAGING,
     session_cookie_name: SESSION_COOKIE_NAME_STAGING,
+    aws_access_key: AWS_ACCESS_KEY,
+    aws_secret_key: AWS_SECRET_KEY,
+    aws_s3_region: AWS_S3_REGION,
+    aws_s3_bucket_name: AWS_S3_BUCKET_NAME,
   },
 };
