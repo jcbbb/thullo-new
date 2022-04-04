@@ -10,16 +10,16 @@ export const authenticate = fp(async function authenticate(fastify, opts) {
   fastify.addHook("preHandler", async (req, res) => {
     const cookie = req.cookies[config.session_cookie_name];
     const sid = cookie && req.unsignCookie(cookie);
-    if (!sid || !sid.valid) return res.render("auth/signup", { title: "Signup" });
+    if (!sid || !sid.valid) return res.redirect(`/auth/login?return_to=${req.url}`);
     const session = await AuthService.getSession(sid.value);
 
     if (!session) {
       const { cookie, opts } = CookieService.removeAccessCookie();
       res.setCookie(cookie.name, cookie.value, opts);
-      return res.render("auth/signup", { title: "Signup" });
+      return res.redirect(`/auth/login?return_to=${req.url}`);
     }
 
-    if (!session.active) return res.render("auth/signup", { title: "Signup" });
+    if (!session.active) return res.redirect(`/auth/login?return_to=${req.url}`);
     const user = await UserService.getOne(session.user_id);
 
     req.user = user;

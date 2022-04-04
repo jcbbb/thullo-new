@@ -3,7 +3,7 @@
 <div class="bg-slate-50 h-full pt-24">
   <div class="bg-white shadow-md max-w-sm p-8 space-y-6 rounded-lg mx-auto">
     <h2 class="font-bold text-lg text-center">Signup</h2>
-    <form action="/auth/signup" method="post" class="space-y-6">
+    <form action="/auth/signup?return_to=<%= it.return_to %>" method="post" class="space-y-6">
       <fieldset class="space-y-4">
         <input name="email" type="email" class="input" placeholder="jane@gmail.com" required />
         <input name="password" type="password" class="input" placeholder="pass" required />

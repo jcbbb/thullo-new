@@ -15,6 +15,7 @@ fileUpload.addEventListener("change", (e) => {
     imageViewer.style.display = "block";
   }
 });
+
 closeBoardDialog.addEventListener("click", () => createBoardDialog.close());
 
 addBoardBtn.addEventListener("click", () => createBoardDialog.showModal());
