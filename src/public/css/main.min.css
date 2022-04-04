@@ -438,7 +438,7 @@ Ensure the default browser behavior of the `hidden` attribute.
 
   font-weight: 700;
 
-  src: url("/public/fonts/Roboto-medium.ttf");
+  src: url("/public/fonts/Roboto-Medium.ttf");
 
   font-display: swap;
 }
@@ -448,7 +448,7 @@ Ensure the default browser behavior of the `hidden` attribute.
 
   font-weight: 500;
 
-  src: url("/public/fonts/Roboto-Medium.ttf");
+  src: url("/public/fonts/Roboto-Bold.ttf");
 
   font-display: swap;
 }
