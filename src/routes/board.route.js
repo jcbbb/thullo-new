@@ -10,5 +10,7 @@ export const board = async (fastify) => {
   fastify.patch("/:id", BoardController.updateOne);
   fastify.post("/:id/members", BoardController.addMember);
   fastify.post("/:id/lists", BoardController.createList);
-  fastify.post("/:id/lists/:list_id", BoardController.addListItem);
+  fastify.post("/:id/lists/:list_id", BoardController.updateList);
+  fastify.delete("/:id/lists/:list_id", BoardController.deleteList);
+  fastify.post("/:id/lists/:list_id/items", BoardController.addListItem);
 };

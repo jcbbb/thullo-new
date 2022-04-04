@@ -26,6 +26,13 @@ export async function createList({ board_id, title, order }) {
   return await List.query().insert({ board_id, title, order });
 }
 
+export async function deleteList(id) {
+  return await List.query().deleteById(id);
+}
+export async function updateList(id, update) {
+  return await List.query().patchAndFetchById(id, update);
+}
+
 export async function addListItem({ title, order, list_id }) {
   return await ListItem.query().insert({ title, order, list_id });
 }

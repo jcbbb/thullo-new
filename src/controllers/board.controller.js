@@ -53,6 +53,27 @@ export async function createList(req, res) {
   res.redirect(`/boards/${id}`);
 }
 
+export async function deleteList(req, res) {
+  const { list_id, id } = req.params;
+  await BoardService.deleteList(list_id);
+  res.redirect(`/boards/${id}`);
+}
+
+export async function updateList(req, res) {
+  const { id, list_id } = req.params;
+  const { _action, title, order } = req.body;
+
+  switch (_action) {
+    case "delete":
+      await BoardService.deleteList(list_id);
+      break;
+    default:
+      await BoardService.updateList({ title, order });
+  }
+
+  res.redirect(`/boards/${id}`);
+}
+
 export async function addListItem(req, res) {
   const { list_id, id } = req.params;
   const { title, order } = req.body;
