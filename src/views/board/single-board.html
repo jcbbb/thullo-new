@@ -1,13 +1,13 @@
-<% layout('./layout.html', { title: it.title, board_title: it.title }) %>
+<% layout('./layout.html', { title: it.board.title, board: it.board, user: it.user }) %>
 <div class="px-6 py-8 h-full">
   <div class="flex space-x-4">
     <form method="post" id="change-board-visibility-form">
       <select name="visibility" id="" class="select" required>
-        <option value="PRIVATE" <%= it.visibility === "PRIVATE" ? "selected" : ""%>>Private</option>
-        <option value="PUBLIC" <%= it.visibility === "PUBLIC" ? "selected" : ""%>>Public</option>
+        <option value="PRIVATE" <%= it.board.visibility === "PRIVATE" ? "selected" : ""%>>Private</option>
+        <option value="PUBLIC" <%= it.board.visibility === "PUBLIC" ? "selected" : ""%>>Public</option>
       </select>
     </form>
-    <% if (it.members.length) {%>
+    <% if (it.board.members.length) {%>
     <ul class="flex"></ul>
     <% } %>
     <noscript>
@@ -16,7 +16,7 @@
   </div>
   <div class="flex space-x-4 bg-slate-100 rounded-2xl w-full mt-4 h-full">
     <ul class="flex space-x-6 w-full overflow-x-auto p-4">
-      <% it.lists.forEach(function(list_item){ %>
+      <% it.board.lists.forEach(function(list_item){ %>
         <li class="flex flex-col w-full flex-shrink-0 basis-64">
           <div class="flex justify-between mb-4">
             <span>
@@ -40,7 +40,7 @@
               <% }) %>
             </ul>
           <% } %>
-          <form action="/boards/<%= it.id %>/lists/<%= list_item.id %>" method="post">
+          <form action="/boards/<%= it.board.id %>/lists/<%= list_item.id %>" method="post">
             <input type="hidden" name="order" value="0">
             <input type="text" name="title" class="input !p-2 !bg-white" placeholder="Title e.g. Write some docs" required>
             <button class="bg-brand-200 text-brand-500 p-3 rounded-lg w-full focus:ring-2 focus:ring-brand-300 ring-offset-2 ring-offset-brand-400 text-sm active:scale-95 duration-200 flex justify-between mt-2">
@@ -62,7 +62,7 @@
         </li>
       <% }) %>
       <li class="flex-shrink-0 w-full basis-64">
-        <form action="/boards/<%= it.id %>/lists" method="post">
+        <form action="/boards/<%= it.board.id %>/lists" method="post">
           <input type="hidden" name="order" value="0">
           <input type="text" name="title" class="input !p-2 !bg-white" placeholder="Title e.g. In progress" required>
           <button class="bg-brand-200 text-brand-500 p-3 rounded-lg w-full focus:ring-2 focus:ring-brand-300 ring-offset-2 ring-offset-brand-400 text-sm active:scale-95 duration-200 flex justify-between mt-4">

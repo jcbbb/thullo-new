@@ -33,9 +33,10 @@ export async function addMember(req, res) {
 }
 
 export async function getOne(req, res) {
+  const user = req.user;
   const id = req.params.id;
   const board = await BoardService.getOne(id);
-  res.render("board/single-board", board);
+  res.render("board/single-board", { board, user });
 }
 
 export async function updateOne(req, res) {
