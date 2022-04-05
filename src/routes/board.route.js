@@ -1,18 +1,14 @@
 import * as BoardController from "../controllers/board.controller.js";
+import * as ListController from "../controllers/list.controller.js";
 import { authenticate } from "../plugins/authenticate.js";
 
 export const board = async (fastify) => {
   fastify.register(authenticate);
   fastify.post("/", BoardController.createOne);
   fastify.get("/new", BoardController.getNew);
-  fastify.get("/:id", BoardController.getOne);
-  fastify.post("/:id", BoardController.updateOne);
-  fastify.patch("/:id", BoardController.updateOne);
-  fastify.post("/:id/members", BoardController.addMember);
-  fastify.post("/:id/lists", BoardController.createList);
-  fastify.post("/:id/lists/:list_id/items/:list_item_id/members", BoardController.addListMember);
-  fastify.post("/:id/lists/:list_id", BoardController.updateList);
-  fastify.patch("/:id/lists/:list_id", BoardController.updateList);
-  fastify.delete("/:id/lists/:list_id", BoardController.deleteList);
-  fastify.post("/:id/lists/:list_id/items", BoardController.addListItem);
+  fastify.get("/:board_id", BoardController.getOne);
+  fastify.post("/:board_id", BoardController.updateOne);
+  fastify.patch("/:board_id", BoardController.updateOne);
+  fastify.post("/:board_id/members", BoardController.addMember);
+  fastify.post("/:board_id/lists", ListController.createOne);
 };

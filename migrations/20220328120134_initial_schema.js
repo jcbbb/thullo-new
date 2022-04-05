@@ -62,6 +62,14 @@ export function up(knex) {
       table.text("content");
       table.timestamps(false, true);
     })
+    .createTable("invitations", (table) => {
+      table.uuid("id").defaultTo(knex.raw("gen_random_uuid()")).primary();
+      table.uuid("board_id").references("id").inTable("boards").onDelete("CASCADE");
+      table.uuid("user_id").references("id").inTable("users").onDelete("CASCADE");
+      table.enu("status", ["ACCEPTED", "DENIED", "PENDING"]).defaultTo("PENDING");
+      table.unique(["user_id", "board_id"]);
+      table.timestamps(false, true);
+    })
     .createTable("list_items_members", (table) => {
       table.uuid("user_id").references("id").inTable("users").onDelete("CASCADE");
       table.uuid("list_item_id").references("id").inTable("list_items").onDelete("CASCADE");
@@ -84,6 +92,7 @@ export function down(knex) {
     .dropTable("comments")
     .dropTable("attachments")
     .dropTable("labels")
+    .dropTable("invitations")
     .dropTable("lists_members")
     .dropTable("board_members");
 }

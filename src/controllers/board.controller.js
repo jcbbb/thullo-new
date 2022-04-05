@@ -27,64 +27,22 @@ export async function createOne(req, res) {
 }
 
 export async function addMember(req, res) {
-  const board_id = req.params.id;
+  const board_id = req.params.board_id;
   const { user_id } = req.body;
   await BoardService.addMember({ user_id, board_id });
   res.redirect("/");
 }
 
-export async function addListMember(req, res) {
-  const { list_item_id, id } = req.params;
-  const { user_id } = req.body;
-  await BoardService.addListItemMember({ user_id, list_item_id });
-  res.redirect(`/boards/${id}`);
-}
-
 export async function getOne(req, res) {
   const user = req.user;
-  const id = req.params.id;
-  const board = await BoardService.getOne(id);
+  const board_id = req.params.board_id;
+  const board = await BoardService.getOne(board_id);
   res.render("board/single-board", { board, user });
 }
 
 export async function updateOne(req, res) {
-  const id = req.params.id;
+  const board_id = req.params.board_id;
   const { visibility, title, description, cover } = normalizeBody(req.body);
-  await BoardService.updateOne(id, { visibility, title, description, cover });
-  res.redirect(`/boards/${id}`);
-}
-
-export async function createList(req, res) {
-  const id = req.params.id;
-  const { title, order } = req.body;
-  await BoardService.createList({ title, board_id: id, order });
-  res.redirect(`/boards/${id}`);
-}
-
-export async function deleteList(req, res) {
-  const { list_id, id } = req.params;
-  await BoardService.deleteList(list_id);
-  res.redirect(`/boards/${id}`);
-}
-
-export async function updateList(req, res) {
-  const { id, list_id } = req.params;
-  const { _action, title, order } = req.body;
-
-  switch (_action) {
-    case "delete":
-      await BoardService.deleteList(list_id);
-      break;
-    default:
-      await BoardService.updateList({ title, order });
-  }
-
-  res.redirect(`/boards/${id}`);
-}
-
-export async function addListItem(req, res) {
-  const { list_id, id } = req.params;
-  const { title, order } = req.body;
-  await BoardService.addListItem({ title, order, list_id });
-  res.redirect(`/boards/${id}`);
+  await BoardService.updateOne(board_id, { visibility, title, description, cover });
+  res.redirect(`/boards/${board_id}`);
 }

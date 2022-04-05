@@ -11,13 +11,13 @@
   }
   @font-face {
     font-family: "Roboto";
-    font-weight: 700;
+    font-weight: 500;
     src: url("/public/fonts/Roboto-Medium.ttf");
     font-display: swap;
   }
   @font-face {
     font-family: "Roboto";
-    font-weight: 500;
+    font-weight: 700;
     src: url("/public/fonts/Roboto-Bold.ttf");
     font-display: swap;
   }

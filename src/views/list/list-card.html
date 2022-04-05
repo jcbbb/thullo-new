@@ -19,7 +19,8 @@
         </svg>
       </summary>
       <menu class="absolute bg-white w-40 shadow drop-shadow-sm rounded-md overflow-hidden mt-2">
-        <form action="/boards/<%= it.board.id %>/lists/<%= it.list.id %>" method="post">
+        <form action="/lists/<%= it.list.id %>" method="post">
+          <input type="hidden" name="board_id" value="<%= it.board.id %>" />
           <button
             name="_action"
             value="delete"
@@ -37,8 +38,10 @@
     %> <% }) %>
   </ul>
   <% } %>
-  <form action="/boards/<%= it.board.id %>/lists/<%= it.list.id %>/items" method="post">
+  <form action="/list-items" method="post">
     <input type="hidden" name="order" value="0" />
+    <input type="hidden" name="board_id" value="<%= it.board.id %>" />
+    <input type="hidden" name="list_id" value="<%= it.list.id %>" />
     <input
       type="text"
       name="title"

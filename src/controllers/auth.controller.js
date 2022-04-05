@@ -4,7 +4,7 @@ import { normalizeBody } from "../utils/index.js";
 import config from "../config/index.js";
 
 export async function getSignup(req, res) {
-  const { return_to } = req.query;
+  const { return_to = "/" } = req.query;
   const cookie = req.cookies[config.session_cookie_name];
   const sid = cookie && req.unsignCookie(cookie);
   if (!sid || !sid.valid) return res.render("auth/signup", { return_to });
@@ -19,7 +19,7 @@ export async function getSignup(req, res) {
 }
 
 export async function getLogin(req, res) {
-  const { return_to } = req.query;
+  const { return_to = "/" } = req.query;
   const cookie = req.cookies[config.session_cookie_name];
   const sid = cookie && req.unsignCookie(cookie);
   if (!sid || !sid.valid) return res.render("auth/login", { return_to });
@@ -34,21 +34,21 @@ export async function getLogin(req, res) {
 }
 
 export async function signup(req, res) {
-  const { return_to } = req.query;
+  const { return_to = "/" } = req.query;
   const { email, password, name } = normalizeBody(req.body);
   const { session } = await AuthService.signup({ email, password, name });
   const { cookie, opts } = CookieService.generateAccessCookie(session.id);
   res.setCookie(cookie.name, cookie.value, opts);
-  res.redirect(return_to || "/");
+  res.redirect(return_to);
 }
 
 export async function login(req, res) {
-  const { return_to } = req.query;
+  const { return_to = "/" } = req.query;
   const { email, password } = normalizeBody(req.body);
   const { session } = await AuthService.login({ email, password });
   const { cookie, opts } = CookieService.generateAccessCookie(session.id);
   res.setCookie(cookie.name, cookie.value, opts);
-  res.redirect(return_to || "/");
+  res.redirect(return_to);
 }
 
 export async function logout(req, res) {

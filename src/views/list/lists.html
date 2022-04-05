@@ -2,7 +2,8 @@
   <% it.board.lists.forEach(function(list){ %> <%~ includeFile('./list-card.html', Object.assign(it,
   { list })) %> <% }) %>
   <li class="flex-shrink-0 w-full basis-64">
-    <form action="/boards/<%= it.board.id %>/lists" method="post">
+    <form action="/lists" method="post">
+      <input type="hidden" name="board_id" value="<%= it.board.id %>" />
       <input type="hidden" name="order" value="0" />
       <input
         type="text"
