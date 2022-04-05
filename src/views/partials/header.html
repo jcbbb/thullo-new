@@ -25,7 +25,9 @@
       </svg>
     </a>
     <% if (it.board) { %>
-    <h1 class="font-medium text-lg"><%= it.board.title %></h1>
+    <h1 class="font-medium text-lg">
+      <a href="/boards/<%= it.board.id %>"> <%= it.board.title %> </a>
+    </h1>
     <%}%>
   </div>
   <% if (it.user) { %>

@@ -7,3 +7,7 @@ export async function getOne(id) {
 export async function getMany({ q }) {
   return await User.query().where("name", "ilike", `%${q}%`).orWhere("email", "ilike", `%${q}%`);
 }
+
+export async function getByEmail(email) {
+  return await User.query().findOne({ email });
+}

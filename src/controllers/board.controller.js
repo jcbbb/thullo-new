@@ -3,9 +3,10 @@ import { normalizeBody } from "../utils/index.js";
 import * as S3Service from "../services/s3.service.js";
 
 export async function getNew(req, res) {
+  const user = req.user;
   res.render(
     "board/new-board",
-    { method: "post", title: "Create board" },
+    { method: "post", title: "Create board", user },
     { layout: "layout.html" }
   );
 }
@@ -36,7 +37,7 @@ export async function addMember(req, res) {
 export async function getOne(req, res) {
   const user = req.user;
   const board_id = req.params.board_id;
-  const board = await BoardService.getOne(board_id);
+  const board = await BoardService.getOne(board_id, ["lists.[items]", "members", "creator"]);
   res.render("board/single-board", { board, user });
 }
 

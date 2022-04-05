@@ -1,6 +1,6 @@
 import { Model } from "objection";
 import { thullo } from "../services/db.service.js";
-import { User } from "../models/user.model.js";
+import { User } from "./user.model.js";
 
 class model extends Model {
   static get tableName() {

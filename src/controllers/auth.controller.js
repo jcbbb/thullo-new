@@ -1,6 +1,5 @@
 import * as AuthService from "../services/auth.service.js";
 import * as CookieService from "../services/cookie.service.js";
-import { normalizeBody } from "../utils/index.js";
 import config from "../config/index.js";
 
 export async function getSignup(req, res) {
@@ -35,7 +34,7 @@ export async function getLogin(req, res) {
 
 export async function signup(req, res) {
   const { return_to = "/" } = req.query;
-  const { email, password, name } = normalizeBody(req.body);
+  const { email, password, name } = req.body;
   const { session } = await AuthService.signup({ email, password, name });
   const { cookie, opts } = CookieService.generateAccessCookie(session.id);
   res.setCookie(cookie.name, cookie.value, opts);
@@ -44,7 +43,7 @@ export async function signup(req, res) {
 
 export async function login(req, res) {
   const { return_to = "/" } = req.query;
-  const { email, password } = normalizeBody(req.body);
+  const { email, password } = req.body;
   const { session } = await AuthService.login({ email, password });
   const { cookie, opts } = CookieService.generateAccessCookie(session.id);
   res.setCookie(cookie.name, cookie.value, opts);

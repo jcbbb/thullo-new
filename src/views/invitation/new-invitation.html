@@ -1,12 +1,21 @@
 <div class="bg-white shadow-md max-w-sm p-8 rounded-lg mx-auto <%= it.method !== "dialog" ? "mt-24" : ""%>">
   <h2 class="font-bold text-lg">Invite to Board</h2>
 	<p class="mb-6 text-gray-500">Search users you want to invite to</p>
-  <form action="/boards" method="post" class="js-create-board-form" enctype="multipart/form-data">
+  <form action="/invitations" method="post" class="js-invitation-form">
+    <input type="hidden" value="<%= it.board.id %>" name="board_id">
+    <noscript>
+      <style>
+        .js-enabled {
+          display: none;
+        }
+      </style>
+      <input type="email" name="email" class="input" placeholder="User email" required />
+    </noscript>
     <fieldset class="space-y-4">
-      <input name="q" type="text" class="input" placeholder="User email or name" required />
+      <input name="q" type="text" class="input js-enabled" placeholder="User email or name" />
       <menu class="flex space-x-2 justify-end">
         <% if (it.method === "dialog") {%>
-        <button class="btn-text js-add-board-member-dialog-close" type="button">Cancel</button>
+        <button class="btn-text js-invitation-dialog-close" type="button">Cancel</button>
         <% } %>
         <button class="btn-primary" type="submit">
           <svg

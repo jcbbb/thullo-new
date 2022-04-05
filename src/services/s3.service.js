@@ -22,6 +22,7 @@ export async function upload(file) {
       Key: key,
       Body: await file.toBuffer(),
       ContentType: file.mimetype,
+      CacheControl: "max-age=31536000",
     })
   );
   return getUrl(key);

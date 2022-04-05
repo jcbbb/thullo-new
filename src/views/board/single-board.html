@@ -10,18 +10,37 @@
     <% if (it.board.members.length) {%>
     <ul class="flex"></ul>
     <% } %>
-    <button class="btn-primary !px-3 js-add-board-member" title="Add member">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        class="h-5 w-5 flex-shrink-0"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        stroke-width="2"
-      >
-        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-      </svg>
-    </button>
+    <noscript>
+        <style>
+          .js-enabled {
+            display: none;
+          }
+        </style>
+        <a href="/boards/<%= it.board.id %>/invitations/new" class="btn-primary !px-3">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5 flex-shrink-0"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+          </svg>
+        </a>
+      </noscript>
+      <button class="btn-primary !px-3 js-invite-member js-enabled" title="Add member">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5 flex-shrink-0"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+        </svg>
+      </button>
     <noscript>
       <button form="change-board-visibility-form" class="btn-primary">Save</button>
     </noscript>
@@ -30,9 +49,9 @@
     <%~ includeFile('../list/lists.html', { board: it.board }) %>
   </div>
   <dialog
-    class="js-add-board-member-dialog bg-white shadow-md max-w-sm rounded-lg w-full open:animate-dialog-reveal p-0"
+    class="js-invitation-dialog bg-white shadow-md max-w-sm rounded-lg w-full open:animate-dialog-reveal p-0"
   >
-    <%~ includeFile("./new-board-member.html", { method: "dialog" } ) %>
+    <%~ includeFile("../invitation/new-invitation.html", Object.assign(it, { method: "dialog" }) ) %>
   </dialog>
 </div>
 

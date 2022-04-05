@@ -1,0 +1,24 @@
+<% layout('./layout.html', { title: `Invitations to ${it.board.title}`}) %>
+<div class="bg-slate-50 h-full pt-12">
+  <div class="max-w-4xl w-full mx-auto">
+    <h1 class="text-lg">Invitations</h1>
+    <% if (it.invitations.length) { %>
+    <ul class="mt-6">
+      <% it.invitations.forEach(function (invitation) { %>
+      <li class="flex bg-white p-4 rounded-md justify-between items-center">
+        <div class="flex flex-col space-y-1">
+          <span class="font-medium"><%= invitation.to.name %> (<%= invitation.to.email %>)</span>
+          <span class="text-gray-500 text-sm"
+            ><%= new Date(invitation.created_at).toLocaleString("ru-RU") %></span
+          >
+        </div>
+        <form action="/invitations/<%= invitation.id %>" method="post">
+          <input type="hidden" value="<%= invitation.board_id %>" name="board_id" />
+          <button class="btn-secondary-danger" value="cancel" name="_action">Cancel</button>
+        </form>
+      </li>
+      <% }) %>
+    </ul>
+    <% } %>
+  </div>
+</div>
