@@ -1,4 +1,4 @@
-<ul class="flex space-x-6 w-full overflow-x-auto p-4">
+<ul class="flex space-x-6 w-full overflow-x-auto p-4 js-lists-container bg-slate-50 rounded-2xl">
   <% it.board.lists.forEach(function(list){ %> <%~ includeFile('./list-card.html', Object.assign(it,
   { list })) %> <% }) %>
   <li class="flex-shrink-0 w-full basis-64">
@@ -13,7 +13,7 @@
         required
       />
       <button
-        class="bg-brand-200 text-brand-500 p-3 rounded-lg w-full focus:ring-2 focus:ring-brand-300 ring-offset-2 ring-offset-brand-400 text-sm active:scale-95 duration-200 flex justify-between mt-4"
+        class="outline-none bg-brand-200 text-brand-500 p-3 rounded-lg w-full focus:ring-2 focus:ring-brand-500 ring-offset-2 text-sm active:scale-y-50 duration-200 flex justify-between mt-4"
       >
         <span> Add a list </span>
         <svg

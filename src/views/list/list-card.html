@@ -1,6 +1,6 @@
-<div class="w-full flex-shrink-0 basis-64 h-max bg-slate-200 rounded-lg">
+<div class="w-full flex-shrink-0 basis-64 rounded-lg">
   <li
-    class="flex flex-col rounded-lg translate-y-0 translate-x-0 p-4 -m-4 js-list-card bg-slate-100"
+    class="block rounded-lg js-list-card bg-slate-50"
     draggable="true"
     data-list_id="<%= it.list.id %>"
   >
@@ -39,8 +39,8 @@
     </div>
     <% if (it.list.items.length) { %>
     <ul class="space-y-4 mb-4">
-      <% it.list.items.forEach(function (item) { %> <%~ includeFile('./list-item-card.html', {item})
-      %> <% }) %>
+      <% it.list.items.forEach(function (item) { %> <%~ includeFile('./list-item-card.html',
+      Object.assign(it, { item })) %> <% }) %>
     </ul>
     <% } %>
     <form action="/list-items" method="post">
@@ -55,7 +55,7 @@
         required
       />
       <button
-        class="bg-brand-200 text-brand-500 p-3 rounded-lg w-full focus:ring-2 focus:ring-brand-300 ring-offset-2 ring-offset-brand-400 text-sm active:scale-95 duration-200 flex justify-between mt-2"
+        class="outline-none bg-brand-200 text-brand-500 p-3 rounded-lg w-full focus:ring-2 focus:ring-brand-600 ring-offset-2 text-sm active:scale-95 duration-200 flex justify-between mt-2"
       >
         <span> Add a card </span>
         <svg

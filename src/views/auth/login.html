@@ -1,6 +1,6 @@
 <% layout('./layout.html', {title: "Login"}) %>
-<div class="bg-slate-50 h-full pt-24">
-  <div class="bg-white shadow-md max-w-sm p-8 space-y-6 rounded-lg mx-auto">
+<div class="bg-slate-50 min-h-header overflow-y-auto">
+  <div class="bg-white shadow-md max-w-sm p-8 space-y-6 rounded-lg mx-auto my-24">
     <h2 class="font-bold text-lg text-center">Login</h2>
     <form action="/auth/login?return_to=<%= it.return_to %>" method="post" class="space-y-6">
       <fieldset class="space-y-4">
@@ -10,7 +10,7 @@
       </fieldset>
       <span class="block text-center text-gray-400">or</span>
       <fieldset class="flex flex-col space-y-2">
-        <button class="btn-secondary" type="button">
+        <button class="btn-secondary flex justify-center space-x-2 items-center" type="button">
           <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
             <path
               d="M4.38834 8.1375C4.77824 6.95787 5.53072 5.93151 6.53844 5.20483C7.54615 4.47815 8.75761 4.08828 10 4.09083C11.4083 4.09083 12.6817 4.59083 13.6817 5.40917L16.5917 2.5C14.8183 0.954167 12.5458 0 10 0C6.05834 0 2.66501 2.24833 1.03334 5.54167L4.38834 8.1375Z"
@@ -31,7 +31,7 @@
           </svg>
           <span>Continue with Google</span>
         </button>
-        <button class="btn-secondary" type="button">
+        <button class="btn-secondary flex justify-center space-x-2 items-center" type="button">
           <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
             <path
               fill-rule="evenodd"

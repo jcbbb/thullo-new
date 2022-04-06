@@ -1,5 +1,5 @@
 <% layout('./layout.html', { title: it.board.title, board: it.board, user: it.user }) %>
-<div class="px-6 py-8 h-full">
+<div class="px-6 py-8 min-h-header">
   <div class="flex items-center space-x-4">
     <form method="post" id="change-board-visibility-form">
       <select name="visibility" id="" class="select" required>
@@ -45,7 +45,7 @@
       <button form="change-board-visibility-form" class="btn-primary">Save</button>
     </noscript>
   </div>
-  <div class="flex space-x-4 bg-slate-100 rounded-2xl w-full mt-4 h-full">
+  <div class="flex space-x-4 bg-slate-50 rounded-2xl w-full mt-4 min-h-header">
     <%~ includeFile('../list/lists.html', { board: it.board }) %>
   </div>
   <dialog

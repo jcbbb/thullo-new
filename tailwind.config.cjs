@@ -5,6 +5,9 @@ module.exports = {
       maxWidth: {
         "12xl": "120rem",
       },
+      minHeight: {
+        header: "calc(100vh - 88px)",
+      },
       colors: {
         brand: {
           50: "#F1F6FE",

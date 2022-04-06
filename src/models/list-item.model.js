@@ -1,6 +1,7 @@
 import { Model } from "objection";
 import { thullo } from "../services/db.service.js";
 import { User } from "./user.model.js";
+import { Attachment } from "./attachment.model.js";
 
 class model extends Model {
   static get tableName() {
@@ -19,6 +20,14 @@ class model extends Model {
         to: "users.id",
       },
       filter: (builder) => builder.select("id", "name", "verified"),
+    },
+    attachments: {
+      relation: Model.HasManyRelation,
+      modelClass: Attachment,
+      join: {
+        from: "list_items.id",
+        to: "attachments.list_item_id",
+      },
     },
   };
 }

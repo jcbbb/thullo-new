@@ -1,0 +1,119 @@
+<div class="bg-white shadow-md max-w-4xl w-full p-6 rounded-lg mx-auto space-y-6 h-full <%= it.method !== "dialog" ? "my-16" : ""%>">
+	<img src="https://s3.us-east-2.amazonaws.com/s3.pluto.uz/4789b479-728e-45d3-842c-15a5cd7cd6f8-1395379.jpeg" alt="" class="object-cover w-full h-48 rounded-lg">
+	<div class="grid gap-4 grid-cols-12">
+		<div class="space-y-6 col-span-9">
+			<div class="flex text-gray-500 space-x-2">
+				<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mt-[2px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+					<path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+				</svg>
+				<div>
+					<h2 class="text-lg text-neutral-900 font-medium"><%= it.item.title %></h2>
+					<p class="text-gray-500 text-sm">
+						in list: <span class="font-medium text-neutral-900"><%= it.item.list.title %></span>
+					</p>
+				</div>
+			</div>
+			<form class="space-y-3" action="/list-items/<%= it.item.id %>" method="post">
+				<p class="text-gray-500 flex space-x-2 items-center">
+					<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+						<path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+					</svg>
+					<span class="text-neutral-900">
+						Description
+					</span>
+				</p>
+				<textarea required name="description" class="input" placeholder="Add description"><%= it.item.description ? it.item.description : "" %></textarea>
+				<noscript>
+					<button class="btn-primary mt-2">Save</button>
+				</noscript>
+			</form>
+			<div class="space-y-3">
+				<form class="flex items-center space-x-4" action="/list-items/<%= it.item.id %>" method="post" enctype="multipart/form-data">
+					<p class="text-gray-500 flex space-x-2 items-center">
+						<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+							<path stroke-linecap="round" stroke-linejoin="round" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
+						</svg>
+						<span class="text-neutral-900">
+							Attachments
+						</span>
+					</p>
+					<div class="flex space-x-2">
+						<input type="hidden" name="board_id" value="<%= it.board.id %>">
+						<input type="file" name="attachments" class="absolute opacity-0 -z-10 w-0 peer" id="list-item-cover" multiple>
+						<label for="list-item-cover" class="flex peer-focus:ring-2 peer-focus:ring-brand-500 ring-offset-2 py-3 px-6 rounded-md cursor-pointer text-gray-500 bg-brand-50 items-center space-x-2 text-sm duration-200 hover:bg-brand-100 active:scale-95 active:ring-2 active:ring-brand-500">
+							Add
+						</label>
+						<button class="btn-primary" name="_action" value="attach">Save</button>
+					</div>
+				</form>
+				<% if(it.item.attachments.length) { %>
+					<ul class="space-y-8">
+						<% it.item.attachments.forEach(function (attachment) { %>
+							<li class="flex space-x-4 items-center">
+								<img src="<%= attachment.url %>" alt="" class="w-36 h-24 rounded-lg object-cover flex-shrink-0">
+								<div>
+									<span class="text-gray-500 text-sm">Added July 05, 2020</span>
+									<p><%= attachment.filename %></p>
+									<menu class="space-x-2 flex mt-2">
+										<button class="btn-secondary">Download</button>
+										<button class="btn-secondary-danger">Delete</button>
+									</menu>
+								</div>
+							</li>
+						<% }) %>
+					</ul>
+				<% } %>
+			</div>
+			<div class="space-y-3">
+				<textarea name="comment" class="input" placeholder="Add comment"></textarea>
+				<button class="btn-primary">Comment</button>
+			</div>
+		</div>
+		<div class="col-span-3">
+			<div class="space-y-3">
+				<div class="flex items-center space-x-4">
+					<p class="text-gray-500 flex space-x-2 items-center">
+						<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+							<path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+						</svg>
+						<span class="text-neutral-900">
+							Actions
+						</span>
+					</p>
+				</div>
+				<div>
+					<input type="file" class="absolute opacity-0 -z-10 w-0 peer" id="list-item-cover">
+					<label for="list-item-cover" class="flex w-full peer-focus:ring-2 peer-focus:ring-brand-500 ring-offset-2 py-3 px-6 rounded-md cursor-pointer text-gray-500 bg-brand-50 items-center space-x-2 text-sm duration-200 hover:bg-brand-100 active:scale-95 active:ring-2 active:ring-brand-500">
+						<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+							<path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" />
+						</svg>
+						<span>
+							Cover
+						</span>
+					</label>
+				</div>
+				<div>
+					<button class="btn-secondary space-x-2 flex text-gray-500 w-full">
+						<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+							<path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
+						</svg>
+						<span>
+							Members
+						</span>
+					</button>
+				</div>
+				<div>
+					<button class="btn-secondary space-x-2 flex text-gray-500 w-full">
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5" fill="currentColor">
+							<path d="M0 0h24v24H0z" fill="none"/>
+							<path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z"/>
+						</svg>
+						<span>
+							Labels
+						</span>
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

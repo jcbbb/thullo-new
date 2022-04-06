@@ -13,12 +13,24 @@ export function up(knex) {
     .createTable("sessions", (table) => {
       table.uuid("id").defaultTo(knex.raw("gen_random_uuid()")).primary();
       table.boolean("active").defaultTo(true);
-      table.uuid("user_id").notNullable().references("id").inTable("users").onDelete("CASCADE");
+      table
+        .uuid("user_id")
+        .index()
+        .notNullable()
+        .references("id")
+        .inTable("users")
+        .onDelete("CASCADE");
       table.timestamps(false, true);
     })
     .createTable("boards", (table) => {
       table.uuid("id").defaultTo(knex.raw("gen_random_uuid()")).primary();
-      table.uuid("creator_id").notNullable().references("id").inTable("users").onDelete("CASCADE");
+      table
+        .uuid("creator_id")
+        .index()
+        .notNullable()
+        .references("id")
+        .inTable("users")
+        .onDelete("CASCADE");
       table.string("title").notNullable();
       table.text("description");
       table.string("cover_photo_url", 512);
@@ -27,14 +39,27 @@ export function up(knex) {
     })
     .createTable("lists", (table) => {
       table.uuid("id").defaultTo(knex.raw("gen_random_uuid()")).primary();
-      table.uuid("board_id").notNullable().references("id").inTable("boards").onDelete("CASCADE");
+      table
+        .uuid("board_id")
+        .index()
+        .notNullable()
+        .references("id")
+        .inTable("boards")
+        .onDelete("CASCADE");
       table.string("title").notNullable();
       table.integer("order").notNullable();
       table.timestamps(false, true);
     })
     .createTable("list_items", (table) => {
       table.uuid("id").defaultTo(knex.raw("gen_random_uuid()")).primary();
-      table.uuid("list_id").notNullable().references("id").inTable("lists").onDelete("CASCADE");
+      table
+        .uuid("list_id")
+        .index()
+        .notNullable()
+        .references("id")
+        .inTable("lists")
+        .onDelete("CASCADE");
+      table.uuid("board_id").index().notNullable().references("id").inTable("boards");
       table.integer("order").notNullable();
       table.string("title").notNullable();
       table.text("description");
@@ -42,7 +67,13 @@ export function up(knex) {
     })
     .createTable("labels", (table) => {
       table.uuid("id").defaultTo(knex.raw("gen_random_uuid()")).primary();
-      table.uuid("board_id").notNullable().references("id").inTable("boards").onDelete("CASCADE");
+      table
+        .uuid("board_id")
+        .index()
+        .notNullable()
+        .references("id")
+        .inTable("boards")
+        .onDelete("CASCADE");
       table.string("title");
       table.string("color").notNullable();
       table.unique(["title", "color"]);
@@ -50,30 +81,64 @@ export function up(knex) {
     })
     .createTable("attachments", (table) => {
       table.uuid("id").defaultTo(knex.raw("gen_random_uuid()")).primary();
-      table.uuid("list_id").notNullable().references("id").inTable("lists").onDelete("CASCADE");
+      table
+        .uuid("list_item_id")
+        .index()
+        .notNullable()
+        .references("id")
+        .inTable("list_items")
+        .onDelete("CASCADE");
+      table.uuid("board_id").index().notNullable().references("id").inTable("boards");
       table.string("mimetype").notNullable();
       table.string("filename").notNullable();
+      table.string("url", 512);
       table.timestamps(false, true);
     })
     .createTable("comments", (table) => {
       table.uuid("id").defaultTo(knex.raw("gen_random_uuid()")).primary();
-      table.uuid("list_id").notNullable().references("id").inTable("lists").onDelete("CASCADE");
-      table.uuid("user_id").notNullable().references("id").inTable("users");
+      table
+        .uuid("list_item_id")
+        .index()
+        .notNullable()
+        .references("id")
+        .inTable("list_items")
+        .onDelete("CASCADE");
+      table.uuid("user_id").index().notNullable().references("id").inTable("users");
+      table.uuid("board_id").index().notNullable().references("id").inTable("boards");
       table.text("content").notNullable();
       table.timestamps(false, true);
     })
     .createTable("invitations", (table) => {
       table.uuid("id").defaultTo(knex.raw("gen_random_uuid()")).primary();
-      table.uuid("board_id").notNullable().references("id").inTable("boards").onDelete("CASCADE");
-      table.uuid("user_id").notNullable().references("id").inTable("users").onDelete("CASCADE");
+      table
+        .uuid("board_id")
+        .index()
+        .notNullable()
+        .references("id")
+        .inTable("boards")
+        .onDelete("CASCADE");
+      table
+        .uuid("user_id")
+        .index()
+        .notNullable()
+        .references("id")
+        .inTable("users")
+        .onDelete("CASCADE");
       table.enu("status", ["ACCEPTED", "DENIED", "PENDING"]).defaultTo("PENDING");
       table.unique(["user_id", "board_id"]);
       table.timestamps(false, true);
     })
     .createTable("list_items_members", (table) => {
-      table.uuid("user_id").notNullable().references("id").inTable("users").onDelete("CASCADE");
+      table
+        .uuid("user_id")
+        .notNullable()
+        .index()
+        .references("id")
+        .inTable("users")
+        .onDelete("CASCADE");
       table
         .uuid("list_item_id")
+        .index()
         .notNullable()
         .references("id")
         .inTable("list_items")
@@ -81,8 +146,20 @@ export function up(knex) {
       table.unique(["user_id", "list_item_id"]);
     })
     .createTable("boards_members", (table) => {
-      table.uuid("user_id").notNullable().references("id").inTable("users").onDelete("CASCADE");
-      table.uuid("board_id").notNullable().references("id").inTable("boards").onDelete("CASCADE");
+      table
+        .uuid("user_id")
+        .index()
+        .notNullable()
+        .references("id")
+        .inTable("users")
+        .onDelete("CASCADE");
+      table
+        .uuid("board_id")
+        .index()
+        .notNullable()
+        .references("id")
+        .inTable("boards")
+        .onDelete("CASCADE");
       table.unique(["user_id", "board_id"]);
     });
 }

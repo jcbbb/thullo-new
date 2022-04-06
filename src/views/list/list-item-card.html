@@ -1,1 +1,14 @@
-<li class="bg-white p-2 rounded-md"><%= it.item.title %></li>
+<li class="bg-white p-2 rounded-md">
+  <button class="js-list-item w-full text-left outline-none border-none">
+    <%= it.item.title %>
+  </button>
+  <noscript>
+    <a href="/list-items/<%= it.item.id %>"><%= it.item.title %></a>
+  </noscript>
+</li>
+<dialog
+  class="js-list-item-dialog bg-white shadow-md max-w-4xl rounded-lg w-full open:animate-dialog-reveal p-0"
+>
+  <%~ includeFile("./list-item.html", { board: it.board, item: Object.assign(it.item, { list:
+  it.list }), method: "dialog"} ) %>
+</dialog>

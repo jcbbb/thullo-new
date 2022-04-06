@@ -23,9 +23,8 @@
   }
 }
 
-html,
-body {
-  height: 100%;
+* {
+  box-sizing: border-box;
 }
 
 select {
@@ -62,28 +61,29 @@ details summary::marker {
 }
 
 .input {
-  @apply w-full outline-none border-none bg-brand-50 p-3 rounded-md focus:bg-transparent focus:ring-2 focus:ring-brand-300 ring-offset-2 ring-offset-brand-400 transition-colors duration-200 placeholder-gray-500;
+  @apply w-full outline-none border-none bg-brand-50 p-3 rounded-md focus:bg-transparent focus:ring-2 focus:ring-brand-500 ring-offset-2  transition-colors duration-200 placeholder-gray-500;
 }
 
 .file-input {
-  @apply w-full outline-none border-none focus:ring-2 focus:ring-brand-300 ring-offset-2 ring-offset-brand-400 rounded-md file:w-full file:bg-brand-50 file:border-none file:p-3 file:rounded-md file:cursor-pointer file:text-gray-500;
+  @apply w-full outline-none border-none focus:ring-2 focus:ring-brand-500 ring-offset-2 rounded-md file:w-full file:bg-brand-50 file:border-none file:p-3 file:rounded-md file:cursor-pointer file:text-gray-500;
 }
 
 .select {
-  @apply w-full outline-none border-none bg-brand-50 p-3 rounded-md focus:ring-2 focus:ring-brand-300 ring-offset-2 ring-offset-brand-400 transition-colors duration-200 placeholder-gray-500;
+  @apply w-full outline-none border-none bg-brand-50 p-3 rounded-md focus:ring-2 focus:ring-brand-500 ring-offset-2 transition-colors duration-200 placeholder-gray-500;
 }
 
 .btn-primary {
-  @apply py-3 px-6 bg-brand-500 flex space-x-2 justify-center items-center text-white focus:ring-2 focus:ring-brand-300 ring-offset-2 ring-offset-brand-400 rounded-lg text-sm hover:bg-brand-600 transition-transform duration-200 active:scale-95;
+  @apply outline-none py-3 px-6 bg-brand-500 flex space-x-2 justify-center items-center text-white focus:ring-2 focus:ring-brand-500 ring-offset-2 rounded-lg text-sm hover:bg-brand-600 transition-transform duration-200 active:scale-95;
 }
 
 .btn-secondary {
-  @apply py-3 px-6 rounded-md flex space-x-2 justify-center items-center focus:ring-2 focus:ring-brand-300 ring-offset-2 ring-offset-brand-400 duration-200 bg-brand-50 hover:bg-brand-100 text-sm active:scale-95;
+  @apply outline-none py-3 px-6 rounded-md focus:ring-2 focus:ring-brand-500 ring-offset-2 duration-200 bg-brand-50 hover:bg-brand-100 text-sm active:scale-95;
 }
+
 .btn-secondary-danger {
-  @apply py-3 px-6 rounded-md flex space-x-2 justify-center items-center focus:ring-2 focus:ring-red-300 ring-offset-2 ring-offset-red-400 duration-200 bg-red-50 hover:bg-red-100 text-sm active:scale-95;
+  @apply outline-none py-3 px-6 rounded-md focus:ring-2 focus:ring-red-500 ring-offset-2 duration-200 bg-red-50 hover:bg-red-100 text-sm active:scale-95;
 }
 
 .btn-text {
-  @apply py-3 px-6 rounded-md flex space-x-2 justify-center items-center focus:ring-2 focus:ring-brand-300 ring-offset-2 ring-offset-brand-400 duration-200 active:scale-95 text-sm active:bg-brand-100;
+  @apply outline-none py-3 px-6 rounded-md focus:ring-2 focus:ring-brand-500 ring-offset-2 duration-200 active:scale-95 text-sm active:bg-brand-100;
 }

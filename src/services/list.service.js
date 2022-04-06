@@ -11,3 +11,7 @@ export async function deleteOne(id) {
 export async function updateOne(id, update) {
   return await List.query().patchAndFetchById(id, update);
 }
+
+export async function getOne(id) {
+  return await List.query().findById(id);
+}

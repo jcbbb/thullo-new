@@ -1,6 +1,7 @@
 import config from "../config/index.js";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { randomUUID } from "crypto";
+import { asyncPool } from "../utils/index.js";
 
 const s3 = new S3Client({
   region: config.aws_s3_region,
@@ -25,5 +26,11 @@ export async function upload(file) {
       CacheControl: "max-age=31536000",
     })
   );
-  return getUrl(key);
+  return { url: getUrl(key), filename: file.filename, mimetype: file.mimetype };
+}
+
+export async function* uploadMultiple(files) {
+  for await (const attachment of asyncPool(5, files, upload)) {
+    yield attachment;
+  }
 }

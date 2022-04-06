@@ -13,7 +13,7 @@ export async function getNew(req, res) {
 
 export async function createOne(req, res) {
   const { title, visibility, cover } = normalizeBody(req.body);
-  const cover_photo_url = await S3Service.upload(cover);
+  const { url: cover_photo_url } = await S3Service.upload(cover);
   const user = req.user;
   const board = await BoardService.createOne({
     title,
