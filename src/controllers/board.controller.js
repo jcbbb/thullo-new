@@ -37,7 +37,11 @@ export async function addMember(req, res) {
 export async function getOne(req, res) {
   const user = req.user;
   const board_id = req.params.board_id;
-  const board = await BoardService.getOne(board_id, ["lists.[items]", "members", "creator"]);
+  const board = await BoardService.getOne(board_id, [
+    "lists.[items.[attachments]]",
+    "members",
+    "creator",
+  ]);
   res.render("board/single-board", { board, user });
 }
 
