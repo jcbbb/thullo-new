@@ -21,5 +21,5 @@ export async function deleteOne(sid) {
 export async function validateOne(sid) {
   if (!sid) return;
   const session = await getOne(sid);
-  return session.active;
+  return session?.active;
 }
