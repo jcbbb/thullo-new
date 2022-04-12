@@ -1,4 +1,15 @@
-<div class="bg-white shadow-md max-w-4xl w-full p-6 rounded-lg mx-auto space-y-6 h-full <%= it.method !== "dialog" ? "my-16" : ""%>">
+<noscript>
+  <style>
+    .js-disabled {
+      display: block;
+      position: static;
+      opacity: 1;
+      width: 100%;
+			z-index: 1;
+    }
+  </style>
+</noscript>
+<div class="bg-white shadow-md max-w-3xl w-full p-6 rounded-lg mx-auto space-y-6 h-full <%= it.method !== "dialog" ? "my-16" : ""%>">
 	<img src="https://s3.us-east-2.amazonaws.com/s3.pluto.uz/4789b479-728e-45d3-842c-15a5cd7cd6f8-1395379.jpeg" alt="" class="object-cover w-full h-48 rounded-lg">
 	<div class="grid gap-4 grid-cols-12">
 		<div class="space-y-6 col-span-9">
@@ -22,9 +33,9 @@
 						Description
 					</span>
 				</p>
-				<textarea required name="description" class="input" placeholder="Add description"><%= it.item.description ? it.item.description : "" %></textarea>
+				<textarea required name="description" class="input text-input" placeholder="Add description"><%= it.item.description ? it.item.description : "" %></textarea>
 				<noscript>
-					<button class="btn-primary mt-2">Save</button>
+					<button class="btn btn-primary mt-2">Save</button>
 				</noscript>
 			</form>
 			<div class="space-y-3">
@@ -37,13 +48,15 @@
 							Attachments
 						</span>
 					</p>
-					<div class="flex space-x-2">
+					<div class="flex space-x-2 items-center">
 						<input type="hidden" name="board_id" value="<%= it.board.id %>">
-						<input type="file" name="attachments" class="absolute opacity-0 -z-10 w-0 peer" id="list-item-cover" multiple>
-						<label for="list-item-cover" class="flex peer-focus:ring-2 peer-focus:ring-brand-500 ring-offset-2 py-3 px-6 rounded-md cursor-pointer text-gray-500 bg-brand-50 items-center space-x-2 text-sm duration-200 hover:bg-brand-100 active:scale-95 active:ring-2 active:ring-brand-500">
+						<input type="file" name="attachments" class="file-input js-disabled peer" id="list-item-cover" multiple>
+						<label for="list-item-cover" class="file-input-label !px-6 text-sm">
 							Add
 						</label>
-						<button class="btn-primary" name="_action" value="attach">Save</button>
+						<noscript>
+							<button class="btn btn-primary" name="_action" value="attach">Upload</button>
+						</noscript>
 					</div>
 				</form>
 				<% if(it.item.attachments.length) { %>
@@ -52,11 +65,17 @@
 							<li class="flex space-x-4 items-center">
 								<img src="<%= attachment.url %>" alt="" class="w-36 h-24 rounded-lg object-cover flex-shrink-0">
 								<div>
-									<span class="text-gray-500 text-sm">Added July 05, 2020</span>
-									<p><%= attachment.filename %></p>
+									<span class="text-gray-500 text-sm">
+										<%= it.formatter.format(attachment.created_at) %>
+									</span>
+									<p><%= attachment.name %></p>
 									<menu class="space-x-2 flex mt-2">
-										<button class="btn-secondary">Download</button>
-										<button class="btn-secondary-danger">Delete</button>
+										<a class="btn btn-secondary text-neutral-900" download="<%= attachment.filename %>" href="<%= attachment.url %>">Download</a>
+										<form action="/list-items/<%= it.item.id %>" method="post">
+											<input type="hidden" name="attachment_id" value="<%= attachment.id %>">
+											<input type="hidden" name="s3_key" value="<%= attachment.s3_key %>">
+											<button class="btn btn-danger" name="_action" value="delete_attachment">Delete</button>
+										</form>
 									</menu>
 								</div>
 							</li>
@@ -64,9 +83,42 @@
 					</ul>
 				<% } %>
 			</div>
-			<div class="space-y-3">
-				<textarea name="comment" class="input" placeholder="Add comment"></textarea>
-				<button class="btn-primary">Comment</button>
+			<div class="space-y-8">
+				<form action="/comments" method="post">
+					<input type="hidden" name="list_item_id" value="<%= it.item.id %>">
+					<input type="hidden" name="board_id" value="<%= it.board.id %>">
+					<textarea name="content" class="input text-input" placeholder="Add comment" required></textarea>
+					<button class="btn btn-primary mt-2">Comment</button>
+				</form>
+				<% if(it.item.comments.length) {%> 
+					<ul class="space-y-4">
+						<% it.item.comments.forEach(function (comment) { %>
+							<li class="space-y-2">
+								<div class="flex items-start justify-between">
+									<div class="flex space-x-4">
+										<img src="https://i.pravatar.cc/300" alt="" class="flex-shring-0 w-12 h-12 object-cover rounded-lg" >
+										<div class="flex flex-col">
+											<span class="font-medium"><%= comment.user.name %></span>
+											<span class="text-gray-500 text-sm"><%= it.formatter.format(comment.created_at) %></span>
+										</div>
+									</div>
+									<form action="/comments/<%= comment.id %>" method="post">
+										<input type="hidden" name="list_item_id" value="<%= it.item.id %>">
+										<button class="btn btn-danger-text" name="_action" value="delete">Delete</button>
+									</form>
+								</div>
+								<form action="/comments/<%= comment.id %>" method="post">
+									<textarea name="content" class="w-full outline-none focus:ring-2 ring-offset-2 rounded-md p-1 -m-1 focus:ring-brand-400 focus:ring-offset-brand-300" required><%= comment.content %></textarea>
+									<input type="hidden" name="list_item_id" value="<%= it.item.id %>">
+									<input type="hidden" name="board_id" value="<%= it.board.id %>">
+									<noscript>
+										<button class="btn btn-primary mt-2">Save</button>
+									</noscript>
+								</form>
+							</li>
+						<% }) %>
+					</ul>
+				<% } %>
 			</div>
 		</div>
 		<div class="col-span-3">
@@ -93,7 +145,7 @@
 					</label>
 				</div>
 				<div>
-					<button class="btn-secondary space-x-2 flex text-gray-500 w-full">
+					<button class="btn btn-secondary space-x-2 flex text-gray-500 w-full">
 						<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
 							<path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
 						</svg>
@@ -103,7 +155,7 @@
 					</button>
 				</div>
 				<div>
-					<button class="btn-secondary space-x-2 flex text-gray-500 w-full">
+					<button class="btn btn-secondary space-x-2 flex text-gray-500 w-full">
 						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5" fill="currentColor">
 							<path d="M0 0h24v24H0z" fill="none"/>
 							<path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z"/>

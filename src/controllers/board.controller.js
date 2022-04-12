@@ -1,5 +1,6 @@
 import * as BoardService from "../services/board.service.js";
 import { normalizeBody } from "../utils/index.js";
+import { formatter } from "../utils/index.js";
 import * as S3Service from "../services/s3.service.js";
 
 export async function getNew(req, res) {
@@ -38,11 +39,11 @@ export async function getOne(req, res) {
   const user = req.user;
   const board_id = req.params.board_id;
   const board = await BoardService.getOne(board_id, [
-    "lists.[items.[attachments]]",
+    "lists.[items.[attachments, comments.[user]]]",
     "members",
     "creator",
   ]);
-  res.render("board/single-board", { board, user });
+  res.render("board/single-board", { board, user, formatter });
 }
 
 export async function updateOne(req, res) {

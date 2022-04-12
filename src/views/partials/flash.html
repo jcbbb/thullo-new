@@ -1,0 +1,60 @@
+<% if (it.err?.length || it.info?.length || it.success?.length) { %>
+<ul>
+  <% it.err.forEach(function (error) { %>
+  <li class="bg-red-50 text-red-500 p-3 rounded-lg flex space-x-2 items-center text-sm">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="h-5 w-5"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      stroke-width="2"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+      />
+    </svg>
+    <span> <%= error.message %> </span>
+  </li>
+  <% }) %> <% it.info?.forEach(function (info) { %>
+  <li class="bg-amber-100 text-neutral-900 p-3 rounded-lg flex space-x-2 items-center text-sm">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="h-5 w-5"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      stroke-width="2"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+      />
+    </svg>
+    <span><%= info.message %></span>
+  </li>
+  <% }) %> <% it.success?.forEach(function (success) { %>
+  <li class="bg-emerald-50 text-emerald-500 p-3 rounded-lg flex space-x-2 items-center text-sm">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="h-6 w-6"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      stroke-width="2"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+      />
+    </svg>
+
+    <span> <%= success.message %> </span>
+  </li>
+  <% }) %>
+</ul>
+<% } %>

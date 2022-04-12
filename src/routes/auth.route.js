@@ -6,4 +6,6 @@ export const auth = async (fastify) => {
   fastify.post("/signup", AuthController.signup);
   fastify.post("/login", AuthController.login);
   fastify.post("/logout", AuthController.logout);
+  fastify.get("/github", AuthController.githubCallback);
+  fastify.get("/google", AuthController.googleCallback);
 };

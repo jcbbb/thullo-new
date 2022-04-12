@@ -9,7 +9,7 @@ export async function addMember({ user_id, list_item_id }) {
 }
 
 export async function getOne(id) {
-  return await ListItem.query().findById(id).withGraphFetched("attachments");
+  return await ListItem.query().findById(id).withGraphFetched("[attachments, comments.[user]]");
 }
 
 export async function updateOne(id, update) {

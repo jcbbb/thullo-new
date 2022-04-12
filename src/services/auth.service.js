@@ -1,15 +1,21 @@
 import { User } from "../models/user.model.js";
-import { Session } from "../models/session.model.js";
+import * as SessionService from "../services/session.service.js";
+import * as UserService from "../services/user.service.js";
+import { ResourceNotFoundError, BadRequestError } from "../utils/errors.js";
 
-export async function signup({ password, name, email }) {
+export async function signup({ password, name, email, provider_name, user_agent }) {
   const trx = await User.startTransaction();
   try {
-    const user = await User.query(trx).insert({
+    const user = await UserService.createOne(trx)({
       password,
       email,
       name,
     });
-    const session = await Session.query(trx).insert({ user_id: user.id });
+    const session = await SessionService.createOne(trx)({
+      user_id: user.id,
+      provider_name,
+      user_agent,
+    });
     await trx.commit();
     return { session, user };
   } catch (err) {
@@ -18,19 +24,24 @@ export async function signup({ password, name, email }) {
   }
 }
 
-export async function login({ email, password }) {
-  const user = await User.query().findOne({ email });
-  if (!user) throw new Error("User not found");
+export async function login({ email, password, provider_name, user_agent }) {
+  const user = await UserService.getByEmail(email);
+
+  if (!user) throw new ResourceNotFoundError(`User with email ${email} not found`, "auth/login");
+
   const isValid = await user.verifyPassword(password);
-  if (!isValid) throw new Error("Invalid password");
-  const session = await Session.query().insert({ user_id: user.id });
+
+  if (!isValid)
+    throw new BadRequestError(
+      "Invalid email or password. Maybe you logged in with social media?",
+      "auth/login"
+    );
+
+  const session = await SessionService.createOne()({
+    user_id: user.id,
+    auth_provider_name: provider_name,
+    user_agent,
+  });
+
   return { user, session };
-}
-
-export async function getSession(sid) {
-  return await Session.query().findById(sid);
-}
-
-export async function deleteSession(sid) {
-  return await Session.query().deleteById(sid);
 }

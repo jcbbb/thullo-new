@@ -1,21 +1,33 @@
+<noscript>
+  <style>
+    .js-disabled {
+      display: block;
+      position: static;
+      opacity: 1;
+      width: 100%;
+      z-index: 1;
+    }
+  </style>
+</noscript>
 <div class="bg-white shadow-md max-w-sm p-8 space-y-6 rounded-lg mx-auto <%= it.method !== "dialog" ? "mt-24" : ""%>">
   <h2 class="font-bold text-lg text-center">Create board</h2>
   <form action="/boards" method="post" class="js-create-board-form" enctype="multipart/form-data">
     <img alt="" class="h-40 w-full object-cover rounded-md hidden js-image-viewer mb-4">
     <fieldset class="space-y-4">
-      <input name="title" type="text" class="input" placeholder="Board title" required/>
-      <menu class="flex items-center space-x-2">
-        <input type="file" class="file-input js-file-upload" accept="image/*" name="cover" required>
-        <select name="visibility" id="" class="select" required>
+      <input name="title" type="text" class="input text-input" placeholder="Board title" required/>
+      <menu>
+        <input id="board-cover" multiple type="file" class="file-input js-file-upload js-disabled mb-2 peer" accept="image/*" name="cover" required>
+        <label for="board-cover" class="file-input-label max-w-[48%] w-full">Board cover</label>
+        <select name="visibility" id="" class="input ml-2 max-w-[48%]" required>
           <option value="PRIVATE" selected>Private</option>
           <option value="PUBLIC">Public</option>
         </select>
       </menu>
       <menu class="flex space-x-2 justify-end">
         <% if (it.method === "dialog") {%>
-        <button class="btn-text js-create-board-dialog-close" type="button">Cancel</button>
+        <button class="btn btn-text js-create-board-dialog-close" type="button">Cancel</button>
         <% } %>
-        <button class="btn-primary" type="submit">
+        <button class="btn btn-primary" type="submit">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             class="h-5 w-5 flex-shrink-0"

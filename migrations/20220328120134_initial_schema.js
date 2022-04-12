@@ -4,15 +4,38 @@ export function up(knex) {
       table.uuid("id").defaultTo(knex.raw("gen_random_uuid()")).primary();
       table.string("email").notNullable();
       table.string("name").notNullable();
-      table.string("password");
+      table.string("password").notNullable();
       table.string("profile_photo_url", 512);
       table.boolean("verified").defaultTo(false);
       table.timestamps(false, true);
       table.unique(["email"]);
     })
+    .createTable("auth_providers", (table) => {
+      table.uuid("id").defaultTo(knex.raw("gen_random_uuid()")).primary();
+      table.enu("type", ["OAUTH", "PASSWORD"]).notNullable();
+      table.string("title").notNullable();
+      table.string("name").unique().notNullable();
+      table.string("scope").nullable();
+      table.string("client_id").nullable();
+      table.string("client_secret").nullable();
+      table.string("logo_url").nullable();
+      table.string("oauth_code_url").nullable();
+      table.string("oauth_token_url").nullable();
+      table.string("redirect_uri").nullable();
+      table.string("response_type").nullable();
+      table.boolean("active").defaultTo(true);
+      table.timestamps(false, true);
+    })
     .createTable("sessions", (table) => {
       table.uuid("id").defaultTo(knex.raw("gen_random_uuid()")).primary();
       table.boolean("active").defaultTo(true);
+      table.string("user_agent");
+      table
+        .string("auth_provider_name")
+        .index()
+        .notNullable()
+        .references("name")
+        .inTable("auth_providers");
       table
         .uuid("user_id")
         .index()
@@ -90,7 +113,9 @@ export function up(knex) {
         .onDelete("CASCADE");
       table.uuid("board_id").index().notNullable().references("id").inTable("boards");
       table.string("mimetype").notNullable();
-      table.string("filename").notNullable();
+      table.string("name").notNullable();
+      table.string("s3_key");
+      table.string("s3_url", 512);
       table.string("url", 512);
       table.timestamps(false, true);
     })
@@ -176,5 +201,6 @@ export function down(knex) {
     .dropTable("labels")
     .dropTable("invitations")
     .dropTable("lists_members")
-    .dropTable("board_members");
+    .dropTable("board_members")
+    .dropTablle("auth_providers");
 }

@@ -1,5 +1,5 @@
 import config from "../config/index.js";
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { S3Client, PutObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
 import { randomUUID } from "crypto";
 import { asyncPool } from "../utils/index.js";
 
@@ -12,8 +12,9 @@ const s3 = new S3Client({
 });
 
 const getKey = (filename) => `${randomUUID()}-${filename}`;
-const getUrl = (key) =>
+const getS3Url = (key) =>
   `https://s3.${config.aws_s3_region}.amazonaws.com/${config.aws_s3_bucket_name}/${key}`;
+const getUrl = (key) => `https://${config.s3_origin}/${key}`;
 
 export async function upload(file) {
   const key = getKey(file.filename);
@@ -26,11 +27,21 @@ export async function upload(file) {
       CacheControl: "max-age=31536000",
     })
   );
-  return { url: getUrl(key), filename: file.filename, mimetype: file.mimetype };
+  return {
+    s3_url: getS3Url(key),
+    url: getUrl(key),
+    s3_key: key,
+    name: file.filename,
+    mimetype: file.mimetype,
+  };
 }
 
 export async function* uploadMultiple(files) {
-  for await (const attachment of asyncPool(5, files, upload)) {
+  for await (const attachment of asyncPool(5, [files].flat(), upload)) {
     yield attachment;
   }
+}
+
+export async function deleteOne(key) {
+  return await s3.send(new DeleteObjectCommand({ Key: key, Bucket: config.aws_s3_bucket_name }));
 }

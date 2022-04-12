@@ -2,7 +2,7 @@
 <div class="px-6 py-8 min-h-header">
   <div class="flex items-center space-x-4">
     <form method="post" id="change-board-visibility-form">
-      <select name="visibility" id="" class="select" required>
+      <select name="visibility" id="" class="input" required>
         <option value="PRIVATE" <%= it.board.visibility === "PRIVATE" ? "selected" : ""%>>Private</option>
         <option value="PUBLIC" <%= it.board.visibility === "PUBLIC" ? "selected" : ""%>>Public</option>
       </select>
@@ -16,7 +16,7 @@
             display: none;
           }
         </style>
-        <a href="/boards/<%= it.board.id %>/invitations/new" class="btn-primary !px-3">
+        <a href="/boards/<%= it.board.id %>/invitations/new" class="btn btn-primary !px-3">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             class="h-5 w-5 flex-shrink-0"
@@ -29,7 +29,7 @@
           </svg>
         </a>
       </noscript>
-      <button class="btn-primary !px-3 js-invite-member js-enabled" title="Add member">
+      <button class="btn btn-primary !px-3 js-invite-member js-enabled" title="Add member">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           class="h-5 w-5 flex-shrink-0"
@@ -42,11 +42,11 @@
         </svg>
       </button>
     <noscript>
-      <button form="change-board-visibility-form" class="btn-primary">Save</button>
+      <button form="change-board-visibility-form" class="btn btn-primary">Save</button>
     </noscript>
   </div>
   <div class="flex space-x-4 bg-slate-50 rounded-2xl w-full mt-4 min-h-header">
-    <%~ includeFile('../list/lists.html', { board: it.board }) %>
+    <%~ includeFile('../list/lists.html', it) %>
   </div>
   <dialog
     class="js-invitation-dialog bg-white shadow-md max-w-sm rounded-lg w-full open:animate-dialog-reveal p-0"

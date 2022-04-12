@@ -1,6 +1,7 @@
 import * as InvitationService from "../services/invitation.service.js";
 import * as BoardService from "../services/board.service.js";
 import * as UserService from "../services/user.service.js";
+import { formatter } from "../utils/index.js";
 
 export async function getOne(req, res) {}
 
@@ -29,7 +30,7 @@ export async function getMany(req, res) {
   const board_id = req.params.board_id || req.query.board_id;
   const board = await BoardService.getOne(board_id);
   const invitations = await InvitationService.getMany({ board_id: board.id }, ["to"]);
-  res.render("invitation/invitations", { board, user, invitations });
+  res.render("invitation/invitations", { board, user, invitations, formatter });
 }
 
 export async function updateOne(req, res) {

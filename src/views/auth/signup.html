@@ -3,48 +3,46 @@
   <div class="bg-white shadow-md max-w-sm p-8 space-y-6 rounded-lg mx-auto my-24">
     <h2 class="font-bold text-lg text-center">Signup</h2>
     <form action="/auth/signup?return_to=<%= it.return_to %>" method="post" class="space-y-6">
+      <% if (it.providers?.PASSWORD?.length) { %>
       <fieldset class="space-y-4">
-        <input name="email" type="email" class="input" placeholder="jane@gmail.com" required />
-        <input name="password" type="password" class="input" placeholder="password" required />
-        <input name="name" type="text" class="input" placeholder="Jane Doe" required />
-        <button class="btn-primary w-full">Next</button>
+        <input
+          name="email"
+          type="email"
+          class="input text-input"
+          placeholder="jane@gmail.com"
+          required
+        />
+        <input
+          name="password"
+          type="password"
+          class="input text-input"
+          placeholder="password"
+          required
+        />
+        <input type="hidden" name="provider_name" value="<%= it.providers?.PASSWORD?.[0].name %>" />
+        <input name="name" type="text" class="input text-input" placeholder="Jane Doe" required />
+        <button class="btn btn-primary w-full">Next</button>
       </fieldset>
       <span class="block text-center text-gray-400">or</span>
+      <% } %> <% if(it.providers?.OAUTH?.length) {%>
       <fieldset class="flex flex-col space-y-2">
-        <button class="btn-secondary flex justify-center space-x-2 items-center" type="button">
-          <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-            <path
-              d="M4.38834 8.1375C4.77824 6.95787 5.53072 5.93151 6.53844 5.20483C7.54615 4.47815 8.75761 4.08828 10 4.09083C11.4083 4.09083 12.6817 4.59083 13.6817 5.40917L16.5917 2.5C14.8183 0.954167 12.5458 0 10 0C6.05834 0 2.66501 2.24833 1.03334 5.54167L4.38834 8.1375Z"
-              fill="#EA4335"
-            ></path>
-            <path
-              d="M13.3667 15.0108C12.4583 15.5967 11.305 15.9092 10 15.9092C8.76257 15.9117 7.55567 15.5249 6.5502 14.8036C5.54473 14.0823 4.79162 13.063 4.39751 11.89L1.03084 14.4458C1.85688 16.1177 3.13523 17.5245 4.72069 18.5063C6.30615 19.4881 8.13518 20.0056 10 20C12.4442 20 14.7792 19.1308 16.5283 17.5L13.3675 15.0108H13.3667Z"
-              fill="#34A853"
-            ></path>
-            <path
-              d="M16.5283 17.5C18.3575 15.7933 19.545 13.2533 19.545 10C19.545 9.40833 19.4542 8.7725 19.3183 8.18167H10V12.0458H15.3633C15.0992 13.345 14.3883 14.3508 13.3675 15.0108L16.5283 17.5Z"
-              fill="#4A90E2"
-            ></path>
-            <path
-              d="M4.39748 11.89C4.1936 11.2808 4.09003 10.6424 4.09081 10C4.09081 9.34833 4.19498 8.7225 4.38831 8.1375L1.03331 5.54167C0.346957 6.92724 -0.00685536 8.45377 -2.50249e-05 10C-2.50249e-05 11.6 0.370808 13.1083 1.03081 14.4458L4.39748 11.89Z"
-              fill="#FBBC05"
-            ></path>
-          </svg>
-          <span>Continue with Google</span>
-        </button>
-        <button class="btn-secondary flex justify-center space-x-2 items-center" type="button">
-          <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M9.99917 0.833328C4.93834 0.833328 0.833344 4.93749 0.833344 9.99999C0.833344 14.05 3.46001 17.4858 7.10251 18.6975C7.56084 18.7825 7.72751 18.4992 7.72751 18.2558C7.72751 18.0392 7.72001 17.4625 7.71584 16.6975C5.16584 17.2508 4.62751 15.4683 4.62751 15.4683C4.21084 14.41 3.61001 14.1267 3.61001 14.1267C2.77751 13.5592 3.67251 13.57 3.67251 13.57C4.59334 13.635 5.07668 14.515 5.07668 14.515C5.89418 15.915 7.22251 15.5108 7.74501 15.2767C7.82834 14.685 8.06501 14.2808 8.32668 14.0517C6.29168 13.82 4.15168 13.0333 4.15168 9.52083C4.15168 8.52083 4.50834 7.70166 5.09501 7.06083C5.00001 6.82916 4.68584 5.89666 5.18501 4.63583C5.18501 4.63583 5.95418 4.38833 7.70584 5.57499C8.45361 5.37142 9.22503 5.26774 10 5.26666C10.7792 5.26999 11.5633 5.37083 12.295 5.57499C14.045 4.38833 14.8133 4.63499 14.8133 4.63499C15.3133 5.89666 14.9992 6.82916 14.905 7.06083C15.4925 7.70166 15.8467 8.51999 15.8467 9.52083C15.8467 13.0425 13.7033 13.8175 11.6617 14.0442C11.9908 14.3275 12.2842 14.8858 12.2842 15.7417C12.2842 16.9667 12.2725 17.9558 12.2725 18.2558C12.2725 18.5017 12.4383 18.7867 12.9025 18.6975C16.5425 17.4825 19.1667 14.0492 19.1667 9.99999C19.1667 4.93749 15.0617 0.833328 9.99917 0.833328Z"
-              fill="black"
-            ></path>
-          </svg>
-          <span> Continue with Github </span>
-        </button>
+        <% it.providers?.OAUTH?.forEach(function (provider) { %>
+        <a
+          href="<%= provider.oauth_code_url %>?client_id=<%= provider.client_id %>&state=<%= it.oauth_state %>&scope=<%= provider.scope %>&response_type=<%= provider.response_type %>&redirect_uri=<%= provider.redirect_uri %>"
+          class="btn btn-secondary flex justify-center space-x-2 items-center"
+        >
+          <img src="<%= provider.logo_url %>" alt="<%= provider.title %> logo" class="w-5 h-5" />
+          <span>Continue with <%= provider.title %></span>
+        </a>
+        <% }) %>
       </fieldset>
+      <% } %>
     </form>
-    <a href="/auth/login" class="block text-center">Already have an account?</a>
+
+    <% if (it.providers?.PASSWORD?.length) { %>
+    <a href="/auth/login?return_to=<%= it.return_to %>" class="block text-center"
+      >Already have an account?</a
+    >
+    <% } %>
   </div>
 </div>

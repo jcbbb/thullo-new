@@ -2,6 +2,7 @@ import { Model } from "objection";
 import { thullo } from "../services/db.service.js";
 import { User } from "./user.model.js";
 import { Attachment } from "./attachment.model.js";
+import { Comment } from "./comment.model.js";
 
 class model extends Model {
   static get tableName() {
@@ -27,6 +28,14 @@ class model extends Model {
       join: {
         from: "list_items.id",
         to: "attachments.list_item_id",
+      },
+    },
+    comments: {
+      relation: Model.HasManyRelation,
+      modelClass: Comment,
+      join: {
+        from: "list_items.id",
+        to: "comments.list_item_id",
       },
     },
   };

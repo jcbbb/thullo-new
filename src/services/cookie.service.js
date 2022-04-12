@@ -1,6 +1,9 @@
 import config from "../config/index.js";
 
 export function generateAccessCookie(sid) {
+  const now = new Date();
+  const expires = now.setFullYear(now.getFullYear() + 1); // expires after 1 year
+
   return {
     cookie: {
       name: config.session_cookie_name,
@@ -13,6 +16,7 @@ export function generateAccessCookie(sid) {
       signed: true,
       domain: config.origin,
       path: "/",
+      expires,
     },
   };
 }

@@ -1,11 +1,12 @@
 import fastify from "fastify";
 import fastifyStatic from "fastify-static";
+import fastifySession from "fastify-secure-session";
+import fastifyFlash from "fastify-flash";
 import view from "point-of-view";
 import path from "path";
 import config from "./config/index.js";
 import formBody from "fastify-formbody";
 import multipart from "fastify-multipart";
-import cookie from "fastify-cookie";
 import { routes } from "./routes/index.js";
 import { isXhr } from "./plugins/is-xhr.js";
 import * as eta from "eta";
@@ -16,9 +17,21 @@ export async function start() {
     app.register(isXhr);
     app.register(formBody);
     app.register(multipart, { attachFieldsToBody: true });
-    app.register(cookie, {
+
+    app.register(fastifySession, {
       secret: config.cookie_secret,
+      cookieName: config.session_cookie_name,
+      cookie: {
+        httpOnly: true,
+        secure: true,
+        sameSite: "lax",
+        n: config.domain,
+        path: "/",
+        maxAge: 31556926,
+      },
     });
+
+    app.register(fastifyFlash);
 
     app.register(view, {
       engine: {
