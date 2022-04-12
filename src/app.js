@@ -9,7 +9,10 @@ import formBody from "fastify-formbody";
 import multipart from "fastify-multipart";
 import { routes } from "./routes/index.js";
 import { isXhr } from "./plugins/is-xhr.js";
+import os from "os";
 import * as eta from "eta";
+
+process.env.UV_THREADPOOL_SIZE = os.cpus().length;
 
 export async function start() {
   const app = fastify({ logger: true });

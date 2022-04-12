@@ -20,6 +20,12 @@ import {
   S3_ORIGIN,
   GITHUB_CLIENT_SECRET,
   GOOGLE_CLIENT_SECRET,
+  KNEX_MIGRATIONS_DIR,
+  KNEX_MIGRATIONS_DIR_DEV,
+  KNEX_MIGRATIONS_DIR_STAGING,
+  KNEX_SEEDS_DIR,
+  KNEX_SEEDS_DIR_DEV,
+  KNEX_SEEDS_DIR_STAGING,
 } from "./secrets.js";
 
 export const configs = {
@@ -37,6 +43,8 @@ export const configs = {
     aws_s3_bucket_name: AWS_S3_BUCKET_NAME,
     github_client_secret: GITHUB_CLIENT_SECRET,
     google_client_secret: GOOGLE_CLIENT_SECRET,
+    knex_migrations_dir: KNEX_MIGRATIONS_DIR,
+    knex_seeds_dir: KNEX_SEEDS_DIR,
   },
   development: {
     port: PORT_DEV,
@@ -52,6 +60,8 @@ export const configs = {
     aws_s3_bucket_name: AWS_S3_BUCKET_NAME,
     github_client_secret: GITHUB_CLIENT_SECRET,
     google_client_secret: GOOGLE_CLIENT_SECRET,
+    knex_migrations_dir: KNEX_MIGRATIONS_DIR_DEV,
+    knex_seeds_dir: KNEX_SEEDS_DIR_DEV,
   },
   staging: {
     port: PORT_STAGING,
@@ -67,5 +77,7 @@ export const configs = {
     aws_s3_bucket_name: AWS_S3_BUCKET_NAME,
     github_client_secret: GITHUB_CLIENT_SECRET,
     google_client_secret: GOOGLE_CLIENT_SECRET,
+    knex_migrations_dir: KNEX_MIGRATIONS_DIR_STAGING,
+    knex_seeds_dir: KNEX_SEEDS_DIR_STAGING,
   },
 };

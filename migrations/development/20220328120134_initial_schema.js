@@ -191,15 +191,15 @@ export function up(knex) {
 export function down(knex) {
   return knex.schema
     .dropTable("sessions")
-    .dropTable("users")
-    .dropTable("boards")
-    .dropTable("lists")
-    .dropTable("list_items")
-    .dropTable("comments")
     .dropTable("attachments")
+    .dropTable("comments")
+    .dropTable("list_items_members")
+    .dropTable("list_items")
+    .dropTable("lists")
     .dropTable("labels")
     .dropTable("invitations")
-    .dropTable("lists_members")
-    .dropTable("board_members")
-    .dropTablle("auth_providers");
+    .dropTable("boards_members")
+    .dropTable("boards")
+    .dropTable("users")
+    .dropTable("auth_providers");
 }

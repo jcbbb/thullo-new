@@ -5,13 +5,20 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node ./src/index.js",
+    "start:dev": "node ./src/index.js",
+    "start": "NODE_ENV=production node ./src/index.js",
     "tailwind": "pnpx tailwindcss -c tailwind.config.cjs -i ./src/public/css/main.css -o ./src/public/css/main.min.css --watch",
     "nodemon": "nodemon ./src/index.js",
     "livereload": "browser-sync start --proxy \"localhost:$(grep PORT_DEV .env | cut -d '=' -f2) \"  --files \"src/views/*.html\" \"src/public/js/*.js\"",
     "dev": "concurrently \"pnpm tailwind\" \"pnpm nodemon\" \"pnpm livereload\"",
-    "migrate": "knex migrate:latest",
-    "seed": "knex seed:run"
+    "migrate": "NODE_ENV=production knex migrate:latest --env production",
+    "migrate:dev": "knex migrate:latest",
+    "migrate:make": "NODE_ENV=production knex migrate:make --env production",
+    "migrate:dev:make": "knex migrate:make",
+    "seed": "NODE_ENV=production knex seed:run --env production",
+    "seed:dev": "knex seed:run",
+    "seed:make": "NODE_ENV=production knex seed:make --env production",
+    "seed:dev:make": "knex seed:make"
   },
   "keywords": [],
   "author": "",
