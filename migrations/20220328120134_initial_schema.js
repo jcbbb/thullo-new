@@ -17,7 +17,6 @@ export function up(knex) {
       table.string("name").unique().notNullable();
       table.string("scope").nullable();
       table.string("client_id").nullable();
-      table.string("client_secret").nullable();
       table.string("logo_url").nullable();
       table.string("oauth_code_url").nullable();
       table.string("oauth_token_url").nullable();

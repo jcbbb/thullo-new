@@ -1,11 +1,12 @@
 import * as AuthProviderService from "../services/auth-provider.service.js";
+import config from "../config/index.js";
 import fetch from "node-fetch";
 
 const provider = await AuthProviderService.getByName("google");
 
 export async function getAccessToken({ code }) {
   const resp = await fetch(
-    `${provider.oauth_token_url}?code=${code}&client_id=${provider.client_id}&client_secret=${provider.client_secret}&redirect_uri=${provider.redirect_uri}&grant_type=authorization_code`,
+    `${provider.oauth_token_url}?code=${code}&client_id=${provider.client_id}&client_secret=${config.google_client_secret}&redirect_uri=${provider.redirect_uri}&grant_type=authorization_code`,
     {
       method: "post",
       headers: {

@@ -1,5 +1,5 @@
-import config from "../config/index.js";
 import * as AuthProviderService from "../services/auth-provider.service.js";
+import config from "../config/index.js";
 import fetch from "node-fetch";
 
 const provider = await AuthProviderService.getByName("github");
