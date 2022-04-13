@@ -6,6 +6,26 @@ import * as SessionService from "../services/session.service.js";
 import * as GoogleService from "../services/google.service.js";
 import { encrypt, decrypt, option } from "../utils/index.js";
 import { AuthenticationError } from "../utils/errors.js";
+import { AttestationChallenge } from "../utils/webauthn.js";
+import { normalizeBody } from "../utils/index.js";
+import base64url from "base64url";
+
+export async function createCredentials(req, res) {
+  const { email } = normalizeBody(req.body);
+  const provider = await AuthProviderService.getByName("webauthn");
+  const attestation = AttestationChallenge.from({ provider, user: { name: email } });
+  req.session.set("challenge", attestation.challenge);
+  res.send(attestation);
+}
+
+export async function verifyCredentials(req, res) {
+  const credential = req.body;
+  const originalChallenge = req.session.get("challenge");
+  const clientData = JSON.parse(base64url.decode(credential.response.clientDataJSON));
+  console.log({ clientData });
+  console.log({ originalChallenge });
+  res.send({ status: "ok" });
+}
 
 export async function getSignup(req, res) {
   const { return_to = "/" } = req.query;

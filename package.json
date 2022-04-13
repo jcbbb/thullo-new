@@ -26,6 +26,7 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.58.0",
     "argon2": "^0.28.5",
+    "base64url": "^3.0.1",
     "dotenv": "^10.0.0",
     "eta": "^1.12.3",
     "fastify": "^3.27.4",

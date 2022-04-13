@@ -6,7 +6,7 @@
     <form
       action="/auth/login?return_to=<%= it.return_to %>"
       method="post"
-      class="space-y-6"
+      class="space-y-6 js-login-form"
       autocomplete="on"
     >
       <% if (it.providers?.PASSWORD?.length) { %>
@@ -51,3 +51,5 @@
     <% }%>
   </div>
 </div>
+
+<script defer async src="/public/js/webauthn.js" type="module"></script>

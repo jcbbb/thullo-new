@@ -8,4 +8,6 @@ export const auth = async (fastify) => {
   fastify.post("/logout", AuthController.logout);
   fastify.get("/github", AuthController.githubCallback);
   fastify.get("/google", AuthController.googleCallback);
+  fastify.post("/credentials", AuthController.createCredentials);
+  fastify.post("/verify-credentials", AuthController.verifyCredentials);
 };
