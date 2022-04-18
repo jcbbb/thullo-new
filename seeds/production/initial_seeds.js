@@ -10,7 +10,7 @@ export async function seed(knex) {
       type: "PLATFORM",
       title: "Thullo Web Authn",
       name: "webauthn",
-      rp_id: "localhost",
+      rp_id: "pluto.uz",
     },
     {
       type: "OAUTH",
