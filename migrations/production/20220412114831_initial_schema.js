@@ -12,7 +12,7 @@ export function up(knex) {
     })
     .createTable("auth_providers", (table) => {
       table.uuid("id").defaultTo(knex.raw("gen_random_uuid()")).primary();
-      table.enu("type", ["OAUTH", "PASSWORD"]).notNullable();
+      table.enu("type", ["OAUTH", "PASSWORD", "PLATFORM"]).notNullable();
       table.string("title").notNullable();
       table.string("name").unique().notNullable();
       table.string("scope").nullable();
@@ -23,6 +23,7 @@ export function up(knex) {
       table.string("redirect_uri").nullable();
       table.string("response_type").nullable();
       table.boolean("active").defaultTo(true);
+      table.string("rp_id").nullable();
       table.timestamps(false, true);
     })
     .createTable("sessions", (table) => {
