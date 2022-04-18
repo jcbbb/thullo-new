@@ -23,3 +23,7 @@ export function checkExisting(email) {
 export function login(user) {
   return request(`/auth/login`, { body: user });
 }
+
+export function signup(user) {
+  return request(`/auth/signup`, { body: user });
+}

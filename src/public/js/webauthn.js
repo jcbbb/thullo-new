@@ -8,6 +8,7 @@ import {
   checkExisting,
   login,
   verifyAssertion,
+  signup,
 } from "./api/auth.js";
 
 const loginForm = selectOne("login-form");
@@ -21,9 +22,9 @@ signupForm?.addEventListener("submit", (e) => {
 
 passwordlessDialog?.addEventListener("close", async (e) => {
   const shouldEnable = e.target.returnValue === "yes";
+  const user = Object.fromEntries(new FormData(signupForm));
 
   if (shouldEnable) {
-    const user = Object.fromEntries(new FormData(signupForm));
     const credentialRequest = await requestCredential(user);
     credentialRequest.challenge = base64url.decode(credentialRequest.challenge);
     credentialRequest.user.id = base64url.decode(credentialRequest.user.id);
@@ -32,44 +33,56 @@ passwordlessDialog?.addEventListener("close", async (e) => {
       publicKey: credentialRequest,
     });
 
-    await register(credential, user);
+    const [result, err] = await option(registerCredential(credential, user));
+    if (err) {
+      toast(err.message, "err");
+      return;
+    }
+    const params = new URLSearchParams(window.location.search);
+    window.location.href = params.get("return_to") || "/";
+  } else {
+    const [result, err] = await option(signup(user));
+    if (err) {
+      toast(err.message, "err");
+      return;
+    }
+    const params = new URLSearchParams(window.location.search);
+    window.location.href = params.get("return_to") || "/";
   }
 });
 
-async function register(credential, user) {
+async function registerCredential(credential, user) {
   const [rawId, attestationObject, clientDataJSON] = await Promise.all([
     base64url.encode(credential.rawId),
     base64url.encode(credential.response.attestationObject),
     base64url.encode(credential.response.clientDataJSON),
   ]);
 
-  const [result, err] = await option(
-    createCredential({
-      id: credential.id,
-      rawId,
-      type: credential.type,
-      response: {
-        attestationObject,
-        clientDataJSON,
-      },
-      transports: credential.response.getTransports(),
-      user,
-    })
-  );
+  return await createCredential({
+    id: credential.id,
+    rawId,
+    type: credential.type,
+    response: {
+      attestationObject,
+      clientDataJSON,
+    },
+    transports: credential.response.getTransports(),
+    user,
+  });
+}
 
-  if (err) {
-    toast(err.message, "err");
-    return;
-  }
-
-  toast(result.message, "success");
-
-  const params = new URLSearchParams(window.location.search);
-  window.location.href = params.get("return_to") || "/";
+function formatAssertionRequest(assertion) {
+  assertion.allowCredentials = assertion.allowCredentials.map((credential) => ({
+    ...credential,
+    id: base64url.decode(credential.id),
+  }));
+  assertion.challenge = base64url.decode(assertion.challenge);
+  return assertion;
 }
 
 loginForm?.addEventListener("submit", async (e) => {
   e.preventDefault();
+
   const user = Object.fromEntries(new FormData(e.target));
   const [existing, existingErr] = await option(checkExisting(user.email));
 
@@ -79,27 +92,30 @@ loginForm?.addEventListener("submit", async (e) => {
       toast(err.message, "err");
       return;
     }
+    const params = new URLSearchParams(window.location.search);
+    window.location.href = params.get("return_to") || "/";
+    return;
   }
 
-  const [assertionRequest, err] = await option(requestAssertion(user));
+  const [assertionRequest, assertionRequestErr] = await option(requestAssertion(user));
+
+  if (assertionRequestErr) {
+    toast(assertionRequestErr.message, "err");
+    return;
+  }
+
+  const assertion = await window.navigator.credentials.get({
+    publicKey: formatAssertionRequest(assertionRequest),
+  });
+
+  const [result, err] = await option(assert(assertion, user));
 
   if (err) {
     toast(err.message, "err");
     return;
   }
-
-  assertionRequest.allowCredentials = assertionRequest.allowCredentials.map((credential) => ({
-    ...credential,
-    id: base64url.decode(credential.id),
-  }));
-
-  assertionRequest.challenge = base64url.decode(assertionRequest.challenge);
-
-  const assertion = await window.navigator.credentials.get({
-    publicKey: assertionRequest,
-  });
-
-  await assert(assertion, user);
+  const params = new URLSearchParams(window.location.search);
+  window.location.href = params.get("return_to") || "/";
 });
 
 async function assert(assertion, user) {
@@ -111,27 +127,15 @@ async function assert(assertion, user) {
     base64url.encode(assertion.response.userHandle),
   ]);
 
-  const [result, err] = await option(
-    verifyAssertion({
-      id: assertion.id,
-      rawId,
-      response: {
-        authenticatorData,
-        clientDataJSON,
-        signature,
-        userHandle,
-      },
-      user,
-    })
-  );
-
-  if (err) {
-    toast(err.message, "err");
-    return;
-  }
-
-  toast(result.message, "success");
-
-  const params = new URLSearchParams(window.location.search);
-  window.location.href = params.get("return_to") || "/";
+  return await verifyAssertion({
+    id: assertion.id,
+    rawId,
+    response: {
+      authenticatorData,
+      clientDataJSON,
+      signature,
+      userHandle,
+    },
+    user,
+  });
 }
