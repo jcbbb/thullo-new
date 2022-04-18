@@ -173,3 +173,12 @@ export function parseAuthenticatorData(buffer) {
 
   return { rpIdHash, flagsBuf, flags, flagsInt, signCount, signCountBuf };
 }
+
+export function getDomainWithoutSubdomain(url) {
+  const urlParts = new URL(url).hostname.split(".");
+
+  return urlParts
+    .slice(0)
+    .slice(-(urlParts.length === 4 ? 3 : 2))
+    .join(".");
+}

@@ -17,6 +17,7 @@ import {
   hash,
   ASN1toPEM,
   verifySignature,
+  getDomainWithoutSubdomain,
 } from "../utils/webauthn.js";
 import base64url from "base64url";
 import cbor from "cbor";
@@ -134,9 +135,9 @@ export function clientDataValidator(type) {
       throw new ValidationError(`Attestation challenges don't match`);
     }
 
-    const origin = new URL(clientData.origin);
+    const origin = getDomainWithoutSubdomain(clientData.origin);
 
-    if (origin.hostname !== provider.rp_id) {
+    if (origin !== provider.rp_id) {
       throw new ValidationError(
         `Unexpected client data origin ${clientData.origin}, expected ${provider.rp_id}`
       );
