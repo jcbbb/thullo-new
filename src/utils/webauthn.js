@@ -45,19 +45,19 @@ export class CredentialRequest {
 }
 
 export class AssertionRequest {
-  constructor({ credentials = [] }) {
+  constructor({ provider, user }) {
     this.challenge = generateChallenge();
-    this.allowCredentials = credentials.map((credential) => ({
+    this.allowCredentials = user?.credentials.map((credential) => ({
       id: credential.credential_id,
       type: "public-key",
       transports: credential.transports,
     }));
+    this.rpId = provider.rp_id;
     this.timeout = 60000;
   }
 
-  static async from(email) {
-    const user = await getByEmail(email, ["credentials"]);
-    return new AssertionRequest({ credentials: user.credentials });
+  static from({ provider, user }) {
+    return new AssertionRequest({ provider, user });
   }
 }
 
