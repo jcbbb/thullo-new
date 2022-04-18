@@ -7,6 +7,12 @@ export async function seed(knex) {
       name: "thullo",
     },
     {
+      type: "PLATFORM",
+      title: "Thullo Web Authn",
+      name: "webauthn",
+      rp_id: "localhost",
+    },
+    {
       type: "OAUTH",
       scope: "user",
       title: "Github",

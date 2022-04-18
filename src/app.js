@@ -9,6 +9,7 @@ import formBody from "fastify-formbody";
 import multipart from "fastify-multipart";
 import { routes } from "./routes/index.js";
 import { isXhr } from "./plugins/is-xhr.js";
+import { DomainError, InternalError } from "./utils/errors.js";
 import os from "os";
 import * as eta from "eta";
 
@@ -55,6 +56,14 @@ export async function start() {
       root: path.join(process.cwd(), "node_modules"),
       prefix: "/node_modules",
       decorateReply: false,
+    });
+    app.setErrorHandler((err, req, res) => {
+      console.log(err);
+      if (err instanceof DomainError) {
+        return res.code(err.status_code).send(err);
+      }
+      const internal = new InternalError();
+      res.code(internal.status_code).send(internal);
     });
 
     app.register(routes);

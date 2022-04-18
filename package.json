@@ -26,7 +26,10 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.58.0",
     "argon2": "^0.28.5",
+    "base64url": "^3.0.1",
+    "cbor": "^8.1.0",
     "dotenv": "^10.0.0",
+    "elliptic": "^6.5.4",
     "eta": "^1.12.3",
     "fastify": "^3.27.4",
     "fastify-cookie": "^5.6.0",
@@ -37,8 +40,10 @@
     "fastify-secure-session": "^3.0.0",
     "fastify-static": "^4.6.1",
     "jsonwebtoken": "^8.5.1",
+    "jsrsasign": "^10.5.17",
     "knex": "^1.0.4",
     "node-fetch": "^3.2.3",
+    "node-rsa": "^1.1.1",
     "objection": "^3.0.1",
     "pg": "^8.7.3",
     "point-of-view": "^5.2.0"
