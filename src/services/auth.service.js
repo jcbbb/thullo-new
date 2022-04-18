@@ -118,8 +118,13 @@ export async function createCredentialRequest(user) {
   return CredentialRequest.from({ provider, user });
 }
 
-export async function createAssertionRequest(user) {
-  return await AssertionRequest.from(user.email);
+export async function createAssertionRequest({ email }) {
+  const user = await UserService.getByEmail(email, ["credentials"]);
+  const provider = await AuthProviderService.getByName("webauthn");
+  if (!user) {
+    throw new ResourceNotFoundError(`User with email ${email} not found`);
+  }
+  return AssertionRequest.from({ provider, user });
 }
 
 export function clientDataValidator(type) {

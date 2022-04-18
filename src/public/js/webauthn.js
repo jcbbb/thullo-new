@@ -81,7 +81,12 @@ loginForm?.addEventListener("submit", async (e) => {
     }
   }
 
-  const assertionRequest = await requestAssertion(user);
+  const [assertionRequest, err] = await option(requestAssertion(user));
+
+  if (err) {
+    toast(err.message, "err");
+    return;
+  }
 
   assertionRequest.allowCredentials = assertionRequest.allowCredentials.map((credential) => ({
     ...credential,

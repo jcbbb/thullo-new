@@ -24,9 +24,16 @@ export async function createRequest(req, res) {
       break;
     }
     case WEBAUTHN_TYPES.GET: {
-      const assertionRequest = await AuthService.createAssertionRequest({
-        email,
-      });
+      const [assertionRequest, err] = await option(
+        AuthService.createAssertionRequest({
+          email,
+        })
+      );
+
+      if (err) {
+        return res.code(err.status_code).send(err);
+      }
+
       req.session.set("challenge", assertionRequest.challenge);
       res.send(assertionRequest);
       break;
