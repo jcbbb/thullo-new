@@ -4,27 +4,116 @@ import * as GithubService from "../services/github.service.js";
 import * as UserService from "../services/user.service.js";
 import * as SessionService from "../services/session.service.js";
 import * as GoogleService from "../services/google.service.js";
+import * as CredentialService from "../services/credential.service.js";
 import { encrypt, decrypt, option } from "../utils/index.js";
 import { AuthenticationError } from "../utils/errors.js";
-import { AttestationChallenge } from "../utils/webauthn.js";
 import { normalizeBody } from "../utils/index.js";
-import base64url from "base64url";
+import { WEBAUTHN_TYPES } from "../utils/webauthn.js";
 
-export async function createCredentials(req, res) {
-  const { email } = normalizeBody(req.body);
-  const provider = await AuthProviderService.getByName("webauthn");
-  const attestation = AttestationChallenge.from({ provider, user: { name: email } });
-  req.session.set("challenge", attestation.challenge);
-  res.send(attestation);
+export async function createRequest(req, res) {
+  const { type } = req.query;
+  const { email, name } = normalizeBody(req.body);
+  switch (type) {
+    case WEBAUTHN_TYPES.CREATE: {
+      const credRequest = await AuthService.createCredentialRequest({
+        name: email,
+        displayName: name,
+      });
+      req.session.set("challenge", credRequest.challenge);
+      res.send(credRequest);
+      break;
+    }
+    case WEBAUTHN_TYPES.GET: {
+      const assertionRequest = await AuthService.createAssertionRequest({
+        email,
+      });
+      req.session.set("challenge", assertionRequest.challenge);
+      res.send(assertionRequest);
+      break;
+    }
+  }
 }
 
-export async function verifyCredentials(req, res) {
+export async function createCredential(req, res) {
   const credential = req.body;
-  const originalChallenge = req.session.get("challenge");
-  const clientData = JSON.parse(base64url.decode(credential.response.clientDataJSON));
-  console.log({ clientData });
-  console.log({ originalChallenge });
-  res.send({ status: "ok" });
+  const challenge = req.session.get("challenge");
+
+  const validateClientData = AuthService.clientDataValidator(WEBAUTHN_TYPES.CREATE);
+  const [clientResult, clientError] = await option(validateClientData(credential, challenge));
+
+  if (clientError) {
+    return res.code(clientError.status_code).send(clientError);
+  }
+
+  const [responseResult, responseError] = AuthService.validateAttestationResponse(credential);
+
+  if (responseError) {
+    return res.code(responseError.status_code).send(responseError);
+  }
+
+  const [result, err] = await option(
+    AuthService.signupWithCredential({
+      ...credential.user,
+      public_key: responseResult.publicKey,
+      sign_count: responseResult.signCount,
+      credential_id: responseResult.credID,
+      user_agent: req.headers["user-agent"],
+      transports: credential.transports,
+    })
+  );
+
+  if (err) {
+    return res.code(err.status_code).send(err);
+  }
+
+  req.session.set("sid", result.session.id);
+  res.send({ message: "Successfully created" });
+}
+
+export async function checkExisting(req, res) {
+  const { email } = req.params;
+  const user = await UserService.getByEmail(email, ["credentials"]);
+  if (user?.credentials?.length) {
+    return res.send();
+  }
+  res.code(404).send();
+}
+
+export async function assertCredential(req, res) {
+  const assertion = req.body;
+  const challenge = req.session.get("challenge");
+  const validateClientData = AuthService.clientDataValidator(WEBAUTHN_TYPES.GET);
+  const [clientResult, clientError] = await option(validateClientData(assertion, challenge));
+
+  if (clientError) {
+    return res.code(clientError.status_code).send(clientError);
+  }
+
+  const credential = await CredentialService.getOne(assertion.id);
+  const [responseResult, responseError] = await option(
+    AuthService.validateAssertionResponse(assertion, credential)
+  );
+
+  await credential.$query().patch({ sign_count: responseResult.signCount });
+
+  if (responseError) {
+    return res.code(clientError.status_code).send(responseError);
+  }
+
+  const [result, err] = await option(
+    AuthService.loginWithCredential({
+      credential,
+      user_agent: req.headers["user-agent"],
+    })
+  );
+
+  if (err) {
+    return res.code(err.status_code).send(err);
+  }
+
+  req.session.set("sid", result.session.id);
+
+  res.send({ message: "Successfully verified the signature" });
 }
 
 export async function getSignup(req, res) {

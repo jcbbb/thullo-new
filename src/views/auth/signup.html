@@ -56,11 +56,7 @@
   <div class="bg-white shadow-md max-w-sm p-8 rounded-lg mx-auto">
     <h2 class="font-bold text-lg">Web Auth</h2>
     <p class="mb-6 text-gray-500">Would you like to enable passwordless authentication?</p>
-    <form
-      method="dialog"
-      action="/auth/credentials"
-      class="flex items-center justify-end space-x-4 js-challenge-form"
-    >
+    <form method="dialog" class="flex items-center justify-end space-x-4 js-challenge-form">
       <input type="hidden" name="provider_name" value="webauthn" />
       <button value="no" class="btn btn-text">No</button>
       <button value="yes" class="btn btn-primary">Yes</button>

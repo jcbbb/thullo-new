@@ -26,7 +26,6 @@ const IV_LENGTH = 16;
 
 export function encrypt(text) {
   const iv = crypto.randomBytes(IV_LENGTH);
-  console.log("encrypt iv", iv);
   const cipher = crypto.createCipheriv("aes-256-cbc", Buffer.from(key, "hex"), iv);
 
   const encrypted = Buffer.concat([iv, cipher.update(text), cipher.final()]);

@@ -1,4 +1,4 @@
-class DomainError extends Error {
+export class DomainError extends Error {
   constructor(message = "Internal Server Error", status_code = 500, view = "home", errors = []) {
     super();
     this.message = message;
