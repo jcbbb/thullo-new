@@ -1,7 +1,6 @@
 import base64url from "base64url";
 import crypto from "crypto";
 import cbor from "cbor";
-import { getByEmail } from "../services/user.service.js";
 
 export const WEBAUTHN_TYPES = {
   CREATE: "webauthn.create",
@@ -140,7 +139,7 @@ export function parseAuthData(buffer) {
   const credIDBuf = buffer.slice(0, credIDLen);
   buffer = buffer.slice(credIDLen);
 
-  const COSEPublicKey = buffer.slice(0, credIDLen);
+  const COSEPublicKey = buffer;
 
   return {
     rpIdHash,
