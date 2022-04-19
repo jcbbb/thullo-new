@@ -19,7 +19,7 @@ export async function upload(req, res) {
           formatter,
           attachment: createdAttachment,
           item: {
-            id: "238d4384-33b1-4a57-a98a-e0a9e9abacee",
+            id: list_item_id,
           },
         }
       );
