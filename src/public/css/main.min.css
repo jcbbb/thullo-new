@@ -693,16 +693,16 @@ Ensure the default browser behavior of the `hidden` attribute.
   width: 10rem;
 }
 
+.w-0 {
+  width: 0px;
+}
+
 .w-36 {
   width: 9rem;
 }
 
 .w-12 {
   width: 3rem;
-}
-
-.w-0 {
-  width: 0px;
 }
 
 .w-10 {
@@ -1507,6 +1507,10 @@ details summary::marker {
   }
 }
 
+.first-of-type\:mt-3:first-of-type {
+  margin-top: 0.75rem;
+}
+
 @-webkit-keyframes dialog-reveal {
   0% {
     opacty: 0;
@@ -1562,14 +1566,14 @@ details summary::marker {
   --tw-ring-color: rgb(20 113 235 / var(--tw-ring-opacity));
 }
 
-.focus\:ring-brand-400:focus {
-  --tw-ring-opacity: 1;
-  --tw-ring-color: rgb(109 167 242 / var(--tw-ring-opacity));
-}
-
 .focus\:ring-brand-500:focus {
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(47 128 237 / var(--tw-ring-opacity));
+}
+
+.focus\:ring-brand-400:focus {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(109 167 242 / var(--tw-ring-opacity));
 }
 
 .focus\:ring-offset-brand-300:focus {

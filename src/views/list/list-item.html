@@ -38,8 +38,8 @@
 					<button class="btn btn-primary mt-2">Save</button>
 				</noscript>
 			</form>
-			<div class="space-y-3">
-				<form class="flex items-center space-x-4" action="/list-items/<%= it.item.id %>" method="post" enctype="multipart/form-data">
+			<div>
+				<form class="flex items-center space-x-4 js-attachment-form" action="/list-items/<%= it.item.id %>" method="post" enctype="multipart/form-data">
 					<p class="text-gray-500 flex space-x-2 items-center">
 						<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
 							<path stroke-linecap="round" stroke-linejoin="round" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
@@ -50,7 +50,8 @@
 					</p>
 					<div class="flex space-x-2 items-center">
 						<input type="hidden" name="board_id" value="<%= it.board.id %>">
-						<input type="file" name="attachments" class="file-input js-disabled peer" id="list-item-cover" multiple>
+						<input type="hidden" name="list_item_id" value="<%= it.item.id %>">
+						<input type="file" name="attachments" class="file-input js-disabled peer js-attachment-input" id="list-item-cover" multiple>
 						<label for="list-item-cover" class="file-input-label !px-6 text-sm">
 							Add
 						</label>
@@ -59,29 +60,11 @@
 						</noscript>
 					</div>
 				</form>
-				<% if(it.item.attachments.length) { %>
-					<ul class="space-y-8">
-						<% it.item.attachments.forEach(function (attachment) { %>
-							<li class="flex space-x-4 items-center">
-								<img src="<%= attachment.url %>" alt="" class="w-36 h-24 rounded-lg object-cover flex-shrink-0">
-								<div>
-									<span class="text-gray-500 text-sm">
-										<%= it.formatter.format(attachment.created_at) %>
-									</span>
-									<p><%= attachment.name %></p>
-									<menu class="space-x-2 flex mt-2">
-										<a class="btn btn-secondary text-neutral-900" download="<%= attachment.filename %>" href="<%= attachment.url %>">Download</a>
-										<form action="/list-items/<%= it.item.id %>" method="post">
-											<input type="hidden" name="attachment_id" value="<%= attachment.id %>">
-											<input type="hidden" name="s3_key" value="<%= attachment.s3_key %>">
-											<button class="btn btn-danger" name="_action" value="delete_attachment">Delete</button>
-										</form>
-									</menu>
-								</div>
-							</li>
-						<% }) %>
-					</ul>
-				<% } %>
+				<ul class="space-y-8 js-attachment-list">
+					<% it.item.attachments.forEach(function (attachment) { %>
+						<%~ includeFile('../partials/attachment.html', Object.assign(it, { attachment })) %>
+					<% }) %>
+				</ul>
 			</div>
 			<div class="space-y-8">
 				<form action="/comments" method="post">
@@ -93,29 +76,7 @@
 				<% if(it.item.comments.length) {%> 
 					<ul class="space-y-4">
 						<% it.item.comments.forEach(function (comment) { %>
-							<li class="space-y-2">
-								<div class="flex items-start justify-between">
-									<div class="flex space-x-4">
-										<img src="https://i.pravatar.cc/300" alt="" class="flex-shring-0 w-12 h-12 object-cover rounded-lg" >
-										<div class="flex flex-col">
-											<span class="font-medium"><%= comment.user.name %></span>
-											<span class="text-gray-500 text-sm"><%= it.formatter.format(comment.created_at) %></span>
-										</div>
-									</div>
-									<form action="/comments/<%= comment.id %>" method="post">
-										<input type="hidden" name="list_item_id" value="<%= it.item.id %>">
-										<button class="btn btn-danger-text" name="_action" value="delete">Delete</button>
-									</form>
-								</div>
-								<form action="/comments/<%= comment.id %>" method="post">
-									<textarea name="content" class="w-full outline-none focus:ring-2 ring-offset-2 rounded-md p-1 -m-1 focus:ring-brand-400 focus:ring-offset-brand-300" required><%= comment.content %></textarea>
-									<input type="hidden" name="list_item_id" value="<%= it.item.id %>">
-									<input type="hidden" name="board_id" value="<%= it.board.id %>">
-									<noscript>
-										<button class="btn btn-primary mt-2">Save</button>
-									</noscript>
-								</form>
-							</li>
+							<%~ includeFile('../partials/comment.html', Object.assign(it, { comment })) %>	
 						<% }) %>
 					</ul>
 				<% } %>

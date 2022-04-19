@@ -1,0 +1,28 @@
+<li class="flex space-x-4 items-center first-of-type:mt-3 js-attachment-item">
+  <img
+    src="<%= it.attachment.url %>"
+    alt=""
+    class="w-36 h-24 rounded-lg object-cover flex-shrink-0"
+  />
+  <div>
+    <span class="text-gray-500 text-sm">
+      <%= it.formatter.format(it.attachment.created_at) %>
+    </span>
+    <p><%= it.attachment.name %></p>
+    <menu class="space-x-2 flex mt-2">
+      <a
+        class="btn btn-secondary text-neutral-900"
+        download="<%= it.attachment.name %>"
+        href="<%= it.attachment.url %>"
+        >Download</a
+      >
+      <form action="/list-items/<%= it.item.id %>" method="post" class="js-attachment-delete-form">
+        <fieldset class="js-attachment-fieldset">
+          <input type="hidden" name="attachment_id" value="<%= it.attachment.id %>" />
+          <input type="hidden" name="s3_key" value="<%= it.attachment.s3_key %>" />
+          <button class="btn btn-danger" name="_action" value="delete_attachment">Delete</button>
+        </fieldset>
+      </form>
+    </menu>
+  </div>
+</li>

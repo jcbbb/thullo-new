@@ -7,6 +7,7 @@ import {
   BadRequestError,
   ValidationError,
   InternalError,
+  ConflictError,
 } from "../utils/errors.js";
 import { User } from "../models/user.model.js";
 import {
@@ -52,6 +53,8 @@ export async function signupWithCredential({
   user_agent,
   password,
 }) {
+  const existing = UserService.getByEmail(email);
+  if (existing) throw new ConflictError(`User with email ${email} already exists.`);
   const trx = await User.startTransaction();
   try {
     const user = await UserService.createOne(trx)({
@@ -80,6 +83,7 @@ export async function signupWithCredential({
     throw new InternalError();
   }
 }
+
 export async function loginWithCredential({ user_agent, credential }) {
   const user = await UserService.getOne(credential.user_id);
   const session = await SessionService.createOne()({

@@ -37,7 +37,6 @@ export class CredentialRequest {
       },
     ];
   }
-
   static from({ provider, user }) {
     return new CredentialRequest({ provider, user });
   }
@@ -54,17 +53,8 @@ export class AssertionRequest {
     this.rpId = provider.rp_id;
     this.timeout = 60000;
   }
-
   static from({ provider, user }) {
     return new AssertionRequest({ provider, user });
-  }
-}
-
-export class AttestationResponse {
-  constructor(credential) {}
-
-  static from(credential) {
-    return new AttestationResponse(credential);
   }
 }
 

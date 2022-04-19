@@ -51,3 +51,9 @@ export class ValidationError extends DomainError {
     super(message, 422, errors, view);
   }
 }
+
+export class ConflictError extends DomainError {
+  constructor(message = "Conflict", view) {
+    super(message, 409, view);
+  }
+}

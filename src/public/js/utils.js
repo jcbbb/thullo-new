@@ -3,6 +3,11 @@ function singleSelector(prefix) {
     return where.querySelector(prefix + selector);
   };
 }
+function closestSelector(prefix) {
+  return function select(selector, where = document) {
+    return where.closest(prefix + selector);
+  };
+}
 
 function multipleSelector(prefix) {
   return function select(selector, where = document) {
@@ -12,6 +17,7 @@ function multipleSelector(prefix) {
 
 export const selectOne = singleSelector(".js-");
 export const selectAll = multipleSelector(".js-");
+export const selectClosest = closestSelector(".js-");
 
 export function createNode(tag, attributes) {
   const node = document.createElement(tag);
@@ -59,4 +65,8 @@ export async function option(promise) {
   } catch (err) {
     return [null, err];
   }
+}
+
+export async function redirect(path) {
+  window.location.href = path;
 }

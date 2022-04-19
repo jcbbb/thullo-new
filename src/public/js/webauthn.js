@@ -1,4 +1,4 @@
-import { selectOne, option } from "./utils.js";
+import { selectOne, option, redirect } from "./utils.js";
 import * as base64url from "./base64-url.js";
 import { toast } from "./toast.js";
 import {
@@ -20,17 +20,16 @@ signupForm?.addEventListener("submit", (e) => {
   passwordlessDialog.showModal();
 });
 
+const params = new URLSearchParams(window.location.search);
+
 passwordlessDialog?.addEventListener("close", async (e) => {
   const shouldEnable = e.target.returnValue === "yes";
   const user = Object.fromEntries(new FormData(signupForm));
 
   if (shouldEnable) {
     const credentialRequest = await requestCredential(user);
-    credentialRequest.challenge = base64url.decode(credentialRequest.challenge);
-    credentialRequest.user.id = base64url.decode(credentialRequest.user.id);
-
     const credential = await window.navigator.credentials.create({
-      publicKey: credentialRequest,
+      publicKey: formatCredentialRequest(credentialRequest),
     });
 
     const [result, err] = await option(registerCredential(credential, user));
@@ -38,16 +37,15 @@ passwordlessDialog?.addEventListener("close", async (e) => {
       toast(err.message, "err");
       return;
     }
-    const params = new URLSearchParams(window.location.search);
-    window.location.href = params.get("return_to") || "/";
+
+    redirect(params.get("return_to") || "/");
   } else {
     const [result, err] = await option(signup(user));
     if (err) {
       toast(err.message, "err");
       return;
     }
-    const params = new URLSearchParams(window.location.search);
-    window.location.href = params.get("return_to") || "/";
+    redirect(params.get("return_to") || "/");
   }
 });
 
@@ -80,6 +78,12 @@ function formatAssertionRequest(assertion) {
   return assertion;
 }
 
+function formatCredentialRequest(credential) {
+  credential.challenge = base64url.decode(credential.challenge);
+  credential.user.id = base64url.decode(credential.user.id);
+  return credential;
+}
+
 loginForm?.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -92,8 +96,7 @@ loginForm?.addEventListener("submit", async (e) => {
       toast(err.message, "err");
       return;
     }
-    const params = new URLSearchParams(window.location.search);
-    window.location.href = params.get("return_to") || "/";
+    redirect(params.get("return_to") || "/");
     return;
   }
 
@@ -114,8 +117,8 @@ loginForm?.addEventListener("submit", async (e) => {
     toast(err.message, "err");
     return;
   }
-  const params = new URLSearchParams(window.location.search);
-  window.location.href = params.get("return_to") || "/";
+
+  redirect(params.get("return_to") || "/");
 });
 
 async function assert(assertion, user) {

@@ -56,6 +56,7 @@ export async function updateOne(req, res) {
       }
       break;
     }
+
     case "delete_attachment": {
       if (s3_key) {
         await S3Service.deleteOne(s3_key);
