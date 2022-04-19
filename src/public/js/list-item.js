@@ -8,10 +8,10 @@ const attachments = selectOne("attachment-list");
 
 const Decoder = new TextDecoder();
 
-function htmlToNode(html) {
+function htmlToNodes(html) {
   const template = createNode("template");
-  template.innerHTML = html;
-  return template.content.firstChild;
+  template.innerHTML = html.trim();
+  return template.content.childNodes;
 }
 
 attachmentInput.addEventListener("change", async (e) => {
@@ -28,10 +28,12 @@ attachmentInput.addEventListener("change", async (e) => {
     const { done, value } = await reader.read();
     if (done) break;
     const html = Decoder.decode(value);
-    const node = htmlToNode(html);
-    const deleteForm = selectOne("attachment-delete-form", node);
-    deleteForm.addEventListener("submit", onAttachmentDelete);
-    attachments.append(node);
+    const nodes = htmlToNodes(html);
+    nodes.forEach((node) => {
+      const deleteForm = selectOne("attachment-delete-form", node);
+      deleteForm.addEventListener("submit", onAttachmentDelete);
+    });
+    attachments.append(...nodes);
   }
 });
 
