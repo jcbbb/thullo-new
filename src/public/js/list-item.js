@@ -11,7 +11,7 @@ const Decoder = new TextDecoder();
 function htmlToNodes(html) {
   const template = createNode("template");
   template.innerHTML = html.trim();
-  return template.content.childNodes;
+  return Array.from(template.content.children);
 }
 
 attachmentInput.addEventListener("change", async (e) => {
