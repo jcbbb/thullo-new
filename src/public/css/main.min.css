@@ -546,8 +546,28 @@ Ensure the default browser behavior of the `hidden` attribute.
   grid-column: span 3 / span 3;
 }
 
+.-m-4 {
+  margin: -1rem;
+}
+
 .-m-1 {
   margin: -0.25rem;
+}
+
+.m-1 {
+  margin: 0.25rem;
+}
+
+.-m-5 {
+  margin: -1.25rem;
+}
+
+.-m-3 {
+  margin: -0.75rem;
+}
+
+.-m-\[14px\] {
+  margin: -14px;
 }
 
 .mx-auto {
@@ -751,6 +771,16 @@ Ensure the default browser behavior of the `hidden` attribute.
   flex-basis: 16rem;
 }
 
+.translate-x-0 {
+  --tw-translate-x: 0px;
+  transform: var(--tw-transform);
+}
+
+.translate-y-0 {
+  --tw-translate-y: 0px;
+  transform: var(--tw-transform);
+}
+
 .translate-y-2 {
   --tw-translate-y: 0.5rem;
   transform: var(--tw-transform);
@@ -897,6 +927,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .border-2 {
   border-width: 2px;
+}
+
+.border {
+  border-width: 1px;
 }
 
 .border-dashed {
@@ -1505,6 +1539,124 @@ details summary::marker {
   from {
     transform: translateY(5vh)
   }
+}
+
+.before\:absolute::before {
+  content: var(--tw-content);
+  position: absolute;
+}
+
+.before\:left-0::before {
+  content: var(--tw-content);
+  left: 0px;
+}
+
+.before\:left-1\/2::before {
+  content: var(--tw-content);
+  left: 50%;
+}
+
+.before\:top-1\/2::before {
+  content: var(--tw-content);
+  top: 50%;
+}
+
+.before\:-m-4::before {
+  content: var(--tw-content);
+  margin: -1rem;
+}
+
+.before\:-m-2::before {
+  content: var(--tw-content);
+  margin: -0.5rem;
+}
+
+.before\:-m-3::before {
+  content: var(--tw-content);
+  margin: -0.75rem;
+}
+
+.before\:-m-0::before {
+  content: var(--tw-content);
+  margin: -0px;
+}
+
+.before\:-m-5::before {
+  content: var(--tw-content);
+  margin: -1.25rem;
+}
+
+.before\:-m-\[14px\]::before {
+  content: var(--tw-content);
+  margin: -14px;
+}
+
+.before\:block::before {
+  content: var(--tw-content);
+  display: block;
+}
+
+.before\:h-full::before {
+  content: var(--tw-content);
+  height: 100%;
+}
+
+.before\:w-full::before {
+  content: var(--tw-content);
+  width: 100%;
+}
+
+.before\:-translate-y-1\/2::before {
+  content: var(--tw-content);
+  --tw-translate-y: -50%;
+  transform: var(--tw-transform);
+}
+
+.before\:-translate-x-1\/2::before {
+  content: var(--tw-content);
+  --tw-translate-x: -50%;
+  transform: var(--tw-transform);
+}
+
+.before\:rounded-lg::before {
+  content: var(--tw-content);
+  border-radius: 0.5rem;
+}
+
+.before\:border-2::before {
+  content: var(--tw-content);
+  border-width: 2px;
+}
+
+.before\:border-4::before {
+  content: var(--tw-content);
+  border-width: 4px;
+}
+
+.before\:border-dashed::before {
+  content: var(--tw-content);
+  border-style: dashed;
+}
+
+.before\:border-brand-500::before {
+  content: var(--tw-content);
+  --tw-border-opacity: 1;
+  border-color: rgb(47 128 237 / var(--tw-border-opacity));
+}
+
+.before\:p-4::before {
+  content: var(--tw-content);
+  padding: 1rem;
+}
+
+.before\:p-3::before {
+  content: var(--tw-content);
+  padding: 0.75rem;
+}
+
+.before\:p-2::before {
+  content: var(--tw-content);
+  padding: 0.5rem;
 }
 
 .first-of-type\:mt-3:first-of-type {

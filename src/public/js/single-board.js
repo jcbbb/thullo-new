@@ -16,9 +16,42 @@ listItemBtns.forEach((btn) => {
   });
 });
 
-const lists = selectAll("list-card");
+const listCards = selectAll("list-card");
+const listContainers = selectAll("list-container");
 
-let draggingEl = null;
+listCards.forEach((listCard) => {
+  listCard.addEventListener("dragstart", onDragStart);
+  listCard.addEventListener("dragend", onDragEnd);
+});
+
+listContainers.forEach((container) => {
+  container.addEventListener("dragover", onDragOver);
+  container.addEventListener("dragenter", onDragEnter);
+});
+
+function onDragEnter(e) {
+  const dragging = document.querySelector("[data-dragging=true]");
+  const container = e.currentTarget;
+  if (dragging.parentElement === container) return;
+  dragging.parentElement.append(e.target);
+  container.append(dragging);
+}
+
+function onDragOver(e) {
+  e.stopPropagation();
+  e.preventDefault();
+}
+
+function onDragStart(e) {
+  const element = e.target;
+  element.setAttribute("data-dragging", true);
+  // element.parentElement.classList.add("border-2", "border-dashed", "border-brand-500");
+}
+
+function onDragEnd(e) {
+  const element = e.target;
+  element.removeAttribute("data-dragging");
+}
 
 // Array.from(lists).forEach((list) => {
 //   list.addEventListener("dragstart", onDragStart, false);

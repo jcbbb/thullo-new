@@ -1,8 +1,9 @@
-<div class="w-full flex-shrink-0 basis-64 rounded-lg">
+<div class="w-full flex-shrink-0 basis-64 rounded-lg js-list-container">
   <li
-    class="block rounded-lg js-list-card bg-slate-50"
+    class="block rounded-lg js-list-card bg-slate-50 translate-x-0 p-4 -m-4 translate-y-0"
     draggable="true"
     data-list_id="<%= it.list.id %>"
+    data-order="<%= it.list.order %>"
   >
     <div class="flex justify-between mb-4">
       <span> <%= it.list.title %> </span>

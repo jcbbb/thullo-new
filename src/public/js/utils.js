@@ -70,3 +70,11 @@ export async function option(promise) {
 export async function redirect(path) {
   window.location.href = path;
 }
+
+export function disableForm(form) {
+  const elements = Array.from(form.elements);
+  elements.forEach((element) => element.setAttribute("disabled", true));
+  return function enableForm() {
+    elements.forEach((element) => element.removeAttribute("disabled"));
+  };
+}

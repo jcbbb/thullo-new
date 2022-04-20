@@ -51,8 +51,8 @@
 					<div class="flex space-x-2 items-center">
 						<input type="hidden" name="board_id" value="<%= it.board.id %>">
 						<input type="hidden" name="list_item_id" value="<%= it.item.id %>">
-						<input type="file" name="attachments" class="file-input js-disabled peer js-attachment-input" id="list-item-cover" multiple>
-						<label for="list-item-cover" class="file-input-label !px-6 text-sm">
+						<input type="file" name="attachments" class="file-input js-disabled peer js-attachment-input" id="list-item-cover-<%= it.item.id %>" multiple>
+						<label for="list-item-cover-<%= it.item.id %>" class="file-input-label !px-6 text-sm">
 							Add
 						</label>
 						<noscript>

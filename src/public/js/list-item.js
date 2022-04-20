@@ -1,21 +1,25 @@
-import { selectOne, selectAll, option, createNode, selectClosest } from "./utils.js";
+import { selectOne, selectAll, option, createNode, selectClosest, disableForm } from "./utils.js";
 import { deleteOne } from "./api/attachment.js";
 import { toast } from "./toast.js";
 
-const attachmentInput = selectOne("attachment-input");
+const attachmentInputs = selectAll("attachment-input");
 const attachmentDeleteForms = selectAll("attachment-delete-form");
-const attachments = selectOne("attachment-list");
 
 const Decoder = new TextDecoder();
 
-function htmlToNodes(html) {
+function htmlToNode(html) {
   const template = createNode("template");
   template.innerHTML = html.trim();
-  return Array.from(template.content.children);
+  return template.content.firstChild;
 }
 
-attachmentInput.addEventListener("change", async (e) => {
-  const attachmentForm = e.target.closest(".js-attachment-form");
+attachmentInputs?.forEach((input) => {
+  input.addEventListener("change", onAttachmentChange);
+});
+
+async function onAttachmentChange(e) {
+  const attachmentForm = selectClosest("attachment-form", e.target);
+  const attachments = attachmentForm.nextElementSibling;
   const response = await fetch("/attachments", {
     method: "post",
     body: new FormData(attachmentForm),
@@ -28,25 +32,22 @@ attachmentInput.addEventListener("change", async (e) => {
     const { done, value } = await reader.read();
     if (done) break;
     const html = Decoder.decode(value);
-    const nodes = htmlToNodes(html);
-    nodes.forEach((node) => {
-      const deleteForm = selectOne("attachment-delete-form", node);
-      deleteForm.addEventListener("submit", onAttachmentDelete);
-    });
-    attachments.append(...nodes);
+    const node = htmlToNode(html);
+    const deleteForm = selectOne("attachment-delete-form", node);
+    deleteForm.addEventListener("submit", onAttachmentDelete);
+    attachments.append(node);
   }
-});
+}
 
 async function onAttachmentDelete(e) {
   e.preventDefault();
   const attachment = selectClosest("attachment-item", e.target);
-  const fieldset = selectOne("attachment-fieldset", e.target);
   const data = new FormData(e.target);
-  fieldset.setAttribute("disabled", true);
+  const enableForm = disableForm(e.target);
   const [result, err] = await option(deleteOne(data.get("attachment_id")));
   if (err) {
-    fieldset.removeAttribute("disabled");
     toast(err.message, "err");
+    enableForm();
     return;
   }
 
