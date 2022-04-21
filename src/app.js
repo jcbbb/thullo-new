@@ -7,8 +7,10 @@ import path from "path";
 import config from "./config/index.js";
 import formBody from "fastify-formbody";
 import multipart from "fastify-multipart";
+import fastifyAccepts from "fastify-accepts";
 import { routes } from "./routes/index.js";
 import { isXhr } from "./plugins/is-xhr.js";
+import { negotiate } from "./plugins/negotiate.js";
 import { DomainError, InternalError } from "./utils/errors.js";
 import os from "os";
 import * as eta from "eta";
@@ -16,7 +18,9 @@ import * as eta from "eta";
 process.env.UV_THREADPOOL_SIZE = os.cpus().length;
 
 export async function start() {
-  const app = fastify({ logger: true });
+  const app = fastify({
+    logger: true,
+  });
   try {
     app.register(isXhr);
     app.register(formBody);
@@ -57,6 +61,7 @@ export async function start() {
       prefix: "/node_modules",
       decorateReply: false,
     });
+
     app.setErrorHandler((err, req, res) => {
       console.log(err);
       if (err instanceof DomainError) {
@@ -66,6 +71,8 @@ export async function start() {
       res.code(internal.status_code).send(internal);
     });
 
+    app.register(fastifyAccepts);
+    app.register(negotiate);
     app.register(routes);
 
     await app.listen(config.port);

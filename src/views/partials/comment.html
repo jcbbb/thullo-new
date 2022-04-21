@@ -1,4 +1,4 @@
-<li class="space-y-2">
+<li class="space-y-2 js-comment-item">
   <div class="flex items-start justify-between">
     <div class="flex space-x-4">
       <img
@@ -11,8 +11,9 @@
         <span class="text-gray-500 text-sm"><%= it.formatter.format(it.comment.created_at) %></span>
       </div>
     </div>
-    <form action="/comments/<%= it.comment.id %>" method="post">
-      <input type="hidden" name="list_item_id" value="<%= it.item.id %>" />
+    <form action="/comments/<%= it.comment.id %>" method="post" class="js-comment-delete-form">
+      <input type="hidden" name="list_item_id" value="<%= it.comment.list_item_id %>" />
+      <input type="hidden" name="comment_id" value="<%= it.comment.id %>" />
       <button class="btn btn-danger-text" name="_action" value="delete">Delete</button>
     </form>
   </div>
@@ -24,8 +25,8 @@
     >
 <%= it.comment.content %></textarea
     >
-    <input type="hidden" name="list_item_id" value="<%= it.item.id %>" />
-    <input type="hidden" name="board_id" value="<%= it.board.id %>" />
+    <input type="hidden" name="list_item_id" value="<%= it.comment.list_item_id %>" />
+    <input type="hidden" name="board_id" value="<%= it.comment.board_id %>" />
     <noscript>
       <button class="btn btn-primary mt-2">Save</button>
     </noscript>

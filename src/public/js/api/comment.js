@@ -1,7 +1,8 @@
 import { request } from "../utils.js";
 
-export function attachment(prefix) {
+export function comment(prefix) {
   return {
+    createOne: (comment) => request(prefix, { body: comment, headers: { Accept: "text/html" } }),
     deleteOne: (id) =>
       request(`${prefix}/${id}`, {
         method: "delete",

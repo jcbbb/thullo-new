@@ -1,10 +1,29 @@
 import * as CommentService from "../services/comment.service.js";
+import { formatter } from "../utils/index.js";
 
 export async function createOne(req, res) {
   const user = req.user;
   const { content, board_id, list_item_id } = req.body;
-  await CommentService.createOne({ content, board_id, list_item_id, user_id: user.id });
-  res.redirect(`/list-items/${list_item_id}`);
+  const comment = await CommentService.createOne({
+    content,
+    board_id,
+    list_item_id,
+    user_id: user.id,
+  });
+
+  const accept = req.accepts();
+
+  switch (accept.type(["json", "html"])) {
+    case "html": {
+      if (req.xhr) {
+        return res.render("partials/comment.html", { comment, formatter });
+      }
+      res.redirect(`/list-items/${list_item_id}`);
+    }
+    case "json": {
+      res.send(comment);
+    }
+  }
 }
 
 export async function updateOne(req, res) {
@@ -23,4 +42,8 @@ export async function updateOne(req, res) {
   res.redirect(`/list-items/${list_item_id}`);
 }
 
-export async function deleteOne(req, res) {}
+export async function deleteOne(req, res) {
+  const id = req.params.comment_id;
+  await CommentService.deleteOne(id);
+  res.send({ id });
+}

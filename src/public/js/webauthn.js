@@ -1,15 +1,7 @@
 import { selectOne, option, redirect } from "./utils.js";
-import * as base64url from "./base64-url.js";
 import { toast } from "./toast.js";
-import {
-  requestCredential,
-  requestAssertion,
-  createCredential,
-  checkExisting,
-  login,
-  verifyAssertion,
-  signup,
-} from "./api/auth.js";
+import * as base64url from "./base64-url.js";
+import api from "./api/index.js";
 
 const loginForm = selectOne("login-form");
 const signupForm = selectOne("signup-form");
@@ -27,7 +19,7 @@ passwordlessDialog?.addEventListener("close", async (e) => {
   const user = Object.fromEntries(new FormData(signupForm));
 
   if (shouldEnable) {
-    const credentialRequest = await requestCredential(user);
+    const credentialRequest = await api.auth.requestCredential(user);
     const credential = await window.navigator.credentials.create({
       publicKey: formatCredentialRequest(credentialRequest),
     });
@@ -40,7 +32,7 @@ passwordlessDialog?.addEventListener("close", async (e) => {
 
     redirect(params.get("return_to") || "/");
   } else {
-    const [result, err] = await option(signup(user));
+    const [result, err] = await option(api.auth.signup(user));
     if (err) {
       toast(err.message, "err");
       return;
@@ -56,7 +48,7 @@ async function registerCredential(credential, user) {
     base64url.encode(credential.response.clientDataJSON),
   ]);
 
-  return await createCredential({
+  return await api.auth.createCredential({
     id: credential.id,
     rawId,
     type: credential.type,
@@ -88,10 +80,10 @@ loginForm?.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const user = Object.fromEntries(new FormData(e.target));
-  const [existing, existingErr] = await option(checkExisting(user.email));
+  const [existing, existingErr] = await option(api.auth.checkExisting(user.email));
 
   if (!existing) {
-    const [result, err] = await option(login(user));
+    const [result, err] = await option(api.auth.login(user));
     if (err) {
       toast(err.message, "err");
       return;
@@ -100,7 +92,7 @@ loginForm?.addEventListener("submit", async (e) => {
     return;
   }
 
-  const [assertionRequest, assertionRequestErr] = await option(requestAssertion(user));
+  const [assertionRequest, assertionRequestErr] = await option(api.auth.requestAssertion(user));
 
   if (assertionRequestErr) {
     toast(assertionRequestErr.message, "err");
@@ -130,7 +122,7 @@ async function assert(assertion, user) {
     base64url.encode(assertion.response.userHandle),
   ]);
 
-  return await verifyAssertion({
+  return await api.auth.verifyAssertion({
     id: assertion.id,
     rawId,
     response: {

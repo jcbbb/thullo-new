@@ -1,9 +1,11 @@
 import { selectOne, selectAll, option, createNode, selectClosest, disableForm } from "./utils.js";
-import { deleteOne } from "./api/attachment.js";
 import { toast } from "./toast.js";
+import api from "./api/index.js";
 
 const attachmentInputs = selectAll("attachment-input");
 const attachmentDeleteForms = selectAll("attachment-delete-form");
+const commentForms = selectAll("comment-form");
+const commentDeleteForms = selectAll("comment-delete-form");
 
 const Decoder = new TextDecoder();
 
@@ -44,7 +46,7 @@ async function onAttachmentDelete(e) {
   const attachment = selectClosest("attachment-item", e.target);
   const data = new FormData(e.target);
   const enableForm = disableForm(e.target);
-  const [result, err] = await option(deleteOne(data.get("attachment_id")));
+  const [result, err] = await option(api.attachment.deleteOne(data.get("attachment_id")));
   if (err) {
     toast(err.message, "err");
     enableForm();
@@ -56,4 +58,45 @@ async function onAttachmentDelete(e) {
 
 attachmentDeleteForms?.forEach((form) => {
   form.addEventListener("submit", onAttachmentDelete);
+});
+
+async function onComment(e) {
+  e.preventDefault();
+  const commentForm = e.target;
+  const comment = Object.fromEntries(new FormData(commentForm));
+  const [result, err] = await option(api.comment.createOne(comment));
+  if (err) {
+    toast(err.message, "err");
+    return;
+  }
+  const node = htmlToNode(result);
+  const deleteForm = selectOne("comment-delete-form", node);
+  const comments = commentForm.nextElementSibling;
+  deleteForm.addEventListener("submit", onCommentDelete);
+  comments.append(node);
+  commentForm.reset();
+}
+
+async function onCommentDelete(e) {
+  e.preventDefault();
+  const deleteForm = e.target;
+  const comment = selectClosest("comment-item", deleteForm);
+  const data = new FormData(deleteForm);
+  const enableForm = disableForm(deleteForm);
+  const [result, err] = await option(api.comment.deleteOne(data.get("comment_id")));
+  if (err) {
+    toast(err.message, "err");
+    enableForm();
+    return;
+  }
+
+  comment.remove();
+}
+
+commentForms?.forEach((form) => {
+  form.addEventListener("submit", onComment);
+});
+
+commentDeleteForms?.forEach((form) => {
+  form.addEventListener("submit", onCommentDelete);
 });

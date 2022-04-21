@@ -1,29 +1,19 @@
 import { request } from "../utils.js";
-
-export function requestCredential(body) {
-  return request("/auth/requests?type=webauthn.create", { body });
-}
-
-export function requestAssertion(body) {
-  return request("/auth/requests?type=webauthn.get", { body });
-}
-
-export function createCredential(body) {
-  return request(`/auth/credentials`, { body });
-}
-
-export function verifyAssertion(body) {
-  return request(`/auth/assertions`, { body });
-}
-
-export function checkExisting(email) {
-  return request(`/auth/credentials/${email}`, { method: "head", json: false });
-}
-
-export function login(user) {
-  return request(`/auth/login`, { body: user });
-}
-
-export function signup(user) {
-  return request(`/auth/signup`, { body: user });
+export function auth(prefix) {
+  return {
+    signup: () => request(`${prefix}/signup`, { body: user }),
+    login: () => request(`${prefix}/login`, { body: user }),
+    checkExisting: (email) => {
+      return request(`${prefix}/credentials/${email}`, {
+        method: "head",
+        headers: {
+          Accept: undefined,
+        },
+      });
+    },
+    verifyAssertion: (body) => request(`${prefix}/assertions`, { body }),
+    createCredential: (body) => request(`${prefix}/credentials`, { body }),
+    requestAssertion: (body) => request(`${prefix}/requests?type=webauthn.get`, { body }),
+    requestCredential: (body) => request(`${prefix}/requests?type=webauthn.create`, { body }),
+  };
 }

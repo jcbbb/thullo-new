@@ -42,6 +42,7 @@ export async function request(
     ...customConfig,
     headers: {
       "Content-Type": "application/json",
+      "X-Requested-With": "XMLHttpRequest",
       Accept: "application/json",
       ...customConfig.headers,
     },
@@ -49,7 +50,21 @@ export async function request(
 
   return window.fetch(url, config).then(async (response) => {
     clearTimeout(timerId);
-    const data = json ? await response.json().catch(() => {}) : response;
+    const accept = config.headers["Accept"];
+    let data = response;
+
+    switch (accept) {
+      case "application/json": {
+        data = await response.json().catch(() => {});
+        break;
+      }
+      case "text/html": {
+        data = await response.text();
+        break;
+      }
+      default:
+    }
+
     if (!response.ok) {
       return Promise.reject(data);
     }

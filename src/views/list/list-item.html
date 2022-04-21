@@ -67,19 +67,17 @@
 				</ul>
 			</div>
 			<div class="space-y-8">
-				<form action="/comments" method="post">
+				<form action="/comments" method="post" class="js-comment-form">
 					<input type="hidden" name="list_item_id" value="<%= it.item.id %>">
 					<input type="hidden" name="board_id" value="<%= it.board.id %>">
 					<textarea name="content" class="input text-input" placeholder="Add comment" required></textarea>
 					<button class="btn btn-primary mt-2">Comment</button>
 				</form>
-				<% if(it.item.comments.length) {%> 
-					<ul class="space-y-4">
-						<% it.item.comments.forEach(function (comment) { %>
-							<%~ includeFile('../partials/comment.html', Object.assign(it, { comment })) %>	
-						<% }) %>
-					</ul>
-				<% } %>
+				<ul class="space-y-4">
+					<% it.item.comments.forEach(function (comment) { %>
+						<%~ includeFile('../partials/comment.html', Object.assign(it, { comment })) %>	
+					<% }) %>
+				</ul>
 			</div>
 		</div>
 		<div class="col-span-3">
@@ -130,3 +128,7 @@
 		</div>
 	</div>
 </div>
+
+<% if(it.method !== "dialog") { %>
+	<script defer async type="module" src="/public/js/list-item.js"></script>
+<% } %>
