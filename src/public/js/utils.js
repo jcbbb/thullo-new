@@ -106,3 +106,15 @@ export function addListener(nodes, type, listener) {
     .filter(Boolean)
     .forEach((node) => node.addEventListener(type, listener));
 }
+
+export function addListeners(nodeOrNodes, obj) {
+  const types = Object.keys(obj);
+  if (nodeOrNodes instanceof NodeList) {
+    nodeOrNodes.forEach((node) => types.forEach((type) => node.addEventListener(type, obj[type])));
+    return;
+  }
+
+  if (nodeOrNodes instanceof Node) {
+    types.forEach((type) => nodeOrNodes.addEventListener(type, obj[type]));
+  }
+}

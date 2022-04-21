@@ -4,7 +4,11 @@
   <li class="flex-shrink-0 w-full basis-64">
     <form action="/lists" method="post">
       <input type="hidden" name="board_id" value="<%= it.board.id %>" />
-      <input type="hidden" name="order" value="0" />
+      <input
+        type="hidden"
+        name="order"
+        value="<%= it.board.lists[it.board.lists.length - 1]?.order + 1 || 0 %>"
+      />
       <input
         type="text"
         name="title"

@@ -5,7 +5,7 @@ import {
   htmlToNode,
   selectClosest,
   disableForm,
-  addListener,
+  addListeners,
 } from "./utils.js";
 import { toast } from "./toast.js";
 import api from "./api/index.js";
@@ -34,7 +34,7 @@ async function onAttachmentChange(e) {
     const html = Decoder.decode(value);
     const node = htmlToNode(html);
     const deleteForm = selectOne("attachment-delete-form", node);
-    deleteForm.addEventListener("submit", onAttachmentDelete);
+    addListeners(deleteForm, { submit: onAttachmentDelete });
     attachments.append(node);
   }
 }
@@ -54,10 +54,6 @@ async function onAttachmentDelete(e) {
   attachment.remove();
 }
 
-attachmentDeleteForms?.forEach((form) => {
-  form.addEventListener("submit", onAttachmentDelete);
-});
-
 async function onComment(e) {
   e.preventDefault();
   const commentForm = e.target;
@@ -70,7 +66,7 @@ async function onComment(e) {
   const node = htmlToNode(result);
   const deleteForm = selectOne("comment-delete-form", node);
   const comments = commentForm.nextElementSibling;
-  deleteForm.addEventListener("submit", onCommentDelete);
+  addListeners(deleteForm, { submit: onCommentDelete });
   comments.append(node);
   commentForm.reset();
 }
@@ -91,6 +87,7 @@ async function onCommentDelete(e) {
   comment.remove();
 }
 
-addListener(commentForms, "submit", onComment);
-addListener(commentDeleteForms, "submit", onCommentDelete);
-addListener(attachmentInputs, "change", onAttachmentChange);
+addListeners(attachmentDeleteForms, { submit: onAttachmentDelete });
+addListeners(commentForms, { submit: onComment });
+addListeners(commentDeleteForms, { submit: onCommentDelete });
+addListeners(attachmentInputs, { change: onAttachmentChange });
