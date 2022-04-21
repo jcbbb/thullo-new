@@ -1,4 +1,12 @@
-import { selectOne, selectAll, option, createNode, selectClosest, disableForm } from "./utils.js";
+import {
+  selectOne,
+  selectAll,
+  option,
+  htmlToNode,
+  selectClosest,
+  disableForm,
+  addListener,
+} from "./utils.js";
 import { toast } from "./toast.js";
 import api from "./api/index.js";
 
@@ -8,16 +16,6 @@ const commentForms = selectAll("comment-form");
 const commentDeleteForms = selectAll("comment-delete-form");
 
 const Decoder = new TextDecoder();
-
-function htmlToNode(html) {
-  const template = createNode("template");
-  template.innerHTML = html.trim();
-  return template.content.firstChild;
-}
-
-attachmentInputs?.forEach((input) => {
-  input.addEventListener("change", onAttachmentChange);
-});
 
 async function onAttachmentChange(e) {
   const attachmentForm = selectClosest("attachment-form", e.target);
@@ -93,10 +91,6 @@ async function onCommentDelete(e) {
   comment.remove();
 }
 
-commentForms?.forEach((form) => {
-  form.addEventListener("submit", onComment);
-});
-
-commentDeleteForms?.forEach((form) => {
-  form.addEventListener("submit", onCommentDelete);
-});
+addListener(commentForms, "submit", onComment);
+addListener(commentDeleteForms, "submit", onCommentDelete);
+addListener(attachmentInputs, "change", onAttachmentChange);

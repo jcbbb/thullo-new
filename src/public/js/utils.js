@@ -93,3 +93,16 @@ export function disableForm(form) {
     elements.forEach((element) => element.removeAttribute("disabled"));
   };
 }
+
+export function htmlToNode(html) {
+  const template = createNode("template");
+  template.innerHTML = html.trim();
+  return template.content.firstChild;
+}
+
+export function addListener(nodes, type, listener) {
+  return Array.from(nodes)
+    .flat()
+    .filter(Boolean)
+    .forEach((node) => node.addEventListener(type, listener));
+}
