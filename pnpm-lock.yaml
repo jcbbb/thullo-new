@@ -14,6 +14,7 @@ specifiers:
   fastify: ^3.27.4
   fastify-accepts: ^2.2.0
   fastify-cookie: ^5.6.0
+  fastify-etag: ^2.1.0
   fastify-flash: ^3.0.0
   fastify-formbody: ^5.2.0
   fastify-multipart: ^5.3.1
@@ -44,6 +45,7 @@ dependencies:
   fastify: 3.27.4
   fastify-accepts: 2.2.0
   fastify-cookie: 5.6.0
+  fastify-etag: 2.1.0
   fastify-flash: 3.0.0
   fastify-formbody: 5.2.0
   fastify-multipart: 5.3.1
@@ -1999,6 +2001,12 @@ packages:
 
   /fastify-error/0.3.1:
     resolution: {integrity: sha512-oCfpcsDndgnDVgiI7bwFKAun2dO+4h84vBlkWsWnz/OUK9Reff5UFoFl241xTiLeHWX/vU9zkDVXqYUxjOwHcQ==}
+    dev: false
+
+  /fastify-etag/2.1.0:
+    resolution: {integrity: sha512-guGp8u2GZDgDyenx80k8qrUNo22gP1qCBxuwuK+fxjdfDSlgh+ENJCm/mfO/YoB9eWKaqK5DlMSOOlDA78013w==}
+    dependencies:
+      fastify-plugin: 3.0.1
     dev: false
 
   /fastify-flash/3.0.0:

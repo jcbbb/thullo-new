@@ -2,6 +2,7 @@ import fastify from "fastify";
 import fastifyStatic from "fastify-static";
 import fastifySession from "fastify-secure-session";
 import fastifyFlash from "fastify-flash";
+import fastifyEtag from "fastify-etag";
 import view from "point-of-view";
 import path from "path";
 import config from "./config/index.js";
@@ -75,6 +76,7 @@ export async function start() {
     });
 
     app.register(fastifyAccepts);
+    app.register(fastifyEtag);
     app.register(negotiate);
     app.register(routes);
 
