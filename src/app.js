@@ -63,12 +63,15 @@ export async function start() {
     });
 
     app.setErrorHandler((err, req, res) => {
-      console.log(err);
       if (err instanceof DomainError) {
         return res.code(err.status_code).send(err);
       }
       const internal = new InternalError();
       res.code(internal.status_code).send(internal);
+    });
+
+    app.setNotFoundHandler((req, res) => {
+      res.render("404.html");
     });
 
     app.register(fastifyAccepts);
