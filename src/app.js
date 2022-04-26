@@ -71,7 +71,7 @@ export async function start() {
     });
 
     app.setNotFoundHandler((req, res) => {
-      res.render("404.html");
+      res.code(404).render("404.html");
     });
 
     app.register(fastifyAccepts);
