@@ -1,5 +1,7 @@
 import { request } from "../utils.js";
 
-export function updateListItem(id, update) {
-  return request(`/list-items/${id}`, { body: update });
+export function listItem(prefix) {
+  return {
+    updateOne: (id, update) => request(`${prefix}/${id}`, { body: update, method: "patch" }),
+  };
 }

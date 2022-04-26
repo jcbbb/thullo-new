@@ -70,7 +70,7 @@ export function up(knex) {
         .inTable("boards")
         .onDelete("CASCADE");
       table.string("title").notNullable();
-      table.integer("order").notNullable();
+      table.integer("pos").notNullable();
       table.timestamps(false, true);
     })
     .createTable("list_items", (table) => {
@@ -83,7 +83,7 @@ export function up(knex) {
         .inTable("lists")
         .onDelete("CASCADE");
       table.uuid("board_id").index().notNullable().references("id").inTable("boards");
-      table.integer("order").notNullable();
+      table.integer("pos").notNullable();
       table.string("title").notNullable();
       table.text("description");
       table.timestamps(false, true);

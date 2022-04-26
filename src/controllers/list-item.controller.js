@@ -8,8 +8,8 @@ import { normalizeBody, formatter } from "../utils/index.js";
 export async function createOne(req, res) {
   const board_id = req.params.board_id || req.body.board_id;
   const list_id = req.params.list_id || req.body.list_id;
-  const { title, order } = req.body;
-  await ListItemService.createOne({ title, order, list_id, board_id });
+  const { title, pos } = req.body;
+  await ListItemService.createOne({ title, pos, list_id, board_id });
   res.redirect(`/boards/${board_id}`);
 }
 

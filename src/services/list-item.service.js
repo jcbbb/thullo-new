@@ -1,7 +1,7 @@
 import { ListItem } from "../models/list-item.model.js";
 
-export async function createOne({ title, order, list_id, board_id }) {
-  return await ListItem.query().insert({ title, order, list_id, board_id });
+export async function createOne({ title, pos, list_id, board_id }) {
+  return await ListItem.query().insert({ title, pos, list_id, board_id });
 }
 
 export async function addMember({ user_id, list_item_id }) {

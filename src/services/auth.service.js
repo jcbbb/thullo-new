@@ -53,7 +53,7 @@ export async function signupWithCredential({
   user_agent,
   password,
 }) {
-  const existing = UserService.getByEmail(email);
+  const existing = await UserService.getByEmail(email);
   if (existing) throw new ConflictError(`User with email ${email} already exists.`);
   const trx = await User.startTransaction();
   try {

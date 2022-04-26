@@ -16,6 +16,7 @@ class model extends Model {
           from: "boards.id",
           to: "lists.board_id",
         },
+        filter: (builder) => builder.orderBy("pos"),
       },
       members: {
         relation: Model.ManyToManyRelation,
