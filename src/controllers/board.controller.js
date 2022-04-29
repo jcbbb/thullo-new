@@ -1,6 +1,6 @@
 import * as BoardService from "../services/board.service.js";
 import { normalizeBody } from "../utils/index.js";
-import { formatter } from "../utils/index.js";
+import { formatter, initials } from "../utils/index.js";
 import * as S3Service from "../services/s3.service.js";
 
 export async function getNew(req, res) {
@@ -41,7 +41,7 @@ export async function getOne(req, res) {
     "members",
     "creator",
   ]);
-  res.render("board/single-board", { board, user, formatter });
+  res.render("board/single-board", { board, user, formatter, initials });
 }
 
 export async function updateOne(req, res) {

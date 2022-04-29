@@ -685,6 +685,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   height: 2.5rem;
 }
 
+.h-11 {
+  height: 2.75rem;
+}
+
 .min-h-header {
   min-height: calc(100vh - 88px);
 }
@@ -723,6 +727,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .w-10 {
   width: 2.5rem;
+}
+
+.w-11 {
+  width: 2.75rem;
 }
 
 .max-w-xl {

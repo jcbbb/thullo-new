@@ -9,6 +9,20 @@
     </form>
     <% if (it.board.members.length) {%>
     <ul class="flex"></ul>
+      <% it.board.members.forEach(function (member) {%>
+      <li
+        title="<%= member.name %>"
+        class="bg-gray-400 text-white rounded-xl overflow-hidden font-medium relative w-11 h-11 flex items-center justify-center text-lg"
+      >
+        <% if (member.profile_photo_url) {%>
+        <img
+          src="https://i.pravatar.cc/300"
+          alt="<%= member.name %>"
+          class="flex-shring-0 max-w-full object-cover absolute"
+        />
+        <% } %> <%= it.initials(member.name) %>
+      </li>
+      <% }) %>
     <% } %>
     <noscript>
         <style>
