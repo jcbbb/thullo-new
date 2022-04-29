@@ -50,7 +50,6 @@ function createSuggestion(user) {
 }
 
 async function onInput(e) {
-  console.log("here");
   const q = e.target.value;
   const users = await api.user.getMany({ q });
   suggestions.innerHTML = "";
@@ -73,7 +72,6 @@ async function onSubmit(e) {
 
   toast("Successfully sent invitations", "success");
 }
-console.log(inviteInput);
 
 addListeners(inviteInput, {
   input: debounce(onInput),

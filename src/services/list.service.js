@@ -35,7 +35,6 @@ export async function updateOne({ board_id, id, update }) {
 
     await trx.commit();
   } catch (err) {
-    console.log(err);
     trx.rollback();
     throw new InternalError();
   }

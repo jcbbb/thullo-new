@@ -1,4 +1,5 @@
 import * as BoardService from "../services/board.service.js";
+import { initials } from "../utils/index.js";
 
 export async function getIndex(req, res) {
   const user = req.user;
@@ -8,5 +9,6 @@ export async function getIndex(req, res) {
     user,
     xhr: req.xhr,
     boards,
+    initials,
   });
 }

@@ -6,12 +6,17 @@
   <% if (it.members?.length) {%>
   <ul class="mt-5 flex space-x-4">
     <% it.members.forEach(function (member) {%>
-    <li title="<%= member.name %>">
+    <li
+      title="<%= member.name %>"
+      class="bg-gray-400 text-white rounded-xl overflow-hidden font-medium relative w-12 h-12 flex items-center justify-center text-lg"
+    >
+      <% if (member.profile_photo_url) {%>
       <img
         src="https://i.pravatar.cc/300"
         alt="<%= member.name %>"
-        class="flex-shring-0 w-12 h-12 object-cover rounded-xl"
+        class="flex-shring-0 max-w-full object-cover absolute"
       />
+      <% } %> <%= it.initials(member.name) %>
     </li>
     <% }) %>
   </ul>

@@ -44,8 +44,8 @@
     <ul
       class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-10 js-boards-list"
     >
-      <% it.boards.forEach(function(board){ %> <%~ includeFile('./board-card.html', board) %> <% })
-      %>
+      <% it.boards.forEach(function(board){ %> <%~ includeFile('./board-card.html',
+      Object.assign(board, { initials: it.initials })) %> <% }) %>
     </ul>
   </div>
 </div>

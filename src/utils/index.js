@@ -68,3 +68,8 @@ export function formatRelations(relations = []) {
   const newRelations = str ? `[${str}]` : str;
   return newRelations;
 }
+
+export function initials(name) {
+  const parts = name.split(" ");
+  return `${parts[0][0]} ${parts[parts.length - 1][0]}`;
+}

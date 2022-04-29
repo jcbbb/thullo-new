@@ -759,6 +759,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   max-width: fit-content;
 }
 
+.max-w-full {
+  max-width: 100%;
+}
+
 .flex-shrink-0 {
   flex-shrink: 0;
 }
@@ -988,6 +992,46 @@ Ensure the default browser behavior of the `hidden` attribute.
   background-color: rgb(236 253 245 / var(--tw-bg-opacity));
 }
 
+.bg-gray-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(229 231 235 / var(--tw-bg-opacity));
+}
+
+.bg-gray-400 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(156 163 175 / var(--tw-bg-opacity));
+}
+
+.bg-gray-300 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(209 213 219 / var(--tw-bg-opacity));
+}
+
+.bg-neutral-400 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(163 163 163 / var(--tw-bg-opacity));
+}
+
+.bg-neutral-300 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(212 212 212 / var(--tw-bg-opacity));
+}
+
+.bg-brand-400 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(109 167 242 / var(--tw-bg-opacity));
+}
+
+.bg-brand-700 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(17 97 202 / var(--tw-bg-opacity));
+}
+
+.bg-brand-300 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(156 195 246 / var(--tw-bg-opacity));
+}
+
 .object-cover {
   -o-object-fit: cover;
      object-fit: cover;
@@ -1127,6 +1171,11 @@ Ensure the default browser behavior of the `hidden` attribute.
 .text-emerald-500 {
   --tw-text-opacity: 1;
   color: rgb(16 185 129 / var(--tw-text-opacity));
+}
+
+.text-white {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
 .opacity-0 {

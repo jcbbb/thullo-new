@@ -28,7 +28,7 @@ export class Board extends BaseModel {
         },
         to: "users.id",
       },
-      filter: (builder) => builder.select("id", "name", "verified").limit(3),
+      filter: (builder) => builder.select("id", "name", "verified", "profile_photo_url").limit(3),
     },
 
     creator: {
