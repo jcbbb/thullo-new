@@ -1,4 +1,3 @@
-import { Model } from "objection";
 import { Board, Credential, BaseModel } from "./index.js";
 import * as argon2 from "argon2";
 
@@ -9,7 +8,7 @@ export class User extends BaseModel {
 
   static relationMappings = () => ({
     credentials: {
-      relation: Model.HasManyRelation,
+      relation: BaseModel.HasManyRelation,
       modelClass: Credential,
       join: {
         from: "users.id",
@@ -17,7 +16,7 @@ export class User extends BaseModel {
       },
     },
     boards: {
-      relation: Model.ManyToManyRelation,
+      relation: BaseModel.ManyToManyRelation,
       modelClass: Board,
       join: {
         from: "users.id",
@@ -58,5 +57,3 @@ export class User extends BaseModel {
     return hash;
   }
 }
-
-// export const User = model.bindKnex(thullo);

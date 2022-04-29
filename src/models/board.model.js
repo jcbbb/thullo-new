@@ -1,4 +1,3 @@
-import { Model } from "objection";
 import { User, List, BaseModel, Invitation } from "./index.js";
 
 export class Board extends BaseModel {
@@ -8,7 +7,7 @@ export class Board extends BaseModel {
 
   static relationMappings = () => ({
     lists: {
-      relation: Model.HasManyRelation,
+      relation: BaseModel.HasManyRelation,
       modelClass: List,
       join: {
         from: "boards.id",
@@ -18,7 +17,7 @@ export class Board extends BaseModel {
     },
 
     members: {
-      relation: Model.ManyToManyRelation,
+      relation: BaseModel.ManyToManyRelation,
       modelClass: User,
       join: {
         from: "boards.id",
@@ -32,7 +31,7 @@ export class Board extends BaseModel {
     },
 
     creator: {
-      relation: Model.BelongsToOneRelation,
+      relation: BaseModel.BelongsToOneRelation,
       modelClass: User,
       join: {
         from: "boards.creator_id",
@@ -41,7 +40,7 @@ export class Board extends BaseModel {
     },
 
     invitations: {
-      relation: Model.HasManyRelation,
+      relation: BaseModel.HasManyRelation,
       modelClass: Invitation,
       join: {
         from: "boards.id",

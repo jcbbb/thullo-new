@@ -1,13 +1,13 @@
-import { Model } from "objection";
 import { User, Attachment, Comment, BaseModel } from "./index.js";
 
 export class ListItem extends BaseModel {
   static get tableName() {
     return "list_items";
   }
-  static relationMappings = {
+
+  static relationMappings = () => ({
     members: {
-      relation: Model.ManyToManyRelation,
+      relation: BaseModel.ManyToManyRelation,
       modelClass: User,
       join: {
         from: "list_items.id",
@@ -20,7 +20,7 @@ export class ListItem extends BaseModel {
       filter: (builder) => builder.select("id", "name", "verified"),
     },
     attachments: {
-      relation: Model.HasManyRelation,
+      relation: BaseModel.HasManyRelation,
       modelClass: Attachment,
       join: {
         from: "list_items.id",
@@ -28,12 +28,12 @@ export class ListItem extends BaseModel {
       },
     },
     comments: {
-      relation: Model.HasManyRelation,
+      relation: BaseModel.HasManyRelation,
       modelClass: Comment,
       join: {
         from: "list_items.id",
         to: "comments.list_item_id",
       },
     },
-  };
+  });
 }

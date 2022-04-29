@@ -661,8 +661,8 @@ Ensure the default browser behavior of the `hidden` attribute.
   height: 10rem;
 }
 
-.h-12 {
-  height: 3rem;
+.h-11 {
+  height: 2.75rem;
 }
 
 .h-full {
@@ -681,12 +681,12 @@ Ensure the default browser behavior of the `hidden` attribute.
   height: 6rem;
 }
 
-.h-10 {
-  height: 2.5rem;
+.h-12 {
+  height: 3rem;
 }
 
-.h-11 {
-  height: 2.75rem;
+.h-10 {
+  height: 2.5rem;
 }
 
 .min-h-header {
@@ -709,8 +709,8 @@ Ensure the default browser behavior of the `hidden` attribute.
   width: 100%;
 }
 
-.w-12 {
-  width: 3rem;
+.w-11 {
+  width: 2.75rem;
 }
 
 .w-40 {
@@ -725,12 +725,12 @@ Ensure the default browser behavior of the `hidden` attribute.
   width: 9rem;
 }
 
-.w-10 {
-  width: 2.5rem;
+.w-12 {
+  width: 3rem;
 }
 
-.w-11 {
-  width: 2.75rem;
+.w-10 {
+  width: 2.5rem;
 }
 
 .max-w-xl {
@@ -739,6 +739,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .max-w-sm {
   max-width: 24rem;
+}
+
+.max-w-full {
+  max-width: 100%;
 }
 
 .max-w-7xl {
@@ -765,10 +769,6 @@ Ensure the default browser behavior of the `hidden` attribute.
   max-width: -webkit-fit-content;
   max-width: -moz-fit-content;
   max-width: fit-content;
-}
-
-.max-w-full {
-  max-width: 100%;
 }
 
 .flex-shrink-0 {
@@ -970,6 +970,11 @@ Ensure the default browser behavior of the `hidden` attribute.
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
 
+.bg-gray-400 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(156 163 175 / var(--tw-bg-opacity));
+}
+
 .\!bg-white {
   --tw-bg-opacity: 1 !important;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity)) !important;
@@ -998,46 +1003,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 .bg-emerald-50 {
   --tw-bg-opacity: 1;
   background-color: rgb(236 253 245 / var(--tw-bg-opacity));
-}
-
-.bg-gray-200 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(229 231 235 / var(--tw-bg-opacity));
-}
-
-.bg-gray-400 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(156 163 175 / var(--tw-bg-opacity));
-}
-
-.bg-gray-300 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(209 213 219 / var(--tw-bg-opacity));
-}
-
-.bg-neutral-400 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(163 163 163 / var(--tw-bg-opacity));
-}
-
-.bg-neutral-300 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(212 212 212 / var(--tw-bg-opacity));
-}
-
-.bg-brand-400 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(109 167 242 / var(--tw-bg-opacity));
-}
-
-.bg-brand-700 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(17 97 202 / var(--tw-bg-opacity));
-}
-
-.bg-brand-300 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(156 195 246 / var(--tw-bg-opacity));
 }
 
 .object-cover {
@@ -1167,6 +1132,11 @@ Ensure the default browser behavior of the `hidden` attribute.
   color: rgb(23 23 23 / var(--tw-text-opacity));
 }
 
+.text-white {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
 .text-inherit {
   color: inherit;
 }
@@ -1179,11 +1149,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 .text-emerald-500 {
   --tw-text-opacity: 1;
   color: rgb(16 185 129 / var(--tw-text-opacity));
-}
-
-.text-white {
-  --tw-text-opacity: 1;
-  color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
 .opacity-0 {
