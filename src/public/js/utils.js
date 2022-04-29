@@ -33,6 +33,9 @@ export async function request(
   url,
   { body, query, method, timeout = 60000, json = true, ...customConfig } = {}
 ) {
+  if (query) {
+    url += `?${new URLSearchParams(query).toString()}`;
+  }
   const controller = new AbortController();
   const timerId = setTimeout(controller.abort, timeout);
   const config = {
@@ -117,4 +120,16 @@ export function addListeners(nodeOrNodes, obj) {
   if (nodeOrNodes instanceof Node) {
     types.forEach((type) => nodeOrNodes.addEventListener(type, obj[type]));
   }
+}
+
+export function debounce(fn, timeout = 300) {
+  let timer;
+  return function debouncedFn(...args) {
+    const later = () => {
+      clearTimeout(timer);
+      fn(...args);
+    };
+    clearTimeout(timer);
+    timer = setTimeout(later, timeout);
+  };
 }
