@@ -1,3 +1,16 @@
+import objection from "objection";
+const {
+  ValidationError: DBValidationError,
+  NotFoundError,
+  DBError,
+  ConstraintViolationError,
+  UniqueViolationError,
+  NotNullViolationError,
+  ForeignKeyViolationError,
+  CheckViolationError,
+  DataError,
+} = objection;
+
 export class DomainError extends Error {
   constructor(message = "Internal Server Error", status_code = 500, view = "home", errors = []) {
     super();
@@ -57,3 +70,46 @@ export class ConflictError extends DomainError {
     super(message, 409, view);
   }
 }
+
+// export class DatabaseError {
+//   constructor(err) {
+//     if (err instanceof dbvalidationerror) {
+//       switch (err.type) {
+//         case "modelvalidation": {
+//           super(err.message, 400);
+//           break;
+//         }
+//         case "relationexpression": {
+//           super(err.message, 400);
+//           break;
+//         }
+//         case "unallowedrelation": {
+//           super(err.message, 400);
+//           break;
+//         }
+//         case "invalidgraph": {
+//           super(err.message, 400);
+//           break;
+//         }
+//         default:
+//           super(err.message, 400);
+//       }
+//     } else if (err instanceof notfounderror) {
+//       super("resource not found", 404);
+//     } else if (err instanceof uniqueviolationerror) {
+//       super("entity already exists", 409);
+//     } else if (err instanceof notnullviolationerror) {
+//       super(err.message, 400);
+//     } else if (err instanceof foreignkeyviolationerror) {
+//       super(err.message, 409);
+//     } else if (err instanceof checkviolationerror) {
+//       super(err.message, 400);
+//     } else if (err instanceof dataerror) {
+//       super(err.message, 400);
+//     } else if (err instanceof dberror) {
+//       super(err.message, 500);
+//     }
+//   }
+// }
+
+// export function isDBError(err) {}

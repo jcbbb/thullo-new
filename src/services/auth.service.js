@@ -9,7 +9,7 @@ import {
   InternalError,
   ConflictError,
 } from "../utils/errors.js";
-import { User } from "../models/user.model.js";
+import { User } from "../models/index.js";
 import {
   CredentialRequest,
   parseAuthData,

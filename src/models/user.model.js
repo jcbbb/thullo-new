@@ -1,14 +1,13 @@
 import { Model } from "objection";
-import { thullo } from "../services/db.service.js";
-import { Credential } from "./credential.model.js";
+import { Board, Credential, BaseModel } from "./index.js";
 import * as argon2 from "argon2";
 
-class model extends Model {
+export class User extends BaseModel {
   static get tableName() {
     return "users";
   }
 
-  static relationMappings = {
+  static relationMappings = () => ({
     credentials: {
       relation: Model.HasManyRelation,
       modelClass: Credential,
@@ -17,7 +16,25 @@ class model extends Model {
         to: "credentials.user_id",
       },
     },
-  };
+    boards: {
+      relation: Model.ManyToManyRelation,
+      modelClass: Board,
+      join: {
+        from: "users.id",
+        through: {
+          from: "boards_members.user_id",
+          to: "boards_members.board_id",
+        },
+        to: "boards.id",
+      },
+    },
+  });
+
+  $formatJson(json) {
+    json = super.$formatJson(json);
+    delete json.password;
+    return json;
+  }
 
   async $beforeInsert() {
     await this.hashPassword();
@@ -42,4 +59,4 @@ class model extends Model {
   }
 }
 
-export const User = model.bindKnex(thullo);
+// export const User = model.bindKnex(thullo);

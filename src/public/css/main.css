@@ -97,8 +97,20 @@ details summary::marker {
 }
 
 .file-input-label {
-  @apply inline-block focus:ring-brand-400 focus:ring-2 focus:ring-offset-brand-300 peer-focus:ring-2 peer-focus:ring-brand-400 peer-focus:ring-offset-brand-300 ring-offset-2 bg-brand-50 rounded-lg cursor-pointer p-3 duration-200 hover:bg-brand-100 active:scale-95 active:ring-brand-400
+  @apply inline-block focus:ring-brand-400 focus:ring-2 focus:ring-offset-brand-300 peer-focus:ring-2 peer-focus:ring-brand-400 peer-focus:ring-offset-brand-300 ring-offset-2 bg-brand-50 rounded-lg cursor-pointer p-3 duration-200 hover:bg-brand-100 active:scale-95 active:ring-brand-400;
 }
+
+.checkbox-icon path {
+  stroke-dasharray: 20;
+  stroke-dashoffset: 20;
+  transition: stroke-dashoffset 150ms ease-in-out;
+}
+
+.checkbox-input:checked ~ .checkbox-icon path {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 150ms ease-in-out;
+}
+
 
 .toast-group {
   position: fixed;
@@ -116,32 +128,42 @@ details summary::marker {
   @apply p-3 rounded-lg flex items-center space-x-2;
   max-inline-size: min(50ch, 90vw);
   will-change: transform;
-  animation: 
-    fade-in .3s ease,
-    slide-in .3s ease,
-    fade-out .3s ease 3s;
+  animation: fade-in 0.3s ease, slide-in 0.3s ease, fade-out 0.3s ease 3s;
 }
 
 .toast-item-err {
-  @apply bg-red-50 text-red-500 
+  @apply bg-red-50 text-red-500;
 }
 
 .toast-item-info {
-  @apply bg-amber-100 text-neutral-900
+  @apply bg-amber-100 text-neutral-900;
 }
 
 .toast-item-success {
-  @apply bg-emerald-50 text-emerald-500
+  @apply bg-emerald-50 text-emerald-500;
 }
 
 @keyframes fade-in {
-  from { opacity: 0 }
+  from {
+    opacity: 0;
+  }
 }
 
 @keyframes fade-out {
-  to { opacity: 0; transform: translateY(5vh) }
+  to {
+    opacity: 0;
+    transform: translateY(5vh);
+  }
 }
 
 @keyframes slide-in {
-  from { transform: translateY(5vh) }
+  from {
+    transform: translateY(5vh);
+  }
+}
+
+@keyframes checkbox-reveal {
+  to {
+    stroke-dashoffset: 0;
+  }
 }

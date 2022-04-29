@@ -1,18 +1,28 @@
-import { User } from "../models/user.model.js";
+import { User } from "../models/index.js";
 import { randomBytes } from "crypto";
+import { formatRelations } from "../utils/index.js";
 
 export async function getOne(id) {
-  return await User.query().findById(id).select("id", "email", "name", "verified");
+  return await User.query().findById(id);
 }
 
-export async function getMany({ q }) {
-  return await User.query().where("name", "ilike", `%${q}%`).orWhere("email", "ilike", `%${q}%`);
+export async function getMany({ q, limit = 10, excludes = [] }) {
+  if (!q) return [];
+  return await User.query()
+    .where("name", "ilike", `%${q}%`)
+    .whereNotIn("id", excludes)
+    .orWhere("email", "ilike", `%${q}%`)
+    .whereNotIn("id", excludes)
+    .limit(Math.min(limit, 100));
 }
 
 export async function getByEmail(email, relations = []) {
-  const str = relations.toString();
-  const newRelations = str ? `[${str}]` : str;
-  return await User.query().findOne({ email }).withGraphFetched(newRelations);
+  return await User.query().findOne({ email }).withGraphFetched(formatRelations(relations));
+}
+
+export async function hasCredentials(email) {
+  const user = await getByEmail(email, ["credentials"]);
+  return !!user?.credentials?.length;
 }
 
 export function createOne(trx) {

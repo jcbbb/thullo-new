@@ -1,4 +1,4 @@
-import { Credential } from "../models/credential.model.js";
+import { Credential } from "../models/index.js";
 
 export function createOne(trx) {
   return async (credential) => await Credential.query(trx).insert(credential);

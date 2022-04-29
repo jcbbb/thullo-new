@@ -1,4 +1,4 @@
-import { AuthProvider } from "../models/auth-provider.model.js";
+import { AuthProvider } from "../models/index.js";
 
 export async function getMany() {
   const providers = await AuthProvider.query()

@@ -62,3 +62,9 @@ export const formatter = new Intl.DateTimeFormat("en", {
   hourCycle: "h24",
   minute: "numeric",
 });
+
+export function formatRelations(relations = []) {
+  const str = relations.toString();
+  const newRelations = str ? `[${str}]` : str;
+  return newRelations;
+}

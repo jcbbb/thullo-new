@@ -1,8 +1,8 @@
 import { request } from "../utils.js";
 export function auth(prefix) {
   return {
-    signup: () => request(`${prefix}/signup`, { body: user }),
-    login: () => request(`${prefix}/login`, { body: user }),
+    signup: (user) => request(`${prefix}/signup`, { body: user }),
+    login: (user) => request(`${prefix}/login`, { body: user }),
     checkExisting: (email) => {
       return request(`${prefix}/credentials/${email}`, {
         method: "head",

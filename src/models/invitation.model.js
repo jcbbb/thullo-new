@@ -1,9 +1,7 @@
 import { Model } from "objection";
-import { thullo } from "../services/db.service.js";
-import { Board } from "./board.model.js";
-import { User } from "./user.model.js";
+import { User, Board, BaseModel } from "./index.js";
 
-class model extends Model {
+export class Invitation extends BaseModel {
   static get tableName() {
     return "invitations";
   }
@@ -17,12 +15,22 @@ class model extends Model {
           from: "invitations.board_id",
           to: "boards.id",
         },
+        filter: (query) => query.select("id", "title"),
       },
-      to: {
+      invitee: {
         relation: Model.HasOneRelation,
         modelClass: User,
         join: {
-          from: "invitations.user_id",
+          from: "invitations.to",
+          to: "users.id",
+        },
+        filter: (builder) => builder.select("id", "name", "email"),
+      },
+      sender: {
+        relation: Model.HasOneRelation,
+        modelClass: User,
+        join: {
+          from: "invitations.from",
           to: "users.id",
         },
         filter: (builder) => builder.select("id", "name", "email"),
@@ -30,5 +38,3 @@ class model extends Model {
     };
   }
 }
-
-export const Invitation = model.bindKnex(thullo);

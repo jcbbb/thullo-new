@@ -2,10 +2,7 @@ import { selectOne, selectAll, addListeners, option } from "./utils.js";
 import { toast } from "./toast.js";
 import api from "./api/index.js";
 
-const addBoardMemberBtn = selectOne("invite-member");
 const listItemBtns = selectAll("list-item");
-const addBoardMemberDialog = selectOne("invitation-dialog");
-const closeBoardDialog = selectOne("invitation-dialog-close", addBoardMemberDialog);
 const listCards = selectAll("list-card");
 const listContainers = selectAll("list-container");
 
@@ -92,6 +89,3 @@ addListeners(listContainers, {
   dragenter: onDragEnter,
   drop: onDrop,
 });
-
-addListeners(closeBoardDialog, { click: () => addBoardMemberDialog.close() });
-addListeners(addBoardMemberBtn, { click: () => addBoardMemberDialog.showModal() });

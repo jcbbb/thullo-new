@@ -3,10 +3,16 @@
   <a href="/boards/<%= it.id %>" class="text-neutral-900 block">
     <h2 class="text-lg font-medium"><%= it.title %></h2>
   </a>
-  <% if (it.members.length) {%>
-  <ul class="mt-5">
+  <% if (it.members?.length) {%>
+  <ul class="mt-5 flex space-x-4">
     <% it.members.forEach(function (member) {%>
-    <li><%= member.name %></li>
+    <li title="<%= member.name %>">
+      <img
+        src="https://i.pravatar.cc/300"
+        alt="<%= member.name %>"
+        class="flex-shring-0 w-12 h-12 object-cover rounded-xl"
+      />
+    </li>
     <% }) %>
   </ul>
   <% } %>

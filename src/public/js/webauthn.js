@@ -78,7 +78,6 @@ function formatCredentialRequest(credential) {
 
 loginForm?.addEventListener("submit", async (e) => {
   e.preventDefault();
-
   const user = Object.fromEntries(new FormData(e.target));
   const [existing, existingErr] = await option(api.auth.checkExisting(user.email));
 

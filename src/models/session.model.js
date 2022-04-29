@@ -1,10 +1,7 @@
-import { Model } from "objection";
-import { thullo } from "../services/db.service.js";
+import { BaseModel } from "./index.js";
 
-class model extends Model {
+export class Session extends BaseModel {
   static get tableName() {
     return "sessions";
   }
 }
-
-export const Session = model.bindKnex(thullo);

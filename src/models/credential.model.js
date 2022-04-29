@@ -1,7 +1,6 @@
-import { Model } from "objection";
-import { thullo } from "../services/db.service.js";
+import { BaseModel } from "./index.js";
 
-class model extends Model {
+export class Credential extends BaseModel {
   static get tableName() {
     return "credentials";
   }
@@ -9,5 +8,3 @@ class model extends Model {
     return ["transports"];
   }
 }
-
-export const Credential = model.bindKnex(thullo);

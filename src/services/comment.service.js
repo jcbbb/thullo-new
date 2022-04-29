@@ -1,4 +1,4 @@
-import { Comment } from "../models/comment.model.js";
+import { Comment } from "../models/index.js";
 
 export async function createOne({ content, board_id, list_item_id, user_id }) {
   return await Comment.query()

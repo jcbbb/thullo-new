@@ -79,10 +79,8 @@ export async function createCredential(req, res) {
 
 export async function checkExisting(req, res) {
   const { email } = req.params;
-  const user = await UserService.getByEmail(email, ["credentials"]);
-  if (user?.credentials?.length) {
-    return res.send();
-  }
+  const hasCredentials = await UserService.hasCredentials(email);
+  if (hasCredentials) return res.send();
   res.code(404).send();
 }
 
@@ -180,18 +178,32 @@ export async function login(req, res) {
   const { email, password, provider_name } = req.body;
 
   const user_agent = req.headers["user-agent"];
+  const accept = req.accepts();
 
   const [result, err] = await option(
     AuthService.login({ email, password, provider_name, user_agent })
   );
 
-  if (err) {
-    req.flash("err", err);
-    return res.redirect(req.url);
+  switch (accept.type(["html", "json"])) {
+    case "html": {
+      if (err) {
+        req.flash("err", err);
+        return res.redirect(req.url);
+      }
+      req.session.set("sid", result.sesion.id);
+      res.redirect(return_to);
+      break;
+    }
+    case "json": {
+      if (err) {
+        return res.code(err.status_code).send(err);
+      }
+      req.session.set("sid", result.sesion.id);
+      res.send(result);
+      break;
+    }
   }
-
-  req.session.set("sid", result.session.id);
-  res.redirect(return_to);
+  res.send();
 }
 
 export async function logout(req, res) {

@@ -1,4 +1,4 @@
-import { Session } from "../models/session.model.js";
+import { Session } from "../models/index.js";
 
 export function createOne(trx) {
   return async ({ user_id, provider_name, user_agent }) => {

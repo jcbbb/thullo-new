@@ -64,6 +64,7 @@ export async function start() {
     });
 
     app.setErrorHandler((err, req, res) => {
+      console.log(err);
       if (err instanceof DomainError) {
         return res.code(err.status_code).send(err);
       }
@@ -86,3 +87,6 @@ export async function start() {
     process.exit(1);
   }
 }
+
+process.once("SIGUSR2", () => process.kill(process.pid, "SIGUSR2"));
+process.on("SIGINT", () => process.kill(process.pid, "SIGINT"));

@@ -16,14 +16,12 @@ export async function createOne(req, res) {
   const { title, visibility, cover } = normalizeBody(req.body);
   const { url: cover_photo_url } = await S3Service.upload(cover);
   const user = req.user;
-  const board = await BoardService.createOne({
+  await BoardService.createOne({
     title,
     creator_id: user.id,
     visibility,
     cover_photo_url,
   });
-
-  if (req.xhr) return res.render("board/board-card.html", board);
 
   res.redirect("/");
 }
@@ -31,7 +29,7 @@ export async function createOne(req, res) {
 export async function addMember(req, res) {
   const board_id = req.params.board_id;
   const { user_id } = req.body;
-  await BoardService.addMember({ user_id, board_id });
+  await BoardService.addMember()({ user_id, board_id });
   res.redirect("/");
 }
 

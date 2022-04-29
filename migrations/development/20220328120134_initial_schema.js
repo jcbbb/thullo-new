@@ -142,15 +142,16 @@ export function up(knex) {
         .references("id")
         .inTable("boards")
         .onDelete("CASCADE");
+      table.uuid("to").index().notNullable().references("id").inTable("users").onDelete("CASCADE");
       table
-        .uuid("user_id")
+        .uuid("from")
         .index()
         .notNullable()
         .references("id")
         .inTable("users")
         .onDelete("CASCADE");
       table.enu("status", ["ACCEPTED", "DENIED", "PENDING"]).defaultTo("PENDING");
-      table.unique(["user_id", "board_id"]);
+      table.unique(["to", "board_id"]);
       table.timestamps(false, true);
     })
     .createTable("list_items_members", (table) => {

@@ -1,4 +1,4 @@
-import { ListItem } from "../models/list-item.model.js";
+import { ListItem } from "../models/index.js";
 
 export async function createOne({ title, pos, list_id, board_id }) {
   return await ListItem.query().insert({ title, pos, list_id, board_id });

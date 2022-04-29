@@ -6,6 +6,7 @@ import { list } from "./list.route.js";
 import { listItem } from "./list-item.route.js";
 import { comment } from "./comment.route.js";
 import { attachment } from "./attachment.route.js";
+import { user } from "./user.route.js";
 
 export const routes = async (fastify) => {
   fastify.register(home);
@@ -16,4 +17,5 @@ export const routes = async (fastify) => {
   fastify.register(listItem, { prefix: "/list-items" });
   fastify.register(comment, { prefix: "/comments" });
   fastify.register(attachment, { prefix: "/attachments" });
+  fastify.register(user, { prefix: "/users" });
 };
