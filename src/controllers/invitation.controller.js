@@ -58,8 +58,9 @@ export async function getBoardInvitations(req, res) {
 
 export async function getUserInvitations(req, res) {
   const user = req.user;
+  const { h } = req.query; // h -> highlight
   const invitations = await InvitationService.getUserInvitations(user.id, ["board", "sender"]);
-  res.render("invitation/user-invitations", { user, invitations, formatter });
+  res.render("invitation/user-invitations", { user, invitations, formatter, h });
 }
 
 export async function updateOne(req, res) {
