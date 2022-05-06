@@ -68,6 +68,7 @@ export async function updateOne(req, res) {
       }
       break;
     }
+
     default:
       await ListItemService.updateOne(list_item_id, { description });
   }

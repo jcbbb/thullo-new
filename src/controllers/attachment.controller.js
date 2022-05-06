@@ -33,8 +33,20 @@ export async function upload(req, res) {
 
 export async function deleteOne(req, res) {
   const id = req.params.attachment_id;
+  const redirect_uri = req.query.redirect_uri;
   const attachment = await AttachmentService.getOne(id);
   await S3Service.deleteOne(attachment.s3_key);
   await AttachmentService.deleteOne(id);
+  const accept = req.accepts();
+
+  switch (accept.type(["html", "json"])) {
+    case "json": {
+      return res.send({ id });
+    }
+    case "html": {
+      return res.redirect(redirect_uri);
+    }
+  }
+
   res.send({ id });
 }

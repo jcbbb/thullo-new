@@ -1,6 +1,7 @@
 <div class="bg-white shadow-md max-w-sm p-8 rounded-lg mx-auto <%= it.method !== "dialog" ? "mt-24" : ""%>">
   <h2 class="font-bold text-lg">Invite to Board</h2>
 	<p class="mb-6 text-gray-500">Search users you want to invite to</p>
+  <form action="/boards/<%= it.board.id%>/invitations/new" id="new-invitation-form"></form>
   <form action="/invitations" method="post" class="js-invitation-form">
     <input type="hidden" value="<%= it.board.id %>" name="board_id">
     <noscript>
@@ -9,11 +10,15 @@
           display: none;
         }
       </style>
-      <input type="email" name="email" class="input text-input" placeholder="User email" required />
+      <input type="text" name="q" class="input text-input" placeholder="User email or name" required form="new-invitation-form" />
     </noscript>
     <fieldset class="space-y-4">
       <input name="q" type="text" class="input text-input js-enabled js-invitation-input" placeholder="User email or name" />
-      <div class="js-invitation-suggestions space-y-2"></div>
+      <div class="js-invitation-suggestions space-y-2">
+        <% it.suggestions?.forEach(function (suggestion) { %>
+          <%~ includeFile('partials/invite-suggestion.html', { suggestion }) %>
+        <% }) %>
+      </div>
       <menu class="flex space-x-2 justify-end">
         <% if (it.method === "dialog") {%>
         <button class="btn btn-text js-invitation-dialog-close" type="button">Cancel</button>

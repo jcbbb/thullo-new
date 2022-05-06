@@ -10,6 +10,15 @@ export async function createOne({ to, board_id, from }) {
     .ignore();
 }
 
+export function createFrom(from, board_id) {
+  return async function to(to) {
+    return await Invitation.query()
+      .insert({ to, board_id, from })
+      .onConflict(["to", "board_id"])
+      .ignore();
+  };
+}
+
 export async function getBoardInvitations(board_id, relations = []) {
   return await Invitation.query().where({ board_id }).withGraphFetched(formatRelations(relations));
 }
@@ -39,6 +48,7 @@ export async function updateOne(id, update) {
     await trx.commit();
     return invitation;
   } catch (err) {
+    console.log(err);
     trx.rollback();
     throw new InternalError();
   }

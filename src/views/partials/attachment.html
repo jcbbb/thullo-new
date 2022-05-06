@@ -16,11 +16,15 @@
         href="<%= it.attachment.url %>"
         >Download</a
       >
-      <form action="/list-items/<%= it.item.id %>" method="post" class="js-attachment-delete-form">
+      <form
+        action="/attachments/<%= it.attachment.id %>?redirect_uri=/list-items/<%= it.item.id %>"
+        method="post"
+        class="js-attachment-delete-form"
+      >
         <fieldset class="js-attachment-fieldset">
           <input type="hidden" name="attachment_id" value="<%= it.attachment.id %>" />
           <input type="hidden" name="s3_key" value="<%= it.attachment.s3_key %>" />
-          <button class="btn btn-danger" name="_action" value="delete_attachment">Delete</button>
+          <button class="btn btn-danger">Delete</button>
         </fieldset>
       </form>
     </menu>

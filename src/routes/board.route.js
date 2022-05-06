@@ -13,6 +13,6 @@ export const board = async (fastify) => {
   fastify.post("/:board_id/members", BoardController.addMember);
   fastify.post("/:board_id/lists", ListController.createOne);
   fastify.get("/:board_id/invitations/new", InvitationController.getNew);
-  fastify.post("/:board_id/invitations", InvitationController.createOne);
+  fastify.post("/:board_id/invitations", InvitationController.create);
   fastify.get("/:board_id/invitations", InvitationController.getBoardInvitations);
 };

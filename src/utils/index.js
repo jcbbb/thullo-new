@@ -73,3 +73,15 @@ export function initials(name) {
   const parts = name.split(" ");
   return `${parts[0][0]} ${parts[parts.length - 1][0]}`;
 }
+
+export function asyncPipe(...fns) {
+  return (...args) => fns.reduce((promise, fn) => promise.then(fn), Promise.resolve(...args));
+}
+
+export function pipe(...fns) {
+  return (...args) => fns.reduce((previousOutput, currentFn) => currentFn(previousOutput), ...args);
+}
+
+export function prop(key) {
+  return (obj) => obj[key];
+}

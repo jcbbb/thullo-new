@@ -1,0 +1,24 @@
+<label
+  class="flex justify-between items-center hover:bg-brand-50 p-1 -m-1 text-sm rounded-md cursor-pointer relative"
+>
+  <input
+    type="checkbox"
+    class="absolute opacity-0 -z-10 w-0 peer group checkbox-input"
+    name="invites"
+    value="<%= it.suggestion.email %>"
+  />
+  <div class="flex flex-col">
+    <span class="font-medium"><%= it.suggestion.name %></span>
+    <span class="text-gray-500"><%= it.suggestion.email %></span>
+  </div>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="h-5 w-5 text-brand-500 checkbox-icon"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    stroke-width="2"
+  >
+    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+  </svg>
+</label>

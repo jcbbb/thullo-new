@@ -1,38 +1,35 @@
 import * as InvitationService from "../services/invitation.service.js";
 import * as BoardService from "../services/board.service.js";
 import * as UserService from "../services/user.service.js";
-import { formatter, option } from "../utils/index.js";
+import { asyncPipe, formatter, option, prop } from "../utils/index.js";
 
 export async function getOne(req, res) {}
 
-export async function createOne(req, res) {
+export async function create(req, res) {
   const board_id = req.params.board_id || req.body.board_id;
-  const email = req.body.email;
+  const invites = [req.body.invites].flat().filter(Boolean);
   const accept = req.accepts();
   const user = req.user;
 
-  const [invitee, err] = await option(UserService.getByEmail(email));
+  const inviteUser = asyncPipe(
+    UserService.getByEmail,
+    prop("id"),
+    InvitationService.createFrom(user.id, board_id)
+  );
 
-  if (err) {
-    switch (accept.type(["json", "html"])) {
-      case "html": {
-        req.flash("err", err);
-        return res.redirect(req.url);
-      }
-      case "json": {
-        return res.code(err.status_code).send(err);
-      }
-    }
-  }
-
-  const invitation = await InvitationService.createOne({ to: invitee.id, board_id, from: user.id });
+  const [invitations, err] = await option(Promise.all(invites.map(inviteUser)));
 
   switch (accept.type(["json", "html"])) {
     case "html": {
+      if (err) {
+        req.flash("err", err);
+        return res.redirect(req.url);
+      }
       return res.redirect(`/boards/${board_id}/invitations`);
     }
     case "json": {
-      return res.send(invitation);
+      if (err) return res.code(err.status_code).send(err);
+      return res.send(invitations);
     }
   }
   res.send();
@@ -41,10 +38,13 @@ export async function createOne(req, res) {
 export async function getNew(req, res) {
   const user = req.user;
   const board_id = req.params.board_id || req.query.board_id;
+  const q = req.query.q;
   const board = await BoardService.getOne(board_id);
+  const suggestions = await UserService.getMany({ q, excludes: [user.id] });
+
   res.render(
     "invitation/new-invitation.html",
-    { method: "post", title: "Invite to board", user, board },
+    { method: "post", title: "Invite to board", user, board, suggestions },
     { layout: "layout.html" }
   );
 }

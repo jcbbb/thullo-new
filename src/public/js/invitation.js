@@ -58,18 +58,17 @@ async function onInput(e) {
 
 async function onSubmit(e) {
   e.preventDefault();
-  const data = new FormData(e.target);
-  const invites = data.getAll("invites");
-  for (const email of invites) {
-    const [result, err] = await option(
-      api.invitation.createOne({ email, board_id: data.get("board_id") })
-    );
-    if (err) {
-      toast(err.message, "err");
-      return;
-    }
+  const [result, err] = await option(
+    api.invitation.create(Object.fromEntries(new FormData(e.target)))
+  );
+
+  if (err) {
+    toast(err.message, "err");
+    return;
   }
 
+  e.target.reset();
+  inviteDialog.close();
   toast("Successfully sent invitations", "success");
 }
 
