@@ -5,7 +5,7 @@ export function comment(prefix) {
     createOne: (comment) => request(prefix, { body: comment, headers: { Accept: "text/html" } }),
     deleteOne: (id) =>
       request(`${prefix}/${id}`, {
-        method: "delete",
+        method: "DELETE",
         headers: {
           "Content-Type": "text/plain",
         },

@@ -1,4 +1,4 @@
-import { createNode } from "./utils.js";
+import { createNode, addListeners } from "./utils.js";
 
 const icons = {
   success: `
@@ -63,6 +63,15 @@ function addToast(toast) {
   return Toaster.children.length ? flipToast(toast) : Toaster.appendChild(toast);
 }
 
+function pauseAnimation(e) {
+  const animations = e.target.animations();
+  animations.forEach((animation) => animation.pause());
+}
+function resumeAnimation(e) {
+  const animations = e.target.animations();
+  animations.forEach((animation) => animation.play());
+}
+
 function createToast(text, type) {
   const toast = createNode("li", { class: `toast-item toast-item-${type}` });
   const span = createNode("span");
@@ -72,15 +81,7 @@ function createToast(text, type) {
   toast.innerHTML = icons[type];
   toast.append(span);
 
-  toast.addEventListener("mouseover", (e) => {
-    const animations = e.target.getAnimations();
-    animations.forEach((animation) => animation.pause());
-  });
-
-  toast.addEventListener("mouseleave", (e) => {
-    const animations = e.target.getAnimations();
-    animations.forEach((animation) => animation.play());
-  });
+  addListeners(toast, { mouseover: pauseAnimation, mouseleave: resumeAnimation });
 
   return toast;
 }

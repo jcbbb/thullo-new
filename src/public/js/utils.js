@@ -40,7 +40,7 @@ export async function request(
   const timerId = setTimeout(controller.abort, timeout);
   const config = {
     signal: controller.signal,
-    method: method || (body ? "post" : "get"),
+    method: method || (body ? "POST" : "GET"),
     body: body ? JSON.stringify(body) : undefined,
     ...customConfig,
     headers: {

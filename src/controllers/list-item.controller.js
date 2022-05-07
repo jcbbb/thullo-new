@@ -45,6 +45,7 @@ export async function updateOne(req, res) {
   const { _action, description, attachments, board_id, attachment_id, s3_key } = normalizeBody(
     req.body
   );
+  const accept = req.accepts();
 
   switch (_action) {
     case "delete":
@@ -73,7 +74,18 @@ export async function updateOne(req, res) {
       await ListItemService.updateOne(list_item_id, { description });
   }
 
-  res.redirect(`/list-items/${list_item_id}`);
+  switch (accept.type(["html", "json"])) {
+    case "html": {
+      res.redirect(`/list-items/${list_item_id}`);
+      break;
+    }
+    case "json": {
+      res.send();
+      break;
+    }
+    default:
+      res.send();
+  }
 }
 
 export async function deleteOne(req, res) {

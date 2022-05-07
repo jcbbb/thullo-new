@@ -5,7 +5,7 @@ export function auth(prefix) {
     login: (user) => request(`${prefix}/login`, { body: user }),
     checkExisting: (email) => {
       return request(`${prefix}/credentials/${email}`, {
-        method: "head",
+        method: "HEAD",
         headers: {
           Accept: undefined,
         },

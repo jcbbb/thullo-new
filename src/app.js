@@ -9,12 +9,11 @@ import config from "./config/index.js";
 import formBody from "fastify-formbody";
 import multipart from "fastify-multipart";
 import fastifyAccepts from "fastify-accepts";
-import { routes } from "./routes/index.js";
-import { isXhr } from "./plugins/is-xhr.js";
-import { negotiate } from "./plugins/negotiate.js";
-import { DomainError, InternalError } from "./utils/errors.js";
 import os from "os";
 import * as eta from "eta";
+import { routes } from "./routes/index.js";
+import { isXhr } from "./plugins/is-xhr.js";
+import { DomainError, InternalError } from "./utils/errors.js";
 
 process.env.UV_THREADPOOL_SIZE = os.cpus().length;
 
@@ -64,7 +63,6 @@ export async function start() {
     });
 
     app.setErrorHandler((err, req, res) => {
-      console.log(err);
       if (err instanceof DomainError) {
         return res.code(err.status_code).send(err);
       }
@@ -78,7 +76,6 @@ export async function start() {
 
     app.register(fastifyAccepts);
     app.register(fastifyEtag);
-    app.register(negotiate);
     app.register(routes);
 
     await app.listen(config.port);
@@ -87,6 +84,3 @@ export async function start() {
     process.exit(1);
   }
 }
-
-process.once("SIGUSR2", () => process.kill(process.pid, "SIGUSR2"));
-process.on("SIGINT", () => process.kill(process.pid, "SIGINT"));
