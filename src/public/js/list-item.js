@@ -17,6 +17,7 @@ const attachmentDeleteForms = selectAll("attachment-delete-form");
 const commentForms = selectAll("comment-form");
 const commentDeleteForms = selectAll("comment-delete-form");
 const descriptionInputs = selectAll("description-input");
+const commentContents = selectAll("comment-content-input");
 
 const Decoder = new TextDecoder();
 
@@ -68,8 +69,10 @@ async function onComment(e) {
   }
   const node = htmlToNode(result);
   const deleteForm = selectOne("comment-delete-form", node);
+  const contentInput = selectOne("comment-content-input", node);
   const comments = commentForm.nextElementSibling;
   addListeners(deleteForm, { submit: onCommentDelete });
+  addListeners(contentInput, { input: debounce(onCommentChange) });
   comments.append(node);
   commentForm.reset();
 }
@@ -92,8 +95,12 @@ async function onCommentDelete(e) {
 
 async function onDescriptionChange(e) {
   const form = selectClosest("description-form", e.target);
-  const data = new FormData(form);
-  await request(form.action, { body: data });
+  await request(form.action, { body: Object.fromEntries(new FormData(form)) });
+}
+
+async function onCommentChange(e) {
+  const form = selectClosest("comment-content-form", e.target);
+  await request(form.action, { body: Object.fromEntries(new FormData(form)) });
 }
 
 addListeners(attachmentDeleteForms, { submit: onAttachmentDelete });
@@ -101,3 +108,4 @@ addListeners(commentForms, { submit: onComment });
 addListeners(commentDeleteForms, { submit: onCommentDelete });
 addListeners(attachmentInputs, { change: onAttachmentChange });
 addListeners(descriptionInputs, { input: debounce(onDescriptionChange) });
+addListeners(commentContents, { input: debounce(onCommentChange) });

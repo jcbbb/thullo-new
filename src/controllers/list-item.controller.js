@@ -45,6 +45,7 @@ export async function updateOne(req, res) {
   const { _action, description, attachments, board_id, attachment_id, s3_key } = normalizeBody(
     req.body
   );
+
   const accept = req.accepts();
 
   switch (_action) {

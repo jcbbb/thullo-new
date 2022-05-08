@@ -28,7 +28,10 @@ export async function createOne(req, res) {
 
 export async function updateOne(req, res) {
   const { comment_id } = req.params;
-  const { _action, content, list_item_id } = req.body;
+  const { _action, content } = req.body;
+  const { redirect_uri } = req.query;
+
+  const accept = req.accepts();
 
   switch (_action) {
     case "delete": {
@@ -39,7 +42,18 @@ export async function updateOne(req, res) {
       await CommentService.updateOne(comment_id, { content });
   }
 
-  res.redirect(`/list-items/${list_item_id}`);
+  switch (accept.type(["html", "json"])) {
+    case "html": {
+      res.redirect(redirect_uri);
+      break;
+    }
+    case "json": {
+      res.send();
+      break;
+    }
+    default:
+      res.send();
+  }
 }
 
 export async function deleteOne(req, res) {

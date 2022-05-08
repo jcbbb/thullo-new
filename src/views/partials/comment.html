@@ -11,24 +11,28 @@
         <span class="text-gray-500 text-sm"><%= it.formatter.format(it.comment.created_at) %></span>
       </div>
     </div>
-    <form action="/comments/<%= it.comment.id %>" method="post" class="js-comment-delete-form">
-      <input type="hidden" name="list_item_id" value="<%= it.comment.list_item_id %>" />
-      <input type="hidden" name="comment_id" value="<%= it.comment.id %>" />
+    <form
+      action="/comments/<%= it.comment.id %>?redirect_uri=/list-items/<%= it.comment.list_item_id %>"
+      method="post"
+      class="js-comment-delete-form"
+    >
       <button class="btn btn-danger-text" name="_action" value="delete">Delete</button>
     </form>
   </div>
-  <form action="/comments/<%= it.comment.id %>" method="post">
+  <form
+    action="/comments/<%= it.comment.id %>?redirect_uri=/list-items/<%= it.comment.list_item_id %>"
+    method="post"
+    class="js-comment-content-form"
+  >
     <elastic-textarea>
       <textarea
         name="content"
-        class="w-full outline-none focus:ring-2 ring-offset-2 rounded-md p-1 -m-1 focus:ring-brand-400 focus:ring-offset-brand-300"
+        class="w-full outline-none focus:ring-2 ring-offset-2 rounded-md p-1 -m-1 focus:ring-brand-400 focus:ring-offset-brand-300 js-comment-content-input"
         required
       >
 <%= it.comment.content %></textarea
       >
     </elastic-textarea>
-    <input type="hidden" name="list_item_id" value="<%= it.comment.list_item_id %>" />
-    <input type="hidden" name="board_id" value="<%= it.comment.board_id %>" />
     <noscript>
       <button class="btn btn-primary mt-2">Save</button>
     </noscript>

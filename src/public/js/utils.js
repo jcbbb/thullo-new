@@ -31,22 +31,23 @@ export function createNode(tag, attributes) {
 
 export async function request(
   url,
-  { body, query, method, timeout = 60000, json = true, ...customConfig } = {}
+  { body, query, method, timeout = 60000, stringify = true, ...customConfig } = {}
 ) {
   if (query) {
     url += `?${new URLSearchParams(query).toString()}`;
   }
+  const isFormData = body instanceof FormData;
   const controller = new AbortController();
   const timerId = setTimeout(controller.abort, timeout);
   const config = {
     signal: controller.signal,
     method: method || (body ? "POST" : "GET"),
-    body: body ? JSON.stringify(body) : undefined,
+    body: body ? (isFormData ? body : JSON.stringify(body)) : undefined,
     ...customConfig,
     headers: {
-      "Content-Type": "application/json",
       "X-Requested-With": "XMLHttpRequest",
       Accept: "application/json",
+      ...(!isFormData && { "Content-Type": "application/json" }),
       ...customConfig.headers,
     },
   };
