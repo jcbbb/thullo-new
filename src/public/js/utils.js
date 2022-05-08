@@ -47,7 +47,7 @@ export async function request(
     headers: {
       "X-Requested-With": "XMLHttpRequest",
       Accept: "application/json",
-      ...(!isFormData && { "Content-Type": "application/json" }),
+      ...(!isFormData && body && { "Content-Type": "application/json" }),
       ...customConfig.headers,
     },
   };

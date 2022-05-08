@@ -81,9 +81,8 @@ async function onCommentDelete(e) {
   e.preventDefault();
   const deleteForm = e.target;
   const comment = selectClosest("comment-item", deleteForm);
-  const data = new FormData(deleteForm);
   const enableForm = disableForm(deleteForm);
-  const [result, err] = await option(api.comment.deleteOne(data.get("comment_id")));
+  const [result, err] = await option(request(deleteForm.action, { method: "DELETE" }));
   if (err) {
     toast(err.message, "err");
     enableForm();
