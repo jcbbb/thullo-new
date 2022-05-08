@@ -1,31 +1,22 @@
-import api from "./api/index.js";
-import { debounce, selectClosest } from "./utils.js";
-
 class ElasticTextarea extends HTMLElement {
   connectedCallback() {
     this.querySelectorAll("textarea").forEach((textareaEl) => {
-      textareaEl.dataset.minRows = textareaEl.rows || 2;
+      const lines = textareaEl.value.split("\n").length;
+      const rows = (lines >= 2 ? lines : textareaEl.rows) || 2;
+      textareaEl.rows = rows;
+      textareaEl.dataset.minRows = rows;
       this.update(textareaEl);
     });
 
     this.addEventListener("input", ({ target }) => {
       if (!(target instanceof HTMLTextAreaElement)) return;
       this.update(target);
-      this.save(target);
     });
   }
 
   isScrolling(textareaEl) {
     return textareaEl.scrollHeight > textareaEl.clientHeight;
   }
-
-  save = debounce(async (target) => {
-    const form = selectClosest("description-form", target);
-    const data = new FormData(form);
-    await api.listItem.updateOne(data.get("list_item_id"), {
-      description: data.get("description"),
-    });
-  });
 
   grow(textareaEl) {
     let prevHeight = textareaEl.clientHeight;

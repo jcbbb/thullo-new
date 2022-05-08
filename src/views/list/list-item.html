@@ -73,7 +73,9 @@
 				<form action="/comments" method="post" class="js-comment-form">
 					<input type="hidden" name="list_item_id" value="<%= it.item.id %>">
 					<input type="hidden" name="board_id" value="<%= it.board.id %>">
-					<textarea name="content" class="input text-input" placeholder="Add comment" required></textarea>
+					<elastic-textarea>
+						<textarea name="content" class="input text-input" placeholder="Add comment" required></textarea>
+					</elastic-textarea>
 					<button class="btn btn-primary mt-2">Comment</button>
 				</form>
 				<ul class="space-y-4">

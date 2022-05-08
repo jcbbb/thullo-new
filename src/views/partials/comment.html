@@ -18,13 +18,15 @@
     </form>
   </div>
   <form action="/comments/<%= it.comment.id %>" method="post">
-    <textarea
-      name="content"
-      class="w-full outline-none focus:ring-2 ring-offset-2 rounded-md p-1 -m-1 focus:ring-brand-400 focus:ring-offset-brand-300"
-      required
-    >
+    <elastic-textarea>
+      <textarea
+        name="content"
+        class="w-full outline-none focus:ring-2 ring-offset-2 rounded-md p-1 -m-1 focus:ring-brand-400 focus:ring-offset-brand-300"
+        required
+      >
 <%= it.comment.content %></textarea
-    >
+      >
+    </elastic-textarea>
     <input type="hidden" name="list_item_id" value="<%= it.comment.list_item_id %>" />
     <input type="hidden" name="board_id" value="<%= it.comment.board_id %>" />
     <noscript>

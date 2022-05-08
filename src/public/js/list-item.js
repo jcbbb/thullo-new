@@ -6,6 +6,8 @@ import {
   selectClosest,
   disableForm,
   addListeners,
+  debounce,
+  request,
 } from "./utils.js";
 import { toast } from "./toast.js";
 import api from "./api/index.js";
@@ -14,6 +16,7 @@ const attachmentInputs = selectAll("attachment-input");
 const attachmentDeleteForms = selectAll("attachment-delete-form");
 const commentForms = selectAll("comment-form");
 const commentDeleteForms = selectAll("comment-delete-form");
+const descriptionInputs = selectAll("description-input");
 
 const Decoder = new TextDecoder();
 
@@ -87,7 +90,14 @@ async function onCommentDelete(e) {
   comment.remove();
 }
 
+async function onDescriptionChange(e) {
+  const form = selectClosest("description-form", e.target);
+  const data = new FormData(form);
+  await request(form.action, { body: data });
+}
+
 addListeners(attachmentDeleteForms, { submit: onAttachmentDelete });
 addListeners(commentForms, { submit: onComment });
 addListeners(commentDeleteForms, { submit: onCommentDelete });
 addListeners(attachmentInputs, { change: onAttachmentChange });
+addListeners(descriptionInputs, { input: debounce(onDescriptionChange) });
