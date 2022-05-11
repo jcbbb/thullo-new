@@ -1,6 +1,6 @@
-import { formatRelations } from "../utils/index.js";
+import { formatRelations, isValidUUID } from "../utils/index.js";
 import { Board, User } from "../models/index.js";
-import { InternalError } from "../utils/errors.js";
+import { InternalError, ResourceNotFoundError } from "../utils/errors.js";
 
 export async function createOne(board) {
   const trx = await Board.startTransaction();
@@ -22,6 +22,11 @@ export function getMany(query) {
   };
 }
 
+export async function addLabel({ board_id, label_color_id, title }) {
+  if (!title && !label_color_id) return;
+  return await Board.relatedQuery("labels").for(board_id).insert({ label_color_id, title });
+}
+
 export function addMember(trx) {
   return async ({ user_id, board_id }) => {
     return await Board.relatedQuery("members", trx).for(board_id).relate(user_id);
@@ -29,7 +34,9 @@ export function addMember(trx) {
 }
 
 export async function getOne(id, relations = [], from) {
-  if (!id) return;
+  if (!isValidUUID(id)) {
+    throw new ResourceNotFoundError(`Resource with id of ${id} not found`, "404.html");
+  }
   return await Board.query()
     .findById(id)
     .withGraphFetched(formatRelations(relations))

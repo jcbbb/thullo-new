@@ -3,6 +3,7 @@ import * as ListService from "../services/list.service.js";
 import * as S3Service from "../services/s3.service.js";
 import * as BoardService from "../services/board.service.js";
 import * as AttachmentService from "../services/attachment.service.js";
+import * as LabelColorService from "../services/label-color.service.js";
 import { normalizeBody, formatter } from "../utils/index.js";
 
 export async function createOne(req, res) {
@@ -26,6 +27,7 @@ export async function getOne(req, res) {
   const item = await ListItemService.getOne(list_item_id);
   const list = await ListService.getOne(item.list_id);
   const board = await BoardService.getOne(item.board_id);
+  const colors = await LabelColorService.getMany();
   res.render(
     "list/list-item",
     {
@@ -35,6 +37,7 @@ export async function getOne(req, res) {
       board,
       item: Object.assign(item, { list }),
       formatter,
+      colors,
     },
     { layout: "layout.html" }
   );
@@ -83,6 +86,33 @@ export async function updateOne(req, res) {
     case "json": {
       res.send();
       break;
+    }
+    default:
+      res.send();
+  }
+}
+
+export async function addLabel(req, res) {
+  const { list_item_id } = req.params;
+  const { board_id, redirect_uri } = req.query;
+  const { label_color_id, title } = req.body;
+
+  const label = await BoardService.addLabel({ board_id, label_color_id, title });
+
+  const labels = [req.body.labels, label].flat().filter(Boolean);
+
+  await Promise.all(
+    labels.filter(Boolean).map((label_id) => ListItemService.addLabel({ label_id, list_item_id }))
+  );
+
+  const accept = req.accepts();
+
+  switch (accept.types(["html", "json"])) {
+    case "html": {
+      return res.redirect(redirect_uri);
+    }
+    case "json": {
+      return res.send();
     }
     default:
       res.send();

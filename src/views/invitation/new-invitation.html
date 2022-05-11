@@ -13,7 +13,7 @@
       <input type="text" name="q" class="input text-input" placeholder="User email or name" required form="new-invitation-form" />
     </noscript>
     <fieldset class="space-y-4">
-      <input name="q" type="text" class="input text-input js-enabled js-invitation-input" placeholder="User email or name" />
+      <input name="q" type="text" class="input text-input js-enabled js-invitation-input" placeholder="User email or name" required />
       <div class="js-invitation-suggestions space-y-2">
         <% it.suggestions?.forEach(function (suggestion) { %>
           <%~ includeFile('partials/invite-suggestion.html', { suggestion }) %>

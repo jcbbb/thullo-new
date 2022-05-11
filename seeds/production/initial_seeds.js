@@ -1,5 +1,46 @@
 export async function seed(knex) {
   await knex("auth_providers").del();
+  await knex("label_colors").del();
+
+  await knex("label_colors").insert([
+    {
+      hex: "#219653",
+    },
+    {
+      hex: "#F2C94C",
+    },
+    {
+      hex: "#F2994A",
+    },
+    {
+      hex: "#EB5757",
+    },
+    {
+      hex: "#2F80ED",
+    },
+    {
+      hex: "#56CCF2",
+    },
+    {
+      hex: "#6FCF97",
+    },
+    {
+      hex: "#333333",
+    },
+    {
+      hex: "#4F4F4F",
+    },
+    {
+      hex: "#828282",
+    },
+    {
+      hex: "#BDBDBD",
+    },
+    {
+      hex: "#E0E0E0",
+    },
+  ]);
+
   await knex("auth_providers").insert([
     {
       type: "PASSWORD",

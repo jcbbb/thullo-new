@@ -1,14 +1,33 @@
-<li class="bg-white p-2 rounded-md" data-pos="<%= it.item.pos %>">
-  <button class="js-list-item w-full text-left outline-none border-none">
+<li class="bg-white rounded-md" data-pos="<%= it.item.pos %>">
+  <noscript>
+    <style>
+      .js-list-item {
+        display: none;
+      }
+    </style>
+    <a href="/list-items/<%= it.item.id %>" class="w-full p-3 block text-black"
+      ><%= it.item.title %></a
+    >
+  </noscript>
+  <button class="js-list-item w-full text-left outline-none border-none p-3">
     <%= it.item.title %>
   </button>
-  <noscript>
-    <a href="/list-items/<%= it.item.id %>"><%= it.item.title %></a>
-  </noscript>
+  <% if (it.item.labels.length) {%>
+  <ul class="flex flex-wrap gap-2 px-3 pb-3">
+    <% it.item.labels.forEach(function (label) { %>
+    <li
+      class="max-w-fit px-3 py-1 rounded-lg text-sm"
+      style="background: <%= label.color.hex %>33; color: <%= label.color.hex %>"
+    >
+      <%= label.title %>
+    </li>
+    <%})%>
+  </ul>
+  <% } %>
 </li>
 <dialog
   class="js-list-item-dialog bg-white shadow-md max-w-3xl rounded-lg w-full open:animate-dialog-reveal p-0"
 >
-  <%~ includeFile("./list-item.html", { board: it.board, formatter: it.formatter, item:
-  Object.assign(it.item, { list: it.list }), method: "dialog"} ) %>
+  <%~ includeFile("./list-item.html", { board: it.board,colors: it.colors, formatter: it.formatter,
+  item: Object.assign(it.item, { list: it.list }), method: "dialog"} ) %>
 </dialog>

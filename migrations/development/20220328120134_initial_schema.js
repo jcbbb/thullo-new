@@ -82,10 +82,21 @@ export function up(knex) {
         .references("id")
         .inTable("lists")
         .onDelete("CASCADE");
-      table.uuid("board_id").index().notNullable().references("id").inTable("boards");
+      table
+        .uuid("board_id")
+        .index()
+        .notNullable()
+        .references("id")
+        .inTable("boards")
+        .onDelete("CASCADE");
       table.integer("pos").notNullable();
       table.string("title").notNullable();
       table.text("description");
+      table.timestamps(false, true);
+    })
+    .createTable("label_colors", (table) => {
+      table.uuid("id").defaultTo(knex.raw("gen_random_uuid()")).primary();
+      table.string("hex", 7);
       table.timestamps(false, true);
     })
     .createTable("labels", (table) => {
@@ -97,9 +108,15 @@ export function up(knex) {
         .references("id")
         .inTable("boards")
         .onDelete("CASCADE");
+      table
+        .uuid("label_color_id")
+        .index()
+        .notNullable()
+        .references("id")
+        .inTable("label_colors")
+        .onDelete("CASCADE");
       table.string("title");
-      table.string("color").notNullable();
-      table.unique(["title", "color"]);
+      table.unique(["board_id", "label_color_id", "title"]);
       table.timestamps(false, true);
     })
     .createTable("attachments", (table) => {
@@ -111,7 +128,13 @@ export function up(knex) {
         .references("id")
         .inTable("list_items")
         .onDelete("CASCADE");
-      table.uuid("board_id").index().notNullable().references("id").inTable("boards");
+      table
+        .uuid("board_id")
+        .index()
+        .notNullable()
+        .references("id")
+        .inTable("boards")
+        .onDelete("CASCADE");
       table.string("mimetype").notNullable();
       table.string("name").notNullable();
       table.string("s3_key");
@@ -128,8 +151,20 @@ export function up(knex) {
         .references("id")
         .inTable("list_items")
         .onDelete("CASCADE");
-      table.uuid("user_id").index().notNullable().references("id").inTable("users");
-      table.uuid("board_id").index().notNullable().references("id").inTable("boards");
+      table
+        .uuid("user_id")
+        .index()
+        .notNullable()
+        .references("id")
+        .inTable("users")
+        .onDelete("CASCADE");
+      table
+        .uuid("board_id")
+        .index()
+        .notNullable()
+        .references("id")
+        .inTable("boards")
+        .onDelete("CASCADE");
       table.text("content").notNullable();
       table.timestamps(false, true);
     })
@@ -187,6 +222,23 @@ export function up(knex) {
         .inTable("boards")
         .onDelete("CASCADE");
       table.unique(["user_id", "board_id"]);
+    })
+    .createTable("list_items_labels", (table) => {
+      table
+        .uuid("label_id")
+        .notNullable()
+        .index()
+        .references("id")
+        .inTable("labels")
+        .onDelete("CASCADE");
+      table
+        .uuid("list_item_id")
+        .notNullable()
+        .index()
+        .references("id")
+        .inTable("list_items")
+        .onDelete("CASCADE");
+      table.unique(["label_id", "list_item_id"]);
     });
 }
 
@@ -196,6 +248,7 @@ export function down(knex) {
     .dropTable("attachments")
     .dropTable("comments")
     .dropTable("list_items_members")
+    .dropTable("list_items_labels")
     .dropTable("list_items")
     .dropTable("lists")
     .dropTable("labels")
@@ -203,5 +256,6 @@ export function down(knex) {
     .dropTable("boards_members")
     .dropTable("boards")
     .dropTable("users")
-    .dropTable("auth_providers");
+    .dropTable("auth_providers")
+    .dropTable("label_colors");
 }

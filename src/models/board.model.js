@@ -1,4 +1,4 @@
-import { User, List, BaseModel, Invitation } from "./index.js";
+import { User, List, BaseModel, Invitation, Label } from "./index.js";
 
 export class Board extends BaseModel {
   static get tableName() {
@@ -6,6 +6,14 @@ export class Board extends BaseModel {
   }
 
   static relationMappings = () => ({
+    labels: {
+      relation: BaseModel.HasManyRelation,
+      modelClass: Label,
+      join: {
+        from: "boards.id",
+        to: "labels.board_id",
+      },
+    },
     lists: {
       relation: BaseModel.HasManyRelation,
       modelClass: List,

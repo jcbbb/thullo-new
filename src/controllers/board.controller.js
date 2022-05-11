@@ -1,7 +1,8 @@
 import * as BoardService from "../services/board.service.js";
-import { normalizeBody } from "../utils/index.js";
-import { formatter, initials } from "../utils/index.js";
 import * as S3Service from "../services/s3.service.js";
+import * as LabelColorService from "../services/label-color.service.js";
+import { normalizeBody } from "../utils/index.js";
+import { formatter, initials, option } from "../utils/index.js";
 
 export async function getNew(req, res) {
   const user = req.user;
@@ -36,12 +37,23 @@ export async function addMember(req, res) {
 export async function getOne(req, res) {
   const user = req.user;
   const board_id = req.params.board_id;
-  const board = await BoardService.getOne(board_id, [
-    "lists.[items.[attachments, comments.[user]]]",
-    "members",
-    "creator",
-  ]);
-  res.render("board/single-board", { board, user, formatter, initials });
+  const [board, err] = await option(
+    BoardService.getOne(board_id, [
+      "lists.[items.[attachments, labels.[color], comments.[user]]]",
+      "members",
+      "creator",
+      "labels.[color]",
+    ])
+  );
+
+  if (err) {
+    req.flash("err", err);
+    return res.code(err.status_code).render(err.view);
+  }
+
+  const colors = await LabelColorService.getMany();
+
+  res.render("board/single-board", { board, user, formatter, initials, colors });
 }
 
 export async function updateOne(req, res) {

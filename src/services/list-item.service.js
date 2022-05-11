@@ -8,6 +8,10 @@ export async function addMember({ user_id, list_item_id }) {
   return await ListItem.relatedQuery("members").for(list_item_id).relate(user_id);
 }
 
+export async function addLabel({ label_id, list_item_id }) {
+  return await ListItem.relatedQuery("labels").for(list_item_id).relate(label_id);
+}
+
 export async function getOne(id) {
   return await ListItem.query().findById(id).withGraphFetched("[attachments, comments.[user]]");
 }

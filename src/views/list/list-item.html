@@ -98,8 +98,8 @@
 					</p>
 				</div>
 				<div>
-					<input type="file" class="absolute opacity-0 -z-10 w-0 peer" id="list-item-cover">
-					<label for="list-item-cover" class="flex w-full peer-focus:ring-2 peer-focus:ring-brand-500 ring-offset-2 py-3 px-6 rounded-md cursor-pointer text-gray-500 bg-brand-50 items-center space-x-2 text-sm duration-200 hover:bg-brand-100 active:scale-95 active:ring-2 active:ring-brand-500">
+        	<input id="list-item-cover" type="file" class="file-input js-file-upload js-disabled mb-2 peer" accept="image/*" name="cover" required>
+      		<label for="list-item-cover" class="file-input-label w-full items-center space-x-2 !px-6 text-sm">
 						<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
 							<path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" />
 						</svg>
@@ -118,8 +118,8 @@
 						</span>
 					</button>
 				</div>
-				<div>
-					<button class="btn btn-secondary space-x-2 flex text-gray-500 w-full">
+				<details class="relative">
+					<summary class="btn btn-secondary space-x-2 flex text-gray-500 w-full">
 						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5" fill="currentColor">
 							<path d="M0 0h24v24H0z" fill="none"/>
 							<path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z"/>
@@ -127,8 +127,79 @@
 						<span>
 							Labels
 						</span>
-					</button>
-				</div>
+					</summary>
+					<form action="/list-items/<%= it.item.id %>/labels?board_id=<%= it.board.id %>&redirect_uri=/boards/<%= it.board.id %>" method="post" class="bg-white shadow drop-shadow-md p-2 rounded-md absolute bottom-0 w-72 right-0 space-y-4">
+						<div>
+							<h2 class="font-medium text-lg">Label</h2>
+							<p class="text-gray-500">Select a name and a color</p>
+						</div>
+						<input type="text" class="input text-input" placeholder="Title" name="title">
+						<ul class="flex flex-wrap justify-between gap-y-2">
+							<% it.colors.forEach(function (color) { %>
+								<li class="basis-16 h-10 rounded-md overflow-hidden">
+									<label
+										class="flex items-center justify-center h-full cursor-pointer" style="background: <%= color.hex %>">
+										<input
+											type="radio"
+											class="absolute opacity-0 -z-10 w-0 peer group checkbox-input"
+											name="label_color_id"
+											value="<%= color.id %>"
+										/>
+									<svg
+											xmlns="http://www.w3.org/2000/svg"
+											class="h-5 w-5 text-white checkbox-icon"
+											fill="none"
+											viewBox="0 0 24 24"
+											stroke="currentColor"
+											stroke-width="2"
+										>
+											<path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+										</svg>
+									</label>
+								</li>
+							<% }) %>
+						</ul>
+						<div class="space-y-2">
+							<p class="text-gray-500 flex space-x-2 items-center">
+								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-4 h-4" fill="currentColor">
+									<path d="M0 0h24v24H0z" fill="none"/>
+									<path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z"/>
+								</svg>
+								<span>
+									Available
+								</span>
+							</p>
+							<ul class="flex flex-wrap gap-2">
+								<% it.board.labels.forEach(function (lbl) { %>
+									<li class="max-w-fit">
+										<label
+											class="relative flex items-center justify-center h-full cursor-pointer px-3 py-1 rounded-lg text-sm" style="background: <%= lbl.color.hex %>33; color: <%= lbl.color.hex %>">
+											<input
+												type="checkbox"
+												class="absolute opacity-0 -z-10 w-0 peer group checkbox-input"
+												name="labels"
+												value="<%= lbl.id %>"
+											/>
+											<svg
+												xmlns="http://www.w3.org/2000/svg"
+												class="h-4 w-4 absolute checkbox-icon top-0 right-0 text-white translate-x-1/2 -translate-y-1/2 rounded-full duration-100 scale-0 origin-bottom-left peer-checked:scale-100"
+												fill="none"
+												viewBox="0 0 24 24"
+												stroke="currentColor"
+												stroke-width="2"
+												style="background: <%= lbl.color.hex %>"
+											>
+												<path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+											</svg>
+											<%= lbl.title %>
+										</label>
+									</li>
+								<% }) %>
+							</ul>
+						</div>
+						<button class="btn btn-primary mx-auto w-full">Add</button>
+					</form>
+				</details>
 			</div>
 		</div>
 	</div>
