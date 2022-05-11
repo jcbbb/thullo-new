@@ -26,7 +26,7 @@ export async function getOne(req, res) {
   const { list_item_id } = req.params;
   const item = await ListItemService.getOne(list_item_id);
   const list = await ListService.getOne(item.list_id);
-  const board = await BoardService.getOne(item.board_id);
+  const board = await BoardService.getOne(item.board_id, ["labels.[color]"]);
   const colors = await LabelColorService.getMany();
   res.render(
     "list/list-item",

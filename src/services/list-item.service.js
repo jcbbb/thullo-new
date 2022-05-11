@@ -13,7 +13,9 @@ export async function addLabel({ label_id, list_item_id }) {
 }
 
 export async function getOne(id) {
-  return await ListItem.query().findById(id).withGraphFetched("[attachments, comments.[user]]");
+  return await ListItem.query()
+    .findById(id)
+    .withGraphFetched("[attachments, comments.[user], labels.[color]]");
 }
 
 export async function updateOne(id, update) {
