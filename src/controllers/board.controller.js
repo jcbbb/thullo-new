@@ -53,7 +53,7 @@ export async function getOne(req, res) {
 
   const colors = await LabelColorService.getMany();
 
-  res.render("board/single-board", { board, user, formatter, initials, colors });
+  res.render("board/single-board", { board: board.toJSON(), user, formatter, initials, colors });
 }
 
 export async function updateOne(req, res) {

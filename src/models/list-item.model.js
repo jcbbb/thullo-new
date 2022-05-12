@@ -5,6 +5,22 @@ export class ListItem extends BaseModel {
     return "list_items";
   }
 
+  static get virtualAttributes() {
+    return ["attachments_count", "members_count", "comments_count"];
+  }
+
+  attachments_count() {
+    return this.attachments?.length || 0;
+  }
+
+  members_count() {
+    return this.members?.length || 0;
+  }
+
+  comments_count() {
+    return this.comments?.length || 0;
+  }
+
   static relationMappings = () => ({
     labels: {
       relation: BaseModel.ManyToManyRelation,

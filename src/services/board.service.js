@@ -37,6 +37,7 @@ export async function getOne(id, relations = [], from) {
   if (!isValidUUID(id)) {
     throw new ResourceNotFoundError(`Resource with id of ${id} not found`, "404.html");
   }
+
   return await Board.query()
     .findById(id)
     .withGraphFetched(formatRelations(relations))
