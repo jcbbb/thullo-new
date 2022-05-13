@@ -56,7 +56,7 @@ async function registerCredential(credential, user) {
       attestationObject,
       clientDataJSON,
     },
-    transports: credential.response.getTransports(),
+    transports: credential.response.getTransports?.() || [],
     user,
   });
 }
