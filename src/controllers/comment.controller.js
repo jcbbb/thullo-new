@@ -17,7 +17,7 @@ export async function createOne(req, res) {
   switch (accept.type(["json", "html"])) {
     case "html": {
       if (req.xhr) {
-        return res.render("partials/comment.html", { comment, formatter });
+        return res.render("partials/comment.html", { comment, user, formatter });
       }
       res.redirect(`/list-items/${list_item_id}`);
     }
