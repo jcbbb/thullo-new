@@ -8,6 +8,7 @@ import {
   addListeners,
   debounce,
   request,
+  createNode,
 } from "./utils.js";
 import { toast } from "./toast.js";
 import api from "./api/index.js";
@@ -18,6 +19,8 @@ const commentForms = selectAll("comment-form");
 const commentDeleteForms = selectAll("comment-delete-form");
 const descriptionInputs = selectAll("description-input");
 const commentContents = selectAll("comment-content-input");
+const coverUploadInputs = selectAll("cover-upload");
+const memberPickerInputs = selectAll("member-picker-input");
 
 const Decoder = new TextDecoder();
 
@@ -102,9 +105,112 @@ async function onCommentChange(e) {
   await request(form.action, { body: Object.fromEntries(new FormData(form)) });
 }
 
+function createListCardImage(id, src) {
+  return createNode("img", {
+    class: `rounded-md pointer-events-none h-32 w-full object-cover mb-3 js-${id}-cover-photo`,
+    src,
+  });
+}
+
+function createListItemImage(id, src) {
+  return createNode("img", {
+    class: `object-cover max-h-60 w-full rounded-lg js-${id}-cover-photo`,
+    src,
+  });
+}
+
+async function onCoverChange(e) {
+  const file = e.target.files?.[0];
+  if (!file) return;
+  const form = selectClosest("cover-form", e.target);
+  const formData = new FormData(form);
+
+  formData.append("_action", "attach_item_cover");
+
+  const enableForm = disableForm(form);
+  const [result, err] = await option(request(form.action, { body: formData }));
+
+  if (err) {
+    toast(err.message, "err");
+    enableForm();
+    return;
+  }
+
+  const itemId = formData.get("id");
+  const coverDisplays = selectAll(`${itemId}-cover-photo`);
+  const url = URL.createObjectURL(file);
+
+  if (!coverDisplays.length) {
+    const itemCard = selectOne(`item-card-${itemId}`);
+    const itemDialog = selectOne(`item-dialog-${itemId}`);
+    const cardImage = createListCardImage(itemId, url);
+    const itemImage = createListItemImage(itemId, url);
+    itemDialog.prepend(itemImage);
+    itemCard.prepend(cardImage);
+  } else {
+    coverDisplays.forEach((cover) => (cover.src = url));
+  }
+
+  enableForm();
+  toast("Cover photo updated successfully", "success");
+}
+
+function createSuggestion(user) {
+  const suggestion = createNode("label", {
+    class:
+      "flex justify-between items-center hover:bg-brand-50 p-1 -m-1 text-sm rounded-md cursor-pointer relative",
+  });
+
+  const icon =
+    htmlToNode(`<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-brand-500 checkbox-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+</svg>`);
+
+  const div = createNode("div", {
+    class: "flex flex-col",
+  });
+
+  const name = createNode("span", {
+    class: "font-medium",
+  });
+
+  name.textContent = user.name;
+
+  const email = createNode("span", { class: "text-gray-500" });
+
+  email.textContent = user.email;
+
+  const input = createNode("input", {
+    class: "absolute opacity-0 -z-10 w-0 peer group checkbox-input",
+    type: "checkbox",
+    name: "members",
+    value: user.id,
+  });
+
+  div.append(name, email);
+
+  suggestion.append(input, div, icon);
+
+  return suggestion;
+}
+
+async function onMemberChange(e) {
+  const q = e.target.value;
+  const form = e.target.parentElement;
+  const data = new FormData(form);
+  const users = await request(`/boards/${data.get("board_id")}/members`, {
+    query: { q },
+  });
+  const suggestions = selectOne("member-suggestions", form);
+  suggestions.innerHTML = "";
+  suggestions.append(...users.map(createSuggestion));
+}
+
 addListeners(attachmentDeleteForms, { submit: onAttachmentDelete });
 addListeners(commentForms, { submit: onComment });
 addListeners(commentDeleteForms, { submit: onCommentDelete });
 addListeners(attachmentInputs, { change: onAttachmentChange });
 addListeners(descriptionInputs, { input: debounce(onDescriptionChange) });
 addListeners(commentContents, { input: debounce(onCommentChange) });
+addListeners(coverUploadInputs, { change: onCoverChange });
+addListeners(memberPickerInputs, { input: debounce(onMemberChange) });

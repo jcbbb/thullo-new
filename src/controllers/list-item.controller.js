@@ -4,7 +4,7 @@ import * as S3Service from "../services/s3.service.js";
 import * as BoardService from "../services/board.service.js";
 import * as AttachmentService from "../services/attachment.service.js";
 import * as LabelColorService from "../services/label-color.service.js";
-import { normalizeBody, formatter } from "../utils/index.js";
+import { normalizeBody, formatter, option } from "../utils/index.js";
 
 export async function createOne(req, res) {
   const board_id = req.params.board_id || req.body.board_id;
@@ -16,9 +16,21 @@ export async function createOne(req, res) {
 
 export async function addMember(req, res) {
   const { list_item_id } = req.params;
-  const { user_id, board_id } = req.body;
-  await ListItemService.addMember({ user_id, list_item_id });
-  res.redirect(`/boards/${board_id}`);
+  const { redirect_uri } = req.query;
+  const members = [req.body.members].flat().filter(Boolean);
+
+  const [result, err] = await option(
+    Promise.all(
+      members.map((member) => ListItemService.addMember({ user_id: member, list_item_id }))
+    )
+  );
+
+  if (err) {
+    req.flash("err", err);
+    return res.redirect(redirect_uri);
+  }
+
+  res.redirect(redirect_uri);
 }
 
 export async function getOne(req, res) {
@@ -45,20 +57,27 @@ export async function getOne(req, res) {
 
 export async function updateOne(req, res) {
   const { list_item_id } = req.params;
-  const { _action, description, attachments, board_id, attachment_id, s3_key } = normalizeBody(
-    req.body
-  );
+  const { _action, description, attachments, board_id, attachment_id, s3_key, cover } =
+    normalizeBody(req.body);
 
   const accept = req.accepts();
 
   switch (_action) {
-    case "delete":
+    case "delete": {
       await ListItemService.deleteOne(list_item_id);
       break;
+    }
+
     case "attach": {
       for await (const attachment of S3Service.uploadMultiple(attachments)) {
         await AttachmentService.createOne({ attachment, board_id, list_item_id });
       }
+      break;
+    }
+
+    case "attach_item_cover": {
+      const { url: cover_photo_url } = await S3Service.upload(cover);
+      await ListItemService.updateOne(list_item_id, { cover_photo_url });
       break;
     }
 

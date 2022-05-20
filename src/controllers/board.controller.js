@@ -3,6 +3,7 @@ import * as S3Service from "../services/s3.service.js";
 import * as LabelColorService from "../services/label-color.service.js";
 import { normalizeBody } from "../utils/index.js";
 import { formatter, initials, option } from "../utils/index.js";
+import { Board } from "../models/index.js";
 
 export async function getNew(req, res) {
   const user = req.user;
@@ -34,12 +35,24 @@ export async function addMember(req, res) {
   res.redirect("/");
 }
 
+export async function getMembers(req, res) {
+  const board_id = req.params.board_id;
+  const { q } = req.query;
+
+  const members = await Board.relatedQuery("members")
+    .for(board_id)
+    .where("users.name", "ilike", `%${q}%`)
+    .orWhere("users.email", "ilike", `%${q}%`);
+
+  res.send(members);
+}
+
 export async function getOne(req, res) {
   const user = req.user;
   const board_id = req.params.board_id;
   const [board, err] = await option(
     BoardService.getOne(board_id, [
-      "lists.[items.[attachments, labels.[color], comments.[user]]]",
+      "lists.[items.[attachments, labels.[color], members, comments.[user]]]",
       "members",
       "creator",
       "labels.[color]",

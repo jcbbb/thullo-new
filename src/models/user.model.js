@@ -1,5 +1,6 @@
 import { Board, Credential, BaseModel } from "./index.js";
 import * as argon2 from "argon2";
+import { createHash } from "crypto";
 
 export class User extends BaseModel {
   static get tableName() {
@@ -37,6 +38,7 @@ export class User extends BaseModel {
 
   async $beforeInsert() {
     await this.hashPassword();
+    this.setAvatar();
   }
 
   async $beforeUpdate(opts, ...args) {
@@ -55,5 +57,10 @@ export class User extends BaseModel {
     const hash = await argon2.hash(this.password);
     this.password = hash;
     return hash;
+  }
+  setAvatar() {
+    const hash = createHash("md5").update(this.email).digest("hex");
+    this.profile_photo_url = `https://gravatar.com/avatar/${hash}?d=retro`;
+    return this.profile_photo_url;
   }
 }

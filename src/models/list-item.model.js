@@ -45,7 +45,7 @@ export class ListItem extends BaseModel {
         },
         to: "users.id",
       },
-      filter: (builder) => builder.select("id", "name", "verified"),
+      filter: (builder) => builder.select("id", "name", "verified", "profile_photo_url"),
     },
     attachments: {
       relation: BaseModel.HasManyRelation,

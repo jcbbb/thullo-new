@@ -1,0 +1,71 @@
+<form action="/list-items/<%= it.item.id %>/labels?board_id=<%= it.board.id %>&redirect_uri=<%= it.method !== "dialog" ? "/list-items/" + it.item.id : "/boards/" + it.board.id %>" method="post" class="bg-white shadow drop-shadow-md p-3 rounded-md space-y-4">
+	<div>
+		<h2 class="font-medium text-lg">Label</h2>
+		<p class="text-gray-500">Select a name and a color</p>
+	</div>
+	<input type="text" class="input text-input" placeholder="Title" name="title">
+	<ul class="flex flex-wrap justify-between gap-y-2">
+		<% it.colors.forEach(function (color) { %>
+			<li class="basis-16 h-10 rounded-md overflow-hidden">
+				<label
+					class="flex items-center justify-center h-full cursor-pointer" style="background: <%= color.hex %>">
+					<input
+						type="radio"
+						class="absolute opacity-0 -z-10 w-0 peer group checkbox-input"
+						name="label_color_id"
+						value="<%= color.id %>"
+					/>
+				<svg
+						xmlns="http://www.w3.org/2000/svg"
+						class="h-5 w-5 text-white checkbox-icon"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke="currentColor"
+						stroke-width="2"
+					>
+						<path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+					</svg>
+				</label>
+			</li>
+		<% }) %>
+	</ul>
+	<div class="space-y-2">
+		<p class="text-gray-500 flex space-x-2 items-center">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-4 h-4" fill="currentColor">
+				<path d="M0 0h24v24H0z" fill="none"/>
+				<path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z"/>
+			</svg>
+			<span>
+				Available
+			</span>
+		</p>
+		<ul class="flex flex-wrap gap-2">
+			<% it.board.labels.filter(label => !it.item.labels.some(itemLabel => label.id === itemLabel.id)).forEach(function (lbl) { %>
+				<li class="max-w-fit">
+					<label
+						class="relative flex items-center justify-center h-full cursor-pointer px-3 py-1 rounded-lg text-sm" style="background: <%= lbl.color.hex %>33; color: <%= lbl.color.hex %>">
+						<input
+							type="checkbox"
+							class="absolute opacity-0 -z-10 w-0 peer group checkbox-input"
+							name="labels"
+							value="<%= lbl.id %>"
+						/>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							class="h-4 w-4 absolute checkbox-icon top-0 right-0 text-white translate-x-1/2 -translate-y-1/2 rounded-full duration-100 scale-0 origin-bottom-left peer-checked:scale-100"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke="currentColor"
+							stroke-width="2"
+							style="background: <%= lbl.color.hex %>"
+						>
+							<path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+						</svg>
+						<%= lbl.title %>
+					</label>
+				</li>
+			<% }) %>
+		</ul>
+	</div>
+	<button class="btn btn-primary mx-auto w-full">Add</button>
+</form>

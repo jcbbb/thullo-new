@@ -33,7 +33,11 @@
   <% if (it.user) { %>
   <details class="relative group">
     <summary class="flex space-x-3 items-center cursor-pointer text-sm font-bold">
-      <img src="https://i.pravatar.cc/300" alt="" class="w-10 h-10 rounded-md object-cover" />
+      <img
+        src="<%= it.user.profile_photo_url %>"
+        alt=""
+        class="w-10 h-10 rounded-md object-cover"
+      />
       <span class="text-neutral-900"><%= it.user.name %></span>
       <span class="group-open:rotate-180 transition-transform duration-200">
         <svg

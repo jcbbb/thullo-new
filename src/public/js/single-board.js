@@ -1,9 +1,10 @@
-import { selectOne, selectAll, addListeners, option } from "./utils.js";
+import { selectAll, addListeners, option } from "./utils.js";
 import { toast } from "./toast.js";
 import api from "./api/index.js";
 
 const listItemBtns = selectAll("list-item");
 const listCards = selectAll("list-card");
+const listItemCards = selectAll("list-item-card");
 const listContainers = selectAll("list-container");
 
 function onDragEnter(e) {
@@ -43,6 +44,7 @@ function onDragOver(e) {
 }
 
 function onDragStart(e) {
+  e.stopPropagation();
   const draggable = e.target;
   draggable.setAttribute("data-dragging", true);
   e.dataTransfer.setData("text/plain", e.target.dataset.lid);
@@ -53,6 +55,7 @@ function onDragStart(e) {
 }
 
 function onDragEnd(e) {
+  e.stopPropagation();
   const draggable = e.target;
   draggable.removeAttribute("data-dragging");
   draggable.classList.remove("opacity-0");
@@ -80,6 +83,11 @@ addListeners(listItemBtns, {
 });
 
 addListeners(listCards, {
+  dragstart: onDragStart,
+  dragend: onDragEnd,
+});
+
+addListeners(listItemCards, {
   dragstart: onDragStart,
   dragend: onDragEnd,
 });

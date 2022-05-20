@@ -14,6 +14,7 @@ export async function getAccessToken({ code }) {
       },
     }
   );
+
   return await resp.json();
 }
 

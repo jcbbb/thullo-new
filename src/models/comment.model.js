@@ -13,7 +13,7 @@ export class Comment extends BaseModel {
         from: "comments.user_id",
         to: "users.id",
       },
-      filter: (builder) => builder.select("name", "profile_photo_url"),
+      filter: (builder) => builder.select("name", "profile_photo_url", "id"),
     },
   });
 }

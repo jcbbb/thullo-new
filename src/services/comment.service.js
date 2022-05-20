@@ -13,3 +13,7 @@ export async function deleteOne(id) {
 export async function updateOne(id, update) {
   return await Comment.query().patchAndFetchById(id, update);
 }
+
+export async function getOne(id) {
+  return await Comment.query().findById(id).withGraphFetched("user");
+}

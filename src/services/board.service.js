@@ -23,7 +23,7 @@ export function getMany(query) {
 }
 
 export async function addLabel({ board_id, label_color_id, title }) {
-  if (!title && !label_color_id) return;
+  if (!title) return;
   return await Board.relatedQuery("labels").for(board_id).insert({ label_color_id, title });
 }
 

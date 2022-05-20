@@ -2,7 +2,7 @@
   <div class="flex items-start justify-between">
     <div class="flex space-x-4">
       <img
-        src="https://i.pravatar.cc/300"
+        src="<%= it.comment.user.profile_photo_url %>"
         alt=""
         class="flex-shring-0 w-12 h-12 object-cover rounded-lg"
       />
@@ -11,6 +11,7 @@
         <span class="text-gray-500 text-sm"><%= it.formatter.format(it.comment.created_at) %></span>
       </div>
     </div>
+    <% if (it.comment.user.id === it.user.id) { %>
     <form
       action="/comments/<%= it.comment.id %>?redirect_uri=/list-items/<%= it.comment.list_item_id %>"
       method="post"
@@ -18,6 +19,7 @@
     >
       <button class="btn btn-danger-text" name="_action" value="delete">Delete</button>
     </form>
+    <% } %>
   </div>
   <form
     action="/comments/<%= it.comment.id %>?redirect_uri=/list-items/<%= it.comment.list_item_id %>"
@@ -27,8 +29,9 @@
     <elastic-textarea>
       <textarea
         name="content"
-        class="w-full outline-none focus:ring-2 ring-offset-2 rounded-md p-1 -m-1 focus:ring-brand-400 focus:ring-offset-brand-300 js-comment-content-input"
+        class="w-full outline-none focus:ring-2 ring-offset-2 rounded-md p-1 -m-1 focus:ring-brand-400 focus:ring-offset-brand-300 js-comment-content-input resize-none"
         required
+        <%= it.comment.user.id !== it.user.id ? "readonly" : "" %>
       >
 <%= it.comment.content %></textarea
       >

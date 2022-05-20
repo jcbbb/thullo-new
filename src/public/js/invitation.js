@@ -1,5 +1,5 @@
-import { selectOne, addListeners, debounce, createNode, htmlToNode, option } from "./utils.js";
 import api from "./api/index.js";
+import { selectOne, addListeners, debounce, createNode, htmlToNode, option } from "./utils.js";
 import { toast } from "./toast.js";
 
 const inviteMemberBtn = selectOne("invite-member");

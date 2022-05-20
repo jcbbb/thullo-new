@@ -1,19 +1,31 @@
-<li class="bg-white rounded-md" data-pos="<%= it.item.pos %>">
-  <noscript>
-    <style>
-      .js-list-item {
-        display: none;
-      }
-    </style>
-    <a href="/list-items/<%= it.item.id %>" class="w-full p-3 block text-black"
+<noscript>
+  <style>
+    .js-list-item {
+      display: none;
+    }
+  </style>
+</noscript>
+<li
+  class="bg-white rounded-md p-3 js-list-item-card js-item-card-<%= it.item.id %>"
+  data-pos="<%= it.item.pos %>"
+>
+  <% if (it.item.cover_photo_url) { %>
+  <img
+    src="<%= it.item.cover_photo_url %>"
+    class="rounded-md pointer-events-none h-32 w-full object-cover mb-3 js-<%= it.item.id%>-cover-photo"
+    alt=""
+  />
+  <% } %>
+  <button class="js-list-item w-full text-left outline-none border-none">
+    <%= it.item.title %>
+  </button>
+  <noscript class="block">
+    <a href="/list-items/<%= it.item.id %>" class="w-full text-black bg-white block"
       ><%= it.item.title %></a
     >
   </noscript>
-  <button class="js-list-item w-full text-left outline-none border-none p-3">
-    <%= it.item.title %>
-  </button>
   <% if (it.item.labels.length) {%>
-  <ul class="flex flex-wrap gap-2 px-3 pb-3">
+  <ul class="flex flex-wrap gap-2 mt-3">
     <% it.item.labels.forEach(function (label) { %>
     <li
       class="max-w-fit px-3 py-1 rounded-lg text-sm"
@@ -24,8 +36,26 @@
     <%})%>
   </ul>
   <% } %>
-  <div class="flex items-center p-3 w-full">
-    <button class="btn btn-primary !px-3 js-invite-member js-enabled" title="Add member">
+  <div class="flex items-center w-full mt-3 gap-2">
+    <% if (it.item.members.length) { %>
+    <ul>
+      <% it.item.members.forEach(function (member) {%>
+      <li
+        title="<%= member.name %>"
+        class="bg-gray-400 text-white rounded-xl overflow-hidden font-medium relative w-11 h-11 flex items-center justify-center text-lg cursor-default"
+      >
+        <% if (member.profile_photo_url) {%>
+        <img
+          src="<%= member.profile_photo_url %>"
+          alt="<%= member.name %>"
+          class="flex-shring-0 max-w-full object-cover absolute"
+        />
+        <% } %> <%= it.initials(member.name) %>
+      </li>
+      <% }) %>
+    </ul>
+    <% } %>
+    <button class="btn btn-primary !px-3 js-invite-member" title="Add member">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         class="h-5 w-5 flex-shrink-0"
@@ -81,8 +111,8 @@
   </div>
 </li>
 <dialog
-  class="js-list-item-dialog bg-white shadow-md max-w-3xl rounded-lg w-full open:animate-dialog-reveal p-0"
+  class="js-list-item-dialog bg-white shadow-md max-w-3xl rounded-lg w-full h-full open:animate-dialog-reveal p-0 overflow-y-auto"
 >
-  <%~ includeFile("./list-item.html", { board: it.board,colors: it.colors, formatter: it.formatter,
-  item: Object.assign(it.item, { list: it.list }), method: "dialog"} ) %>
+  <%~ includeFile("./list-item.html", { board: it.board, colors: it.colors, user: it.user,
+  formatter: it.formatter, item: Object.assign(it.item, { list: it.list }), method: "dialog"} ) %>
 </dialog>

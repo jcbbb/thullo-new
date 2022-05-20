@@ -9,10 +9,24 @@
     }
   </style>
 </noscript>
-<div class="bg-white shadow-md max-w-3xl w-full p-6 rounded-lg mx-auto space-y-6 h-full <%= it.method !== "dialog" ? "my-16" : ""%>">
-	<img src="https://s3.us-east-2.amazonaws.com/s3.pluto.uz/4789b479-728e-45d3-842c-15a5cd7cd6f8-1395379.jpeg" alt="" class="object-cover w-full h-48 rounded-lg">
+<div class="bg-white max-w-3xl w-full p-6 rounded-lg mx-auto space-y-6 js-item-dialog-<%= it.item.id %> <%= it.method !== "dialog" ? "my-16" : ""%>">
+	<% if (it.item.cover_photo_url) { %>
+		<img src="<%= it.item.cover_photo_url %>" loading="lazy" alt="" class="object-cover max-h-60 w-full rounded-lg js-<%= it.item.id%>-cover-photo">
+	<% } %>
 	<div class="grid gap-4 grid-cols-12">
 		<div class="space-y-6 col-span-9">
+			<% if (it.item.labels.length) {%>
+			<ul class="flex flex-wrap gap-2">
+				<% it.item.labels.forEach(function (label) { %>
+				<li
+					class="max-w-fit px-3 py-1 rounded-lg text-sm"
+					style="background: <%= label.color.hex %>33; color: <%= label.color.hex %>"
+				>
+					<%= label.title %>
+				</li>
+				<%})%>
+			</ul>
+			<% } %>
 			<div class="flex text-gray-500 space-x-2">
 				<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mt-[2px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
 					<path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
@@ -25,17 +39,17 @@
 				</div>
 			</div>
 			<form action="/list-items/<%= it.item.id %>" method="post" class="js-description-form">
-				<p class="text-gray-500 flex space-x-2 items-center">
+				<p class="text-gray-500 flex space-x-2 items-center text-sm">
 					<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
 						<path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
 					</svg>
-					<span class="text-neutral-900">
+					<span>
 						Description
 					</span>
 				</p>
 				<input type="hidden" name="list_item_id" value="<%= it.item.id %>">
 				<elastic-textarea>
-					<textarea required name="description" class="input text-input mt-3 js-description-input" placeholder="Add description"><%= it.item.description ? it.item.description : "" %></textarea>
+					<textarea required name="description" class="input text-input mt-3 resize-none js-description-input" placeholder="Add description"><%= it.item.description ? it.item.description : "" %></textarea>
 				</elastic-textarea>
 				<noscript>
 					<button class="btn btn-primary mt-2">Save</button>
@@ -43,11 +57,11 @@
 			</form>
 			<div>
 				<form class="flex items-center space-x-4 js-attachment-form" action="/list-items/<%= it.item.id %>" method="post" enctype="multipart/form-data">
-					<p class="text-gray-500 flex space-x-2 items-center">
+					<p class="text-gray-500 flex space-x-2 items-center text-sm">
 						<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
 							<path stroke-linecap="round" stroke-linejoin="round" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
 						</svg>
-						<span class="text-neutral-900">
+						<span>
 							Attachments
 						</span>
 					</p>
@@ -74,7 +88,7 @@
 					<input type="hidden" name="list_item_id" value="<%= it.item.id %>">
 					<input type="hidden" name="board_id" value="<%= it.board.id %>">
 					<elastic-textarea>
-						<textarea name="content" class="input text-input" placeholder="Add comment" required></textarea>
+						<textarea name="content" class="input text-input resize-none" placeholder="Add comment" required></textarea>
 					</elastic-textarea>
 					<button class="btn btn-primary mt-2">Comment</button>
 				</form>
@@ -85,21 +99,22 @@
 				</ul>
 			</div>
 		</div>
-		<div class="col-span-3">
+		<div class="col-span-3 space-y-6">
 			<div class="space-y-3">
 				<div class="flex items-center space-x-4">
-					<p class="text-gray-500 flex space-x-2 items-center">
+					<p class="text-gray-500 flex space-x-2 items-center text-sm">
 						<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
 							<path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
 						</svg>
-						<span class="text-neutral-900">
+						<span>
 							Actions
 						</span>
 					</p>
 				</div>
-				<div>
-        	<input id="list-item-cover" type="file" class="file-input js-file-upload js-disabled mb-2 peer" accept="image/*" name="cover" required>
-      		<label for="list-item-cover" class="file-input-label w-full items-center space-x-2 !px-6 text-sm">
+				<form action="/list-items/<%= it.item.id %>" method="post" enctype="multipart/form-data" class="js-cover-form">
+        	<input id="<%= it.item.id %>" type="file" class="file-input js-cover-upload js-disabled mb-2 peer" accept="image/*" name="cover" required>
+					<input type="hidden" name="id" value="<%= it.item.id %>">
+      		<label for="<%= it.item.id %>" class="file-input-label w-full items-center space-x-2 !px-6 text-sm">
 						<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
 							<path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" />
 						</svg>
@@ -107,17 +122,10 @@
 							Cover
 						</span>
 					</label>
-				</div>
-				<div>
-					<button class="btn btn-secondary space-x-2 flex text-gray-500 w-full">
-						<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-							<path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
-						</svg>
-						<span>
-							Members
-						</span>
-					</button>
-				</div>
+					<noscript>
+						<button class="btn btn-primary w-full mt-2" value="attach_item_cover" name="_action">Upload</button>
+					</noscript>
+				</form>
 				<details class="relative">
 					<summary class="btn btn-secondary space-x-2 flex text-gray-500 w-full">
 						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5" fill="currentColor">
@@ -128,77 +136,39 @@
 							Labels
 						</span>
 					</summary>
-					<form action="/list-items/<%= it.item.id %>/labels?board_id=<%= it.board.id %>&redirect_uri=<%= it.method !== "dialog" ? "/list-items/" + it.item.id : "/boards/" + it.board.id %>" method="post" class="bg-white shadow drop-shadow-md p-2 rounded-md absolute w-72 right-0 -bottom-12 space-y-4">
-						<div>
-							<h2 class="font-medium text-lg">Label</h2>
-							<p class="text-gray-500">Select a name and a color</p>
-						</div>
-						<input type="text" class="input text-input" placeholder="Title" name="title">
-						<ul class="flex flex-wrap justify-between gap-y-2">
-							<% it.colors.forEach(function (color) { %>
-								<li class="basis-16 h-10 rounded-md overflow-hidden">
-									<label
-										class="flex items-center justify-center h-full cursor-pointer" style="background: <%= color.hex %>">
-										<input
-											type="radio"
-											class="absolute opacity-0 -z-10 w-0 peer group checkbox-input"
-											name="label_color_id"
-											value="<%= color.id %>"
-										/>
-									<svg
-											xmlns="http://www.w3.org/2000/svg"
-											class="h-5 w-5 text-white checkbox-icon"
-											fill="none"
-											viewBox="0 0 24 24"
-											stroke="currentColor"
-											stroke-width="2"
-										>
-											<path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-										</svg>
-									</label>
-								</li>
-							<% }) %>
-						</ul>
-						<div class="space-y-2">
-							<p class="text-gray-500 flex space-x-2 items-center">
-								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-4 h-4" fill="currentColor">
-									<path d="M0 0h24v24H0z" fill="none"/>
-									<path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z"/>
-								</svg>
-								<span>
-									Available
-								</span>
-							</p>
-							<ul class="flex flex-wrap gap-2">
-								<% it.board.labels.filter(label => !it.item.labels.some(itemLabel => label.id === itemLabel.id)).forEach(function (lbl) { %>
-									<li class="max-w-fit">
-										<label
-											class="relative flex items-center justify-center h-full cursor-pointer px-3 py-1 rounded-lg text-sm" style="background: <%= lbl.color.hex %>33; color: <%= lbl.color.hex %>">
-											<input
-												type="checkbox"
-												class="absolute opacity-0 -z-10 w-0 peer group checkbox-input"
-												name="labels"
-												value="<%= lbl.id %>"
-											/>
-											<svg
-												xmlns="http://www.w3.org/2000/svg"
-												class="h-4 w-4 absolute checkbox-icon top-0 right-0 text-white translate-x-1/2 -translate-y-1/2 rounded-full duration-100 scale-0 origin-bottom-left peer-checked:scale-100"
-												fill="none"
-												viewBox="0 0 24 24"
-												stroke="currentColor"
-												stroke-width="2"
-												style="background: <%= lbl.color.hex %>"
-											>
-												<path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-											</svg>
-											<%= lbl.title %>
-										</label>
-									</li>
-								<% }) %>
-							</ul>
-						</div>
-						<button class="btn btn-primary mx-auto w-full">Add</button>
-					</form>
+					<div class="absolute w-72 right-full mr-4 -bottom-12 top-0">
+						<%~ includeFile('../partials/label-picker.html', it) %>
+					</div>
+				</details>
+			</div>
+			<div class="space-y-3">
+				<div class="flex items-center space-x-4">
+					<p class="text-gray-500 flex space-x-2 items-center text-sm">
+						<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+							<path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+						</svg>
+						<span>
+							Members
+						</span>
+					</p>
+				</div>
+				<details class="relative">
+					<summary class="btn btn-secondary flex justify-between w-full !p-3">
+						<span> Assign member </span>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							class="h-5 w-5 flex-shrink-0"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke="currentColor"
+							stroke-width="2"
+						>
+							<path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+						</svg>
+					</summary>
+					<div class="absolute w-72 right-full mr-4 -bottom-12 top-0">
+						<%~ includeFile('../partials/member-picker.html', it) %>
+					</div>
 				</details>
 			</div>
 		</div>

@@ -91,6 +91,7 @@ export function up(knex) {
         .onDelete("CASCADE");
       table.integer("pos").notNullable();
       table.string("title").notNullable();
+      table.string("cover_photo_url", 512);
       table.text("description");
       table.timestamps(false, true);
     })

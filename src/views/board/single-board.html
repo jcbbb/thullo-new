@@ -16,7 +16,7 @@
       >
         <% if (member.profile_photo_url) {%>
         <img
-          src="https://i.pravatar.cc/300"
+          src="<%= member.profile_photo_url %>"
           alt="<%= member.name %>"
           class="flex-shring-0 max-w-full object-cover absolute"
         />

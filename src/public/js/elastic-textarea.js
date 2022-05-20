@@ -31,6 +31,7 @@ class ElasticTextarea extends HTMLElement {
       prevHeight = newHeight;
     }
   }
+
   shrink(textareaEl) {
     let prevHeight = textareaEl.clientHeight;
     const minRows = parseInt(textareaEl.dataset.minRows);
@@ -50,6 +51,7 @@ class ElasticTextarea extends HTMLElement {
       }
     }
   }
+
   update(textareaEl) {
     if (this.isScrolling(textareaEl)) {
       this.grow(textareaEl);
@@ -57,6 +59,7 @@ class ElasticTextarea extends HTMLElement {
       this.shrink(textareaEl);
     }
   }
+
   rows(textareaEl) {
     return textareaEl.rows || parseInt(textareaEl.dataset.minRows);
   }
