@@ -1,4 +1,4 @@
-<li class="flex space-x-4 items-center first-of-type:mt-3 js-attachment-item">
+<li class="flex gap-4 first-of-type:mt-3 js-attachment-item flex-col sm:flex-row sm:items-center">
   <img
     src="<%= it.attachment.url %>"
     alt=""
@@ -9,7 +9,7 @@
       <%= it.formatter.format(it.attachment.created_at) %>
     </span>
     <p><%= it.attachment.name %></p>
-    <menu class="space-x-2 flex mt-2">
+    <menu class="flex gap-2 mt-2">
       <a
         class="btn btn-secondary text-neutral-900"
         download="<%= it.attachment.name %>"
