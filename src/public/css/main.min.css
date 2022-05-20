@@ -598,6 +598,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   grid-column: span 3 / span 3;
 }
 
+.col-span-12 {
+  grid-column: span 12 / span 12;
+}
+
 .-m-1 {
   margin: -0.25rem;
 }
@@ -1996,6 +2000,14 @@ details summary::marker {
 }
 
 @media (min-width: 1024px) {
+  .lg\:col-span-9 {
+    grid-column: span 9 / span 9;
+  }
+
+  .lg\:col-span-3 {
+    grid-column: span 3 / span 3;
+  }
+
   .lg\:grid-cols-3 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
