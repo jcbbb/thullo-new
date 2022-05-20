@@ -14,6 +14,17 @@ export async function createOne(req, res) {
   res.redirect(`/boards/${board_id}`);
 }
 
+export async function getNew(req, res) {
+  const { list_item_id } = req.params;
+  const item = await ListItemService.getOne(list_item_id, ["board"]);
+
+  res.render(
+    "partials/member-picker",
+    { item, board: item.board },
+    { layout: "layout.html", board: item.board }
+  );
+}
+
 export async function addMember(req, res) {
   const { list_item_id } = req.params;
   const { redirect_uri } = req.query;
@@ -36,7 +47,11 @@ export async function addMember(req, res) {
 export async function getOne(req, res) {
   const user = req.user;
   const { list_item_id } = req.params;
-  const item = await ListItemService.getOne(list_item_id);
+  const item = await ListItemService.getOne(list_item_id, [
+    "attachments",
+    "comments.[user]",
+    "labels.[color]",
+  ]);
   const list = await ListService.getOne(item.list_id);
   const board = await BoardService.getOne(item.board_id, ["labels.[color]"]);
   const colors = await LabelColorService.getMany();

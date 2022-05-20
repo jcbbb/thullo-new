@@ -55,18 +55,24 @@
       <% }) %>
     </ul>
     <% } %>
-    <button class="btn btn-primary !px-3 js-invite-member" title="Add member">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        class="h-5 w-5 flex-shrink-0"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        stroke-width="2"
-      >
-        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-      </svg>
-    </button>
+    <details class="relative">
+      <summary class="btn btn-primary !px-3">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5 flex-shrink-0"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+        </svg>
+      </summary>
+      <div class="absolute w-72 left-full ml-4 -bottom-12 top-0">
+        <%~ includeFile('../partials/member-picker.html', Object.assign(it, { method: "dialog" }))
+        %>
+      </div>
+    </details>
     <% if (it.item.attachments_count || it.item.comments_count) { %>
     <div class="ml-auto flex items-center space-x-3">
       <% if (it.item.attachments_count) { %>

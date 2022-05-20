@@ -4,6 +4,7 @@ import { formatter } from "../utils/index.js";
 export async function createOne(req, res) {
   const user = req.user;
   const { content, board_id, list_item_id } = req.body;
+
   const comment = await CommentService.createOne({
     content,
     board_id,
@@ -21,8 +22,10 @@ export async function createOne(req, res) {
       res.redirect(`/list-items/${list_item_id}`);
     }
     case "json": {
-      res.send(comment);
+      return res.send(comment);
     }
+    default:
+      res.send(comment);
   }
 }
 

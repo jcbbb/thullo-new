@@ -1,4 +1,4 @@
-import { User, Attachment, Comment, BaseModel, Label } from "./index.js";
+import { User, Attachment, Comment, BaseModel, Label, Board } from "./index.js";
 
 export class ListItem extends BaseModel {
   static get tableName() {
@@ -22,6 +22,14 @@ export class ListItem extends BaseModel {
   }
 
   static relationMappings = () => ({
+    board: {
+      relation: BaseModel.HasOneRelation,
+      modelClass: Board,
+      join: {
+        from: "list_items.board_id",
+        to: "boards.id",
+      },
+    },
     labels: {
       relation: BaseModel.ManyToManyRelation,
       modelClass: Label,

@@ -1,4 +1,4 @@
-<form action="/list-items/<%= it.item.id %>/members?board_id=<%= it.board.id %>&redirect_uri=<%= it.method !== "dialog" ? "/list-items/" + it.item.id : "/boards/" + it.board.id %>" method="post" class="bg-white shadow drop-shadow-md p-3 rounded-md space-y-4">
+<form action="/list-items/<%= it.item.id %>/members?board_id=<%= it.board.id %>&redirect_uri=<%= it.method !== "dialog" ? "/list-items/" + it.item.id : "/boards/" + it.board.id %>" method="post" class="bg-white shadow drop-shadow-md p-3 rounded-md space-y-4 max-w-2xl mx-auto">
 	<div>
 		<h2 class="font-medium text-lg">Members</h2>
 		<p class="text-gray-500">Assign members to this card</p>

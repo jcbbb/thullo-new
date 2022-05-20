@@ -1,4 +1,5 @@
 import { ListItem } from "../models/index.js";
+import { formatRelations } from "../utils/index.js";
 
 export async function createOne({ title, pos, list_id, board_id }) {
   return await ListItem.query().insert({ title, pos, list_id, board_id });
@@ -12,10 +13,8 @@ export async function addLabel({ label_id, list_item_id }) {
   return await ListItem.relatedQuery("labels").for(list_item_id).relate(label_id);
 }
 
-export async function getOne(id) {
-  return await ListItem.query()
-    .findById(id)
-    .withGraphFetched("[attachments, comments.[user], labels.[color]]");
+export async function getOne(id, relations = []) {
+  return await ListItem.query().findById(id).withGraphFetched(formatRelations(relations));
 }
 
 export async function updateOne(id, update) {
