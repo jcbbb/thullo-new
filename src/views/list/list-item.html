@@ -152,6 +152,26 @@
 						</span>
 					</p>
 				</div>
+				<% if (it.item.members.length) { %>
+					<ul class="flex flex-col space-y-3">
+						<% it.item.members.forEach(function (member) {%>
+							<li
+								class="flex space-x-2 items-center text-sm"
+							>
+								<span class="bg-gray-400 text-white rounded-xl overflow-hidden font-medium relative flex w-10 h-10  items-center justify-center text-lg cursor-default">
+									<% if (member.profile_photo_url) {%>
+									<img
+										src="<%= member.profile_photo_url %>"
+										alt="<%= member.name %>"
+										class="flex-shring-0 max-w-full object-cover absolute"
+									/>
+									<% } %> <%= it.initials(member.name) %>
+								</span>
+								<span><%= member.name %></span>
+							</li>
+							<% }) %>
+					</ul>
+				<% } %>
 				<details class="relative">
 					<summary class="btn btn-secondary flex justify-between w-full !p-3">
 						<span> Assign member </span>

@@ -38,11 +38,11 @@
   <% } %>
   <div class="flex items-center w-full mt-3 gap-2">
     <% if (it.item.members.length) { %>
-    <ul>
+    <ul class="flex gap-2">
       <% it.item.members.forEach(function (member) {%>
       <li
         title="<%= member.name %>"
-        class="bg-gray-400 text-white rounded-xl overflow-hidden font-medium relative w-11 h-11 flex items-center justify-center text-lg cursor-default"
+        class="bg-gray-400 text-white rounded-xl overflow-hidden font-medium relative w-11 h-11 inline-flex items-center justify-center text-lg cursor-default"
       >
         <% if (member.profile_photo_url) {%>
         <img
@@ -119,6 +119,7 @@
 <dialog
   class="js-list-item-dialog bg-white shadow-md max-w-3xl rounded-lg w-full h-full open:animate-dialog-reveal p-0 overflow-y-auto"
 >
-  <%~ includeFile("./list-item.html", { board: it.board, colors: it.colors, user: it.user,
-  formatter: it.formatter, item: Object.assign(it.item, { list: it.list }), method: "dialog"} ) %>
+  <%~ includeFile("./list-item.html", { board: it.board, colors: it.colors, user: it.user, initials:
+  it.initials, formatter: it.formatter, item: Object.assign(it.item, { list: it.list }), method:
+  "dialog"} ) %>
 </dialog>

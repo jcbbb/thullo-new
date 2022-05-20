@@ -25,7 +25,7 @@
       </svg>
     </a>
     <% if (it.board) { %>
-    <h1 class="font-medium text-lg">
+    <h1 class="font-medium text-lg hidden sm:block">
       <a href="/boards/<%= it.board.id %>"> <%= it.board.title %> </a>
     </h1>
     <%}%>
@@ -53,7 +53,7 @@
       </span>
     </summary>
     <ul
-      class="absolute bg-white shadow drop-shadow-sm rounded-md w-full overflow-hidden mt-2 text-sm text-neutral-900 opacity-0 translate-y-2 group-open:translate-y-0 group-open:opacity-100 duration-200"
+      class="absolute bg-white shadow drop-shadow-sm rounded-md w-full overflow-hidden mt-2 text-sm text-neutral-900 opacity-0 translate-y-2 group-open:translate-y-0 group-open:opacity-100 duration-200 z-50"
     >
       <li>
         <a href="/profile" class="block p-2 text-inherit hover:bg-gray-100 duration-200">Profile</a>
